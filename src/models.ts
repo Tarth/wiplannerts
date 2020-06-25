@@ -1,0 +1,1 @@
+export interface Job {username: String, description: String, start: Date, end: Date, id: Number }
