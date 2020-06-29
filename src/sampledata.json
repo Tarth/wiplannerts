@@ -3,7 +3,7 @@
     {
       "id": 1,
       "user": "Mikkel",
-      "startdate": 22,
+      "startdate": 29,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -14,7 +14,7 @@
     {
       "id": 2,
       "user": "Mikkel",
-      "startdate": 22,
+      "startdate": 29,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "user": "Mikkel",
-      "startdate": 23,
+      "startdate": 30,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -36,7 +36,7 @@
     {
       "id": 4,
       "user": "Mikkel",
-      "startdate": 24,
+      "startdate": 31,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -47,8 +47,8 @@
     {
       "id": 5,
       "user": "Mikkel",
-      "startdate": 25,
-      "startmonth": 6,
+      "startdate": 1,
+      "startmonth": 7,
       "startyear": 2020,
       "enddate": 16,
       "endmonth": 6,
@@ -58,8 +58,8 @@
     {
       "id": 6,
       "user": "Mikkel",
-      "startdate": 26,
-      "startmonth": 6,
+      "startdate": 1,
+      "startmonth": 7,
       "startyear": 2020,
       "enddate": 16,
       "endmonth": 6,
@@ -69,8 +69,8 @@
     {
       "id": 7,
       "user": "Mikkel",
-      "startdate": 27,
-      "startmonth": 6,
+      "startdate": 2,
+      "startmonth": 7,
       "startyear": 2020,
       "enddate": 20,
       "endmonth": 6,

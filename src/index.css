@@ -14,13 +14,12 @@ code {
 
 .workerweek {
   margin: auto;
-  width: 95%;
+  /* width: 95%; */
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .workerjobs {
   display: flex;
-  justify-content: space-between;
 }
 
 .workerjob {
@@ -28,5 +27,4 @@ code {
   flex-grow: 1;
   background-color: lime;
   text-align: center;
-  margin-left: 2px;
 }

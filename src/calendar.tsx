@@ -26,41 +26,59 @@ export const Calendar: React.FC = () => {
 const DisplayWeeklyTasks: React.FC<Props> = ({ tasks }) => {
   const numberOfDays: Number = 5;
   const firstDayOfWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
-  const filteredData = [];
+  const oneWorkerWeekData = [];
+  // console.log("Component: DisplayWeeklyTasks -", tasks);
 
-  if (filteredData.length === 0) {
-    filteredData.push(
+  if (oneWorkerWeekData.length === 0) {
+    oneWorkerWeekData.push(
       tasks.filter((x) => x.start.getDate() === firstDayOfWeek.getDate())
     );
   }
-
   for (let i = 0; i < numberOfDays; i++) {
-    filteredData.push(
+    oneWorkerWeekData.push(
       tasks.filter(
         (x) => x.start.getDate() === addDays(firstDayOfWeek, i).getDate()
       )
     );
   }
 
+  console.log("Component: One Worker Week Data -", oneWorkerWeekData);
   return (
-    <div className="workerweek">
-      {filteredData.map((x) => (
-        <DisplayDailyTasksWorker tasks={x} />
-      ))}
-    </div>
+    <>
+      <div className="workerweek">
+        {oneWorkerWeekData.map((x) => (
+          <DisplayDailyTasksWorker tasks={x} />
+        ))}
+      </div>
+    </>
   );
 };
 
 const DisplayDailyTasksWorker: React.FC<Props> = ({ tasks }) => {
+  // console.log(tasks);
   const [width, setWidth] = useState(500);
 
   return (
-    <div className="workerjobs" style={{ width: width }}>
-      {tasks.map((x) => (
-        <div className="workerjob">
-          {x.start.getDate()}/{x.start.getMonth()}/{x.start.getFullYear()}
-        </div>
-      ))}
-    </div>
+    <>
+      <DisplayWorkerName tasks={tasks} />
+
+      <div className="workerjobs" style={{ width: width }}>
+        {tasks.map((x) => (
+          <div className="workerjob">
+            {x.start.getDate()}/{x.start.getMonth()}/{x.start.getFullYear()}
+          </div>
+        ))}
+      </div>
+    </>
   );
+};
+
+const DisplayWorkerName: React.FC<Props> = ({ tasks }) => {
+  const nameToDiplay = [];
+
+  if (nameToDiplay.length === 0) {
+    nameToDiplay.push(tasks[0].username);
+  }
+
+  return <div>Mikkel</div>;
 };
