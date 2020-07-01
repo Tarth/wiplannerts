@@ -11,6 +11,7 @@ interface Props {
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
+  //Use this as a list of names
   if (tasks.length === 0) {
     const dataHandler = DataHandler();
     setTasks(dataHandler);
@@ -25,13 +26,18 @@ export const Calendar: React.FC = () => {
 };
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
-  let temparray = ["Mikkel", "Mikkel", "Frank"];
-  const workerData = [];
+  // const [names, setNames] = useState<String[]>([]);
+  let allNamesFromDB: String[] = [];
+  let workerData = [];
   console.log("Rå Data:", tasks);
 
-  // temparray = tasks.map((x) => x.username);
+  // Find unique workers
+  allNamesFromDB = tasks.map((x) => x.username);
+  let uniqWorkers = allNamesFromDB.filter((name, index) => {
+    return allNamesFromDB.indexOf(name) === index;
+  });
+  console.log(uniqWorkers);
 
-  console.log(temparray);
   workerData.push(tasks.filter((x) => x.username));
   return (
     <div className="worker">
