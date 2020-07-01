@@ -3,6 +3,7 @@ import "./index.css";
 import { DataHandler } from "./datahandler";
 import { Job } from "./models";
 import { addDays, startOfWeek } from "date-fns";
+import { worker } from "cluster";
 
 interface Props {
   tasks: Job[];
@@ -17,23 +18,35 @@ export const Calendar: React.FC = () => {
   return (
     <div>
       {/*Comments looks like this in JSX*/}
-      <DisplayWeeklyTasks tasks={tasks}></DisplayWeeklyTasks>
+      <AllWorkers tasks={tasks} />
       {/* <DisplayDailyTasksWorker dailyTasks={items}></DisplayDailyTasksWorker> */}
     </div>
   );
 };
-// Denne metode skal vise malerens opgaver i løbet af en uge
-const DisplayWeeklyTasks: React.FC<Props> = ({ tasks }) => {
+
+const AllWorkers: React.FC<Props> = ({ tasks }) => {
+  let temparray = ["Mikkel", "Mikkel", "Frank"];
+  const workerData = [];
+  console.log("Rå Data:", tasks);
+
+  // temparray = tasks.map((x) => x.username);
+
+  console.log(temparray);
+  workerData.push(tasks.filter((x) => x.username));
+  return (
+    <div className="worker">
+      {workerData.map((x) => (
+        <WeeklyTasks tasks={x} />
+      ))}
+    </div>
+  );
+};
+
+const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
   const numberOfDays: Number = 5;
   const firstDayOfWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
   const oneWorkerWeekData = [];
-  // console.log("Component: DisplayWeeklyTasks -", tasks);
 
-  if (oneWorkerWeekData.length === 0) {
-    oneWorkerWeekData.push(
-      tasks.filter((x) => x.start.getDate() === firstDayOfWeek.getDate())
-    );
-  }
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
@@ -42,26 +55,22 @@ const DisplayWeeklyTasks: React.FC<Props> = ({ tasks }) => {
     );
   }
 
-  console.log("Component: One Worker Week Data -", oneWorkerWeekData);
   return (
     <>
+      <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
         {oneWorkerWeekData.map((x) => (
-          <DisplayDailyTasksWorker tasks={x} />
+          <DailyTasks tasks={x} />
         ))}
       </div>
     </>
   );
 };
 
-const DisplayDailyTasksWorker: React.FC<Props> = ({ tasks }) => {
-  // console.log(tasks);
-  const [width, setWidth] = useState(500);
-
+const DailyTasks: React.FC<Props> = ({ tasks }) => {
+  const [width, setWidth] = useState(350);
   return (
     <>
-      <DisplayWorkerName tasks={tasks} />
-
       <div className="workerjobs" style={{ width: width }}>
         {tasks.map((x) => (
           <div className="workerjob">
@@ -74,11 +83,9 @@ const DisplayDailyTasksWorker: React.FC<Props> = ({ tasks }) => {
 };
 
 const DisplayWorkerName: React.FC<Props> = ({ tasks }) => {
-  const nameToDiplay = [];
-
-  if (nameToDiplay.length === 0) {
-    nameToDiplay.push(tasks[0].username);
+  const nameToDisplay = [];
+  if (tasks.length !== 0) {
+    nameToDisplay.push(tasks[0].username);
   }
-
-  return <div>Mikkel</div>;
+  return <div className="workername">{nameToDisplay}</div>;
 };

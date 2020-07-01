@@ -3,7 +3,7 @@
     {
       "id": 1,
       "user": "Mikkel",
-      "startdate": 29,
+      "startdate": 27,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -25,7 +25,7 @@
     {
       "id": 3,
       "user": "Mikkel",
-      "startdate": 30,
+      "startdate": 29,
       "startmonth": 6,
       "startyear": 2020,
       "enddate": 15,
@@ -68,8 +68,30 @@
     },
     {
       "id": 7,
-      "user": "Mikkel",
+      "user": "Frank",
       "startdate": 2,
+      "startmonth": 7,
+      "startyear": 2020,
+      "enddate": 16,
+      "endmonth": 6,
+      "endyear": 2020,
+      "description": "Sixth"
+    },
+    {
+      "id": 8,
+      "user": "Frank",
+      "startdate": 3,
+      "startmonth": 7,
+      "startyear": 2020,
+      "enddate": 20,
+      "endmonth": 6,
+      "endyear": 2020,
+      "description": "Seventh"
+    },
+    {
+      "id": 9,
+      "user": "Frank",
+      "startdate": 4,
       "startmonth": 7,
       "startyear": 2020,
       "enddate": 20,

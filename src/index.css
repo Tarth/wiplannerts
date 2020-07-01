@@ -12,9 +12,17 @@ code {
     monospace;
 }
 
-.workerweek {
+.worker {
   margin: auto;
-  /* width: 95%; */
+  display: flex;
+  border: 1px solid black;
+}
+
+.workername {
+  padding-right: 20px;
+}
+
+.workerweek {
   display: flex;
   justify-content: space-evenly;
 }
@@ -25,6 +33,7 @@ code {
 .workerjob {
   border: 1px solid black;
   flex-grow: 1;
-  background-color: lime;
+  background-color: greenyellow;
   text-align: center;
+  border-collapse: collapse;
 }
