@@ -49,14 +49,15 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
 };
 
 const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
-  const numberOfDays: Number = 5;
-  const firstDayOfWeek = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const numberOfDays: Number = 7;
+  // const firstDayOfWeek = startOfWeek(new Date(), { weekStartsOn: 1 }); -- Denne funktion finder datoen for mandag i igangværende uge, og skal bruges fremadrettet efter tests
+  const startDateTest = new Date(2020, 6, 27);
   const oneWorkerWeekData = [];
 
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
-        (x) => x.start.getDate() === addDays(firstDayOfWeek, i).getDate()
+        (x) => x.start.getDate() === addDays(startDateTest, i).getDate()
       )
     );
   }
@@ -74,7 +75,7 @@ const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
 };
 
 const DailyTasks: React.FC<Props> = ({ tasks }) => {
-  const [width, setWidth] = useState(350);
+  const [width, setWidth] = useState(250);
   return (
     <>
       <div className="workerjobs" style={{ width: width }}>
