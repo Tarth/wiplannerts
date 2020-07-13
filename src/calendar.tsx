@@ -38,13 +38,16 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
   });
   console.log(uniqWorkers);
 
-  workerData.push(tasks.filter((x) => x.username));
+  workerData.push(tasks.filter((x) => x.username === "Mikkel"));
+  console.log(workerData);
   return (
-    <div className="worker">
-      {workerData.map((x) => (
-        <WeeklyTasks tasks={x} />
-      ))}
-    </div>
+    <>
+      <div className="worker">
+        {workerData.map((x) => (
+          <WeeklyTasks tasks={x} />
+        ))}
+      </div>
+    </>
   );
 };
 
