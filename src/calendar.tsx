@@ -3,7 +3,6 @@ import "./index.css";
 import { DataHandler } from "./datahandler";
 import { Job } from "./models";
 import { addDays } from "date-fns";
-//import { worker } from "cluster";
 
 interface Props {
   tasks: Job[];
@@ -20,38 +19,30 @@ export const Calendar: React.FC = () => {
     <div>
       {/*Comments looks like this in JSX*/}
       <AllWorkers tasks={tasks} />
-      {/* <DisplayDailyTasksWorker dailyTasks={items}></DisplayDailyTasksWorker> */}
+      
     </div>
   );
 };
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
-  // const [names, setNames] = useState<String[]>([]);
   let allNamesFromDB: String[] = [];
-  let workerData = [];
-
+  
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
     return allNamesFromDB.indexOf(name) === index;
   });
 
-  workerData.push(tasks.filter((x) => x.username === "Mikkel"));
-
-  const createTable = () => {
-    let temp = [];
-    for (let i = 0; i < uniqWorkers.length; i++) {
-      temp.push(tasks.filter((x) => x.username === uniqWorkers[i]));
-    }
-    console.log(temp);
-  };
-
-  createTable();
-
+  // Sort job data by worker
+  let sortedByWorker = [];
+  for (let i = 0; i < uniqWorkers.length; i++) {
+    sortedByWorker.push(tasks.filter((x) => x.username === uniqWorkers[i]));
+  }
+  
   return (
     <>
       <div className="worker">
-        {workerData.map((x) => (
+        {sortedByWorker.map((x) => (
           <WeeklyTasks tasks={x} />
         ))}
       </div>
