@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./index.css";
 import { DataHandler } from "./datahandler";
 import { Job } from "./models";
-import { addDays, startOfWeek } from "date-fns";
-import { worker } from "cluster";
+import { addDays } from "date-fns";
+//import { worker } from "cluster";
 
 interface Props {
   tasks: Job[];
@@ -29,17 +29,25 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
   // const [names, setNames] = useState<String[]>([]);
   let allNamesFromDB: String[] = [];
   let workerData = [];
-  console.log("Rå Data:", tasks);
 
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
     return allNamesFromDB.indexOf(name) === index;
   });
-  console.log(uniqWorkers);
 
   workerData.push(tasks.filter((x) => x.username === "Mikkel"));
-  console.log(workerData);
+
+  const createTable = () => {
+    let temp = [];
+    for (let i = 0; i < uniqWorkers.length; i++) {
+      temp.push(tasks.filter((x) => x.username === uniqWorkers[i]));
+    }
+    console.log(temp);
+  };
+
+  createTable();
+
   return (
     <>
       <div className="worker">
