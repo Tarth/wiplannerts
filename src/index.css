@@ -12,14 +12,24 @@ code {
     monospace;
 }
 
+.workercontainer {
+  width: 98%;
+  margin: auto;
+}
+
+.workercontainer:last-child {
+  border-bottom: 1px solid black;
+}
+
 .worker {
   margin: auto;
   display: flex;
   border: 1px solid black;
+  border-bottom: none;
 }
 
 .workername {
-  padding-right: 20px;
+  margin: auto;
 }
 
 .workerweek {
@@ -28,12 +38,18 @@ code {
 }
 .workerjobs {
   display: flex;
+  border-left: 1px solid black;
 }
 
 .workerjob {
-  border: 1px solid black;
+  border-right: 1px solid black;
   flex-grow: 1;
   background-color: greenyellow;
   text-align: center;
   border-collapse: collapse;
+}
+
+.workerjob:only-child,
+.workerjob:last-child {
+  border: none;
 }

@@ -16,17 +16,16 @@ export const Calendar: React.FC = () => {
     setTasks(dataHandler);
   }
   return (
-    <div>
+    <div className="workercontainer">
       {/*Comments looks like this in JSX*/}
       <AllWorkers tasks={tasks} />
-      
     </div>
   );
 };
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
   let allNamesFromDB: String[] = [];
-  
+
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
@@ -38,14 +37,14 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
   for (let i = 0; i < uniqWorkers.length; i++) {
     sortedByWorker.push(tasks.filter((x) => x.username === uniqWorkers[i]));
   }
-  
+
   return (
     <>
-      <div className="worker">
-        {sortedByWorker.map((x) => (
+      {sortedByWorker.map((x) => (
+        <div className="worker">
           <WeeklyTasks tasks={x} />
-        ))}
-      </div>
+        </div>
+      ))}
     </>
   );
 };
