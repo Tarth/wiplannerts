@@ -16,40 +16,35 @@ code {
   width: 98%;
   margin: auto;
 }
-
-.workercontainer:last-child {
-  border-bottom: 1px solid black;
-}
-
 .worker {
-  margin: auto;
   display: flex;
   border: 1px solid black;
   border-bottom: none;
 }
-
-.workername {
-  margin: auto;
+.worker:last-child {
+  border-bottom: 1px solid black;
 }
 
+.workername {
+  width: 100px;
+  text-align: center;
+}
 .workerweek {
   display: flex;
-  justify-content: space-evenly;
+  flex-grow: 1;
 }
 .workerjobs {
   display: flex;
+  flex: 1;
   border-left: 1px solid black;
 }
-
 .workerjob {
-  border-right: 1px solid black;
-  flex-grow: 1;
-  background-color: greenyellow;
+  background-color: lightgreen;
+  flex: 1;
   text-align: center;
-  border-collapse: collapse;
+  border-left: 1px solid black;
 }
-
 .workerjob:only-child,
-.workerjob:last-child {
-  border: none;
+.workerjob:first-child {
+  border-left: none;
 }

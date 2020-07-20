@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./index.css";
 import { DataHandler } from "./datahandler";
 import { Job } from "./models";
-import { addDays } from "date-fns";
+import { addDays, startOfWeek } from "date-fns";
 
 interface Props {
   tasks: Job[];
@@ -16,11 +16,25 @@ export const Calendar: React.FC = () => {
     setTasks(dataHandler);
   }
   return (
-    <div className="workercontainer">
-      {/*Comments looks like this in JSX*/}
-      <AllWorkers tasks={tasks} />
-    </div>
+    <>
+      <div className="workercontainer">
+        <DisplayWeekDays />
+        <AllWorkers tasks={tasks} />
+      </div>
+    </>
   );
+};
+
+const DisplayWeekDays: React.FC = () => {
+  const firstDayOfWeek = startOfWeek(new Date(2020, 6, 27), {
+    weekStartsOn: 1,
+  });
+  const numberOfDays = 5;
+  let daysOfTheWeek: Date[];
+  for (let i = 1; i <= numberOfDays; i++) {
+    daysOfTheWeek = addDays(firstDayOfWeek, i);
+  }
+  return <div>{firstDayOfWeek.getFullYear()}</div>;
 };
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
@@ -50,15 +64,17 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
 };
 
 const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
-  const numberOfDays: Number = 7;
-  // const firstDayOfWeek = startOfWeek(new Date(), { weekStartsOn: 1 }); -- Denne funktion finder datoen for mandag i igangværende uge, og skal bruges fremadrettet efter tests
-  const startDateTest = new Date(2020, 6, 27);
+  const numberOfDays: Number = 5;
+  const firstDayOfWeek = startOfWeek(new Date(2020, 6, 27), {
+    weekStartsOn: 1,
+  });
+
   const oneWorkerWeekData = [];
 
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
-        (x) => x.start.getDate() === addDays(startDateTest, i).getDate()
+        (x) => x.start.getDate() === addDays(firstDayOfWeek, i).getDate()
       )
     );
   }
@@ -76,10 +92,9 @@ const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
 };
 
 const DailyTasks: React.FC<Props> = ({ tasks }) => {
-  const [width, setWidth] = useState(250);
   return (
     <>
-      <div className="workerjobs" style={{ width: width }}>
+      <div className="workerjobs">
         {tasks.map((x) => (
           <div className="workerjob">
             {x.start.getDate()}/{x.start.getMonth()}/{x.start.getFullYear()}
