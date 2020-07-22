@@ -1,3 +1,10 @@
+/* color scheme:
+orange: #db5e26;
+lightgray: #dbdbd9;
+darkgray: #3c3c3c */
+@import url("https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap");
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -5,11 +12,57 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: "Roboto Condensed", sans-serif;
+  color: #3c3c3c;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.headersdate {
+  display: flex;
+  padding-left: 101px;
+  text-align: center;
+}
+
+.headerdate {
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  flex: 1;
+  text-transform: capitalize;
+}
+
+.headerdate:last-child {
+  border-right: 1px solid black;
+}
+
+.headermonthandyear {
+  display: grid;
+  grid-template-columns: repeat(1fr, 6);
+  grid-template-rows: 50% 50%;
+  font-size: 50px;
+  font-family: "B612", sans-serif;
+  border-radius: 5px;
+  background-color: #dbdbd9;
+  border-radius: 20px;
+  width: 80%;
+  margin: 15px auto;
+}
+
+.headeryear {
+  grid-column-start: 4;
+}
+.headermonth {
+  grid-column-start: 2;
+  text-transform: uppercase;
+  color: #db5e26;
+  justify-self: end;
+}
+
+.headerweek {
+  grid-row-start: 2;
 }
 
 .workercontainer {

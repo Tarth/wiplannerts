@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./index.css";
 import { DataHandler } from "./datahandler";
 import { Job } from "./models";
-import { addDays, startOfWeek } from "date-fns";
+import { addDays, startOfWeek, format } from "date-fns";
+import { da } from "date-fns/locale";
 
 interface Props {
   tasks: Job[];
@@ -17,9 +18,27 @@ export const Calendar: React.FC = () => {
   }
   return (
     <>
+      <DisplayHeaders />
       <div className="workercontainer">
         <DisplayWeekDays />
         <AllWorkers tasks={tasks} />
+      </div>
+    </>
+  );
+};
+
+const DisplayHeaders: React.FC = () => {
+  const initialDate = new Date(2020, 6, 27);
+  return (
+    <>
+      <div className="headermonthandyear">
+        <div className="headermonth">
+          {format(initialDate, "MMMM", { locale: da })}
+        </div>
+        <div className="headeryear">
+          {format(initialDate, "yyyy", { locale: da })}
+        </div>
+        <div className="headerweek">Uge {format(initialDate, "ww")}</div>
       </div>
     </>
   );
@@ -30,11 +49,20 @@ const DisplayWeekDays: React.FC = () => {
     weekStartsOn: 1,
   });
   const numberOfDays = 5;
-  let daysOfTheWeek: Date[];
-  for (let i = 1; i <= numberOfDays; i++) {
-    daysOfTheWeek = addDays(firstDayOfWeek, i);
+  let daysOfTheWeek: Date[] = [];
+  for (let i = 0; i < numberOfDays; i++) {
+    daysOfTheWeek.push(addDays(firstDayOfWeek, i));
   }
-  return <div>{firstDayOfWeek.getFullYear()}</div>;
+
+  return (
+    <div className="headersdate">
+      {daysOfTheWeek.map((x) => (
+        <div className="headerdate">
+          {format(x, "EEEE - dd/LL", { locale: da })}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
