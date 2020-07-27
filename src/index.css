@@ -92,7 +92,7 @@ code {
   border-left: 1px solid black;
 }
 .workerjob {
-  background-color: lightgreen;
+  /* background-color: lightgreen; */
   flex: 1;
   text-align: center;
   border-left: 1px solid black;

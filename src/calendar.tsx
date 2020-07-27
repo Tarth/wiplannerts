@@ -4,9 +4,11 @@ import { DataHandler } from "./datahandler";
 import { Job } from "./models";
 import { addDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
+import { NameBackgroundColor } from "./colorcodes";
 
 interface Props {
   tasks: Job[];
+  index?: number;
 }
 
 export const Calendar: React.FC = () => {
@@ -50,6 +52,7 @@ const DisplayWeekDays: React.FC = () => {
   });
   const numberOfDays = 5;
   let daysOfTheWeek: Date[] = [];
+
   for (let i = 0; i < numberOfDays; i++) {
     daysOfTheWeek.push(addDays(firstDayOfWeek, i));
   }
@@ -67,6 +70,7 @@ const DisplayWeekDays: React.FC = () => {
 
 const AllWorkers: React.FC<Props> = ({ tasks }) => {
   let allNamesFromDB: String[] = [];
+  let sortedByWorker = [];
 
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
@@ -75,29 +79,28 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
   });
 
   // Sort job data by worker
-  let sortedByWorker = [];
   for (let i = 0; i < uniqWorkers.length; i++) {
     sortedByWorker.push(tasks.filter((x) => x.username === uniqWorkers[i]));
   }
 
   return (
     <>
-      {sortedByWorker.map((x) => (
+      {sortedByWorker.map((x, i) => (
         <div className="worker">
-          <WeeklyTasks tasks={x} />
+          <WeeklyTasks tasks={x} index={i} />
         </div>
       ))}
     </>
   );
 };
 
-const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
+const WeeklyTasks: React.FC<Props> = ({ tasks, index }) => {
   const numberOfDays: Number = 5;
+  const oneWorkerWeekData = [];
+
   const firstDayOfWeek = startOfWeek(new Date(2020, 6, 27), {
     weekStartsOn: 1,
   });
-
-  const oneWorkerWeekData = [];
 
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
@@ -112,19 +115,21 @@ const WeeklyTasks: React.FC<Props> = ({ tasks }) => {
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
         {oneWorkerWeekData.map((x) => (
-          <DailyTasks tasks={x} />
+          <DailyTasks tasks={x} index={index} />
         ))}
       </div>
     </>
   );
 };
 
-const DailyTasks: React.FC<Props> = ({ tasks }) => {
+const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
+  console.log(index);
+  const color = NameBackgroundColor(index);
   return (
     <>
       <div className="workerjobs">
         {tasks.map((x) => (
-          <div className="workerjob">
+          <div className="workerjob" style={{ backgroundColor: color }}>
             {x.start.getDate()}/{x.start.getMonth()}/{x.start.getFullYear()}
           </div>
         ))}
