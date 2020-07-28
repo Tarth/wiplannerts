@@ -2,8 +2,9 @@
 orange: #db5e26;
 lightgray: #dbdbd9;
 darkgray: #3c3c3c */
-@import url("https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"); /*body font*/
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap'); /*header font*/
+
 
 body {
   margin: 0;
@@ -13,6 +14,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Roboto Condensed", sans-serif;
+  font-size: large;
   color: #3c3c3c;
 }
 
@@ -32,6 +34,8 @@ code {
   border-top: 1px solid black;
   flex: 1;
   text-transform: capitalize;
+  font-size: x-large;
+  padding: 15px 0;
 }
 
 .headerdate:last-child {
@@ -39,34 +43,25 @@ code {
 }
 
 .headermonthandyear {
-  display: grid;
-  grid-template-columns: repeat(1fr, 6);
-  grid-template-rows: 50% 50%;
+  display: flex;
+  justify-content: space-evenly;
   font-size: 50px;
-  font-family: "B612", sans-serif;
-  border-radius: 5px;
+  font-family: 'Fjalla One', sans-serif;
   background-color: #dbdbd9;
-  border-radius: 20px;
-  width: 80%;
-  margin: 15px auto;
+  width: 100%;
+  margin: 50px auto 75px;
+  padding: 20px 0;
 }
 
-.headeryear {
-  grid-column-start: 4;
-}
+
 .headermonth {
-  grid-column-start: 2;
   text-transform: uppercase;
   color: #db5e26;
   justify-self: end;
 }
 
-.headerweek {
-  grid-row-start: 2;
-}
-
 .workercontainer {
-  width: 98%;
+  width: 95%;
   margin: auto;
 }
 .worker {
@@ -92,7 +87,6 @@ code {
   border-left: 1px solid black;
 }
 .workerjob {
-  /* background-color: lightgreen; */
   flex: 1;
   text-align: center;
   border-left: 1px solid black;

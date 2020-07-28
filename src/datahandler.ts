@@ -1,7 +1,8 @@
 import { Job } from "./models";
 
 export const DataHandler = () => {
-  let data = require("./sampledata.json");
+  // let data = require("./sampledata.json");
+  let data = require("./sampledata10ppl.json");
   let jobdata = [];
 
   for (let i = 0; i < data.jobs.length; i++) {

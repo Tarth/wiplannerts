@@ -37,10 +37,10 @@ const DisplayHeaders: React.FC = () => {
         <div className="headermonth">
           {format(initialDate, "MMMM", { locale: da })}
         </div>
+        <div className="headerweek">Uge {format(initialDate, "ww")}</div>
         <div className="headeryear">
           {format(initialDate, "yyyy", { locale: da })}
         </div>
-        <div className="headerweek">Uge {format(initialDate, "ww")}</div>
       </div>
     </>
   );
@@ -61,7 +61,7 @@ const DisplayWeekDays: React.FC = () => {
     <div className="headersdate">
       {daysOfTheWeek.map((x) => (
         <div className="headerdate">
-          {format(x, "EEEE - dd/LL", { locale: da })}
+          {format(x, "EEEE dd/LL", { locale: da })}
         </div>
       ))}
     </div>
@@ -123,7 +123,6 @@ const WeeklyTasks: React.FC<Props> = ({ tasks, index }) => {
 };
 
 const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
-  console.log(index);
   const color = NameBackgroundColor(index);
   return (
     <>
