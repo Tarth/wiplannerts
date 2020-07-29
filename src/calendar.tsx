@@ -18,6 +18,7 @@ export const Calendar: React.FC = () => {
     const dataHandler = DataHandler();
     setTasks(dataHandler);
   }
+  console.log(tasks);
   return (
     <>
       <DisplayHeaders />
@@ -129,7 +130,8 @@ const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
       <div className="workerjobs">
         {tasks.map((x) => (
           <div className="workerjob" style={{ backgroundColor: color }}>
-            {x.start.getDate()}/{x.start.getMonth()}/{x.start.getFullYear()}
+            {x.start.getHours()}:{x.start.getMinutes()} - {x.end.getHours()}:
+            {x.end.getMinutes()}
           </div>
         ))}
       </div>

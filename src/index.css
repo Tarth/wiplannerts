@@ -3,8 +3,7 @@ orange: #db5e26;
 lightgray: #dbdbd9;
 darkgray: #3c3c3c */
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"); /*body font*/
-@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap'); /*header font*/
-
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap"); /*header font*/
 
 body {
   margin: 0;
@@ -27,6 +26,7 @@ code {
   display: flex;
   padding-left: 101px;
   text-align: center;
+  font-family: "Fjalla One", sans-serif;
 }
 
 .headerdate {
@@ -46,13 +46,12 @@ code {
   display: flex;
   justify-content: space-evenly;
   font-size: 50px;
-  font-family: 'Fjalla One', sans-serif;
+  font-family: "Fjalla One", sans-serif;
   background-color: #dbdbd9;
   width: 100%;
   margin: 50px auto 75px;
   padding: 20px 0;
 }
-
 
 .headermonth {
   text-transform: uppercase;
@@ -60,7 +59,7 @@ code {
   justify-self: end;
 }
 
-.headeryear{
+.headeryear {
   color: #db5e26;
 }
 
@@ -80,6 +79,7 @@ code {
 .workername {
   width: 100px;
   text-align: center;
+  font-family: "Fjalla One", sans-serif;
 }
 .workerweek {
   display: flex;

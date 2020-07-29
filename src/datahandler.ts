@@ -1,8 +1,7 @@
 import { Job } from "./models";
 
 export const DataHandler = () => {
-  // let data = require("./sampledata.json");
-  let data = require("./sampledata10ppl.json");
+  let data = require("./sampledata.json");
   let jobdata = [];
 
   for (let i = 0; i < data.jobs.length; i++) {
@@ -10,14 +9,24 @@ export const DataHandler = () => {
     const startdate = data.jobs[i].startdate;
     const startmonth = data.jobs[i].startmonth;
     const startyear = data.jobs[i].startyear;
+    const starthour = data.jobs[i].starthour;
+    const startminute = data.jobs[i].startminute;
     const enddate = data.jobs[i].enddate;
     const endmonth = data.jobs[i].endmonth;
     const endyear = data.jobs[i].endyear;
+    const endhour = data.jobs[i].endhour;
+    const endminute = data.jobs[i].endminute;
     const id = data.jobs[i].id;
     const description = data.jobs[i].description;
 
-    let startdato = new Date(startyear, startmonth, startdate);
-    let slutdato = new Date(endyear, endmonth, enddate);
+    let startdato = new Date(
+      startyear,
+      startmonth,
+      startdate,
+      starthour,
+      startminute
+    );
+    let slutdato = new Date(endyear, endmonth, enddate, endhour, endminute);
 
     let job: Job = {
       username: username,
