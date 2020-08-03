@@ -1,4 +1,21 @@
 import { Job } from "./models";
+//import axios from "axios";
+
+const url = "localhost:3003/workers";
+const github = "https://api.github.com/users/janbodnar";
+const axios = require("axios").default;
+
+async function getNumberOfFollowers() {
+  let res = await axios.get(github);
+
+  let nOfFollowers = res.data.followers;
+  let location = res.data.location;
+
+  console.log(`# of followers: ${nOfFollowers}`);
+  console.log(`Location: ${location}`);
+}
+
+getNumberOfFollowers();
 
 export const DataHandler = () => {
   let data = require("./sampledata.json");

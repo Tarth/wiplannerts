@@ -18,7 +18,7 @@ export const Calendar: React.FC = () => {
     const dataHandler = DataHandler();
     setTasks(dataHandler);
   }
-  console.log(tasks);
+
   return (
     <>
       <DisplayHeaders />
