@@ -1,7 +1,7 @@
 import { Job } from "./models";
 
 const url = "http://localhost:3003/";
-const github = "https://api.github.com/users/janbodnar";
+// const github = "https://api.github.com/users/janbodnar";
 const axios = require("axios").default;
 
 async function getNumberOfFollowers() {
