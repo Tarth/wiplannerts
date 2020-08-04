@@ -1,18 +1,21 @@
 import { Job } from "./models";
-//import axios from "axios";
 
-const url = "localhost:3003/workers";
+const url = "http://localhost:3003/";
 const github = "https://api.github.com/users/janbodnar";
 const axios = require("axios").default;
 
 async function getNumberOfFollowers() {
-  let res = await axios.get(github);
+  let res = await axios.get(url);
 
-  let nOfFollowers = res.data.followers;
-  let location = res.data.location;
+  // let nOfFollowers = res.data.followers;
+  // let location = res.data.location;
+  // let id = res.data.id;
 
-  console.log(`# of followers: ${nOfFollowers}`);
-  console.log(`Location: ${location}`);
+  // console.log(`# of followers: ${nOfFollowers}`);
+  // console.log(`Location: ${location}`);
+  // console.log(`ID: ${id}`);
+
+  console.log(res);
 }
 
 getNumberOfFollowers();
