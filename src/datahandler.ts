@@ -3,15 +3,25 @@ import { Job } from "./models";
 const url = "http://localhost:3003/";
 const axios = require("axios").default;
 
-async function getNumberOfFollowers() {
-  let res = await axios.get(url);
-
-  console.log(res);
-}
+const getNumberOfFollowers = async () => {
+  try {
+    let res = await axios.get(url);
+    console.log("getData", res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 getNumberOfFollowers();
 
 export const DataHandler = () => {
+  let dbdata = getNumberOfFollowers() as Promise<Job[]>;
+  dbdata.then((x) => x.forEach((y) => console.log(y)));
+  const dataset = dbdata.then((x) => x.map((y) => y));
+
+  console.log("DataHandler", dbdata);
+
   let data = require("./sampledata.json");
   let jobdata = [];
 
