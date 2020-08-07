@@ -15,8 +15,7 @@ export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
   //Use this as a list of names
   if (tasks.length === 0) {
-    const dataHandler = DataHandler();
-    setTasks(dataHandler);
+    DataHandler(setTasks);
   }
 
   return (
