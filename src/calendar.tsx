@@ -94,6 +94,7 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
   );
 };
 
+//Display all tasks of 1 worker during a week
 const WeeklyTasks: React.FC<Props> = ({ tasks, index }) => {
   const numberOfDays: Number = 5;
   const oneWorkerWeekData = [];
@@ -122,6 +123,7 @@ const WeeklyTasks: React.FC<Props> = ({ tasks, index }) => {
   );
 };
 
+// Display all tasks during a day
 const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
   const color = NameBackgroundColor(index);
   return (
@@ -129,8 +131,7 @@ const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
       <div className="workerjobs">
         {tasks.map((x) => (
           <div className="workerjob" style={{ backgroundColor: color }}>
-            {x.start.getHours()}:{x.start.getMinutes()} - {x.end.getHours()}:
-            {x.end.getMinutes()}
+            {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
           </div>
         ))}
       </div>
