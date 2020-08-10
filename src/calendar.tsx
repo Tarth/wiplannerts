@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./index.css";
-import { DataHandler } from "./datahandler";
+import { GetJobs } from "./datahandler";
 import { Job } from "./models";
 import { addDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
@@ -15,7 +15,7 @@ export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
   //Use this as a list of names
   if (tasks.length === 0) {
-    DataHandler(setTasks);
+    GetJobs(setTasks);
   }
 
   return (
