@@ -14,7 +14,7 @@ export const EntryForm: React.FC = () => {
     GetWorkers(setWorkers);
   }
   console.log(workers);
-  // console.log(selectedWorkers);
+  // console.log("Skulle være tomt", selectedWorkers);
 
   return (
     <div>
