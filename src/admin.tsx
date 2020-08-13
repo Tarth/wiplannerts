@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./admin.css";
+import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { ListBox } from "primereact/listbox";
