@@ -1,3 +1,10 @@
-form {
-  margin-top: 50px;
+.body {
+  width: 95%;
+  margin: 50px auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+form div {
+  margin-bottom: 50px;
 }

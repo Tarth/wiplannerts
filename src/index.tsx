@@ -1,18 +1,18 @@
-import React, { useState } from "react";
 import ReactDOM from "react-dom";
+import React, { useState } from "react";
+import * as serviceWorker from "./serviceWorker";
 import "./index.css";
+import { TabMenu } from "primereact/tabmenu";
 import { Calendar } from "./calendar";
 import { EntryForm } from "./admin";
-import { TabMenu } from "primereact/tabmenu";
-import * as serviceWorker from "./serviceWorker";
 
 const Tabmenu: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("Kalender");
+  const [activeTab, setActiveTab] = useState<string>("Admin");
   let displaycontent;
 
   const items = [
-    { label: "Kalender", icon: "pi pi-fw pi-home" },
-    { label: "Admin", icon: "pi pi-fw pi-calendar" },
+    { label: "Kalender", icon: "pi pi-fw pi-calendar" },
+    { label: "Admin", icon: "pi pi-fw pi-user-edit" },
   ];
 
   if (activeTab === "Admin") {
