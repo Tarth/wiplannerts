@@ -30,8 +30,6 @@ export const EntryForm: React.FC = () => {
         <DateInput />
         <DateInput />
         <WorkerListBox workers={workers} selectedWorkers={selectedWorkers} setSelectedWorkers={setSelectedWorkers} />
-      
-      
       </form>
     </div>
   );
