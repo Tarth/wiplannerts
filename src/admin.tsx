@@ -11,11 +11,13 @@ import { Worker } from "./models";
 
 interface Props {
   workers: Worker[];
-  setWorkers: () => void;
+  selectedWorkers: Worker[];
+  setSelectedWorkers: (worker: Worker[]) => void;
 }
 
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
+  const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
@@ -27,26 +29,37 @@ export const EntryForm: React.FC = () => {
         <Description />
         <DateInput />
         <DateInput />
-        <WorkerListBox workers={workers} setWorkers={() => setWorkers} />
+        <WorkerListBox workers={workers} selectedWorkers={selectedWorkers} setSelectedWorkers={setSelectedWorkers} />
+      
+      
       </form>
     </div>
   );
 };
 
-const WorkerListBox: React.FC<Props> = ({ workers, setWorkers }) => {
+const WorkerListBox: React.FC<Props> = ({ workers, selectedWorkers, setSelectedWorkers }) => {
   return (
     <div className="workers">
       <ListBox
         optionLabel="name"
-        optionValue="id"
-        value={workers}
+        value={selectedWorkers}
         options={workers}
         multiple={true}
-        // onChange={(x) => console.log(x)}
+        onChange={(e) => {
+          UpdateSelectedWorkers(e.value as Worker[], setSelectedWorkers)
+          // setSelectedWorkers(e.value); 
+          // console.log(e.value);
+        }}
       />
     </div>
   );
 };
+
+
+const UpdateSelectedWorkers = (value: Worker[], setSelectedWorkers:((input:Worker[]) => void)) => {
+  setSelectedWorkers(value);
+  console.log(value);
+}
 
 const Description = () => {
   return (
