@@ -23,7 +23,7 @@ const Tabmenu: React.FC = () => {
 
   return (
     <div>
-      <TabMenu model={items} onTabChange={(x) => setActiveTab(x.value.label)} />
+      <TabMenu model={items} onTabChange={(x) => setActiveTab(x.value)} />
       {displaycontent}
     </div>
   );

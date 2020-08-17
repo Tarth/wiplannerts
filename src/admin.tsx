@@ -26,16 +26,28 @@ export const EntryForm: React.FC = () => {
   return (
     <div className="body">
       <form>
+        <h3>Beskrivelse:</h3>
         <Description />
+        <h3>Job start:</h3>
         <DateInput />
+        <h3>Job slut:</h3>
         <DateInput />
-        <WorkerListBox workers={workers} selectedWorkers={selectedWorkers} setSelectedWorkers={setSelectedWorkers} />
+        <h3>Tilføj medarbejdere:</h3>
+        <WorkerListBox
+          workers={workers}
+          selectedWorkers={selectedWorkers}
+          setSelectedWorkers={setSelectedWorkers}
+        />
       </form>
     </div>
   );
 };
 
-const WorkerListBox: React.FC<Props> = ({ workers, selectedWorkers, setSelectedWorkers }) => {
+const WorkerListBox: React.FC<Props> = ({
+  workers,
+  selectedWorkers,
+  setSelectedWorkers,
+}) => {
   return (
     <div className="workers">
       <ListBox
@@ -44,8 +56,8 @@ const WorkerListBox: React.FC<Props> = ({ workers, selectedWorkers, setSelectedW
         options={workers}
         multiple={true}
         onChange={(e) => {
-          UpdateSelectedWorkers(e.value as Worker[], setSelectedWorkers)
-          // setSelectedWorkers(e.value); 
+          UpdateSelectedWorkers(e.value as Worker[], setSelectedWorkers);
+          // setSelectedWorkers(e.value);
           // console.log(e.value);
         }}
       />
@@ -53,19 +65,19 @@ const WorkerListBox: React.FC<Props> = ({ workers, selectedWorkers, setSelectedW
   );
 };
 
-
-const UpdateSelectedWorkers = (value: Worker[], setSelectedWorkers:((input:Worker[]) => void)) => {
+// This method is used to show how to call an external funtion. Its getting called from Listbox
+const UpdateSelectedWorkers = (
+  value: Worker[],
+  setSelectedWorkers: (input: Worker[]) => void
+) => {
   setSelectedWorkers(value);
   console.log(value);
-}
+};
 
 const Description = () => {
   return (
     <div className="description">
-      <span className="p-float-label">
-        <InputText id="description" />
-        <label htmlFor="description">Opgavebeskrivelse</label>
-      </span>
+      <InputText id="description" />
     </div>
   );
 };
@@ -73,16 +85,12 @@ const Description = () => {
 const DateInput = () => {
   return (
     <div className="dateinput">
-      <span className="p-float-label">
-        <Calendar
-          id="start"
-          dateFormat="dd/mm/yy"
-          showTime={true}
-          hourFormat="24"
-          disabledDays={[0, 6]}
-        ></Calendar>
-        <label htmlFor="start">Starttid</label>
-      </span>
+      <Calendar
+        dateFormat="dd/mm/yy"
+        showTime={true}
+        hourFormat="24"
+        disabledDays={[0, 6]}
+      ></Calendar>
     </div>
   );
 };
