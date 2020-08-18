@@ -6,7 +6,7 @@ import "primereact/resources/primereact.css";
 import { ListBox } from "primereact/listbox";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
-import { GetWorkers } from "./datahandler";
+import { GetWorkers, PostWorker } from "./datahandler";
 import { Worker } from "./models";
 
 interface Props {

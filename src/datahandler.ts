@@ -1,4 +1,5 @@
 import { Job, DbJob, Worker } from "./models";
+import { stringify } from "querystring";
 
 const url = "http://localhost:3003";
 const axios = require("axios").default;
@@ -10,6 +11,25 @@ const GetDataFromDB = async (localurl: string) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const PostDataToDB = async (localurl: string, name: string) => {
+  try {
+    let res = await axios.post(localurl, name);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const PostWorker = async () => {
+  PostDataToDB(`${url}/workers/add`, "Mikkel")
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 };
 
 export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
