@@ -26,11 +26,12 @@ export const EntryForm: React.FC = () => {
   return (
     <div className="body">
       <form>
+        <h1>Tilføj malerjob:</h1>
         <h3>Beskrivelse:</h3>
         <Description />
-        <h3>Job start:</h3>
+        <h3>Start dato:</h3>
         <DateInput />
-        <h3>Job slut:</h3>
+        <h3>Slut dato:</h3>
         <DateInput />
         <h3>Tilføj medarbejdere:</h3>
         <WorkerListBox

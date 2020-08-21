@@ -2,9 +2,23 @@
   width: 95%;
   margin: 50px auto;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
 
+form {
+  grid-column: 1 / 3;
+  /* display: grid;
+  grid-template-columns: repeat(2, 1fr); */
+}
 form div {
   margin-bottom: 50px;
+}
+
+.dateinput {
+  /* grid-column: 2 / 2; */
+}
+
+h3,
+h1 {
+  color: #424242;
 }
