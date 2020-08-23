@@ -5,17 +5,23 @@ import "./index.css";
 import { TabMenu } from "primereact/tabmenu";
 import { Calendar } from "./calendar";
 import { EntryForm } from "./admin";
+import { MenuItem } from "./models";
+
 
 const Tabmenu: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string>("Admin");
+  
+  const initialItems: MenuItem[] = [
+      { label: "Kalender", icon: "pi pi-fw pi-calendar", command: () => setActiveItem(items[0]) },
+      { label: "Admin", icon: "pi pi-fw pi-user-edit", command: () => setActiveItem(items[1])},
+    ];
+  const initialItem = initialItems[1];
+
+  const [items] = useState<MenuItem[]>(initialItems);
+  const [activeItem, setActiveItem] = useState<MenuItem>(initialItem);
   let displaycontent;
+  
 
-  const items = [
-    { label: "Kalender", icon: "pi pi-fw pi-calendar" },
-    { label: "Admin", icon: "pi pi-fw pi-user-edit" },
-  ];
-
-  if (activeTab === "Admin") {
+  if (activeItem === items[1]) {
     displaycontent = <EntryForm />;
   } else {
     displaycontent = <Calendar />;
@@ -23,7 +29,7 @@ const Tabmenu: React.FC = () => {
 
   return (
     <div>
-      <TabMenu model={items} onTabChange={(x) => setActiveTab(x.value.label)} />
+      <TabMenu model={items} activeItem={initialItem} />
       {displaycontent}
     </div>
   );
