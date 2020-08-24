@@ -6,7 +6,7 @@ import "primereact/resources/primereact.css";
 import { ListBox } from "primereact/listbox";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
-import { GetWorkers, PostWorker } from "./datahandler";
+import { GetWorkers } from "./datahandler";
 import { Worker } from "./models";
 
 interface Props {
@@ -84,13 +84,17 @@ const Description = () => {
 };
 
 const DateInput = () => {
+  const [startDate, setStartDate] = useState<Date>(new Date());
+
   return (
     <div className="dateinput">
       <Calendar
+        value={startDate}
         dateFormat="dd/mm/yy"
         showTime={true}
         hourFormat="24"
         disabledDays={[0, 6]}
+        // onChange={(e) => setStartDate(e.value)}
       ></Calendar>
     </div>
   );

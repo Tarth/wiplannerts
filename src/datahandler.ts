@@ -1,5 +1,5 @@
 import { Job, DbJob, Worker } from "./models";
-import { stringify } from "querystring";
+// import { stringify } from "querystring";
 
 const url = "http://localhost:3003";
 const axios = require("axios").default;
@@ -23,7 +23,7 @@ const PostDataToDB = async (localurl: string, name: string) => {
 };
 
 export const PostWorker = async () => {
-  PostDataToDB(`${url}/workers/add`, "Mikkel")
+  PostDataToDB(`${url}/workers/add`, "Test")
     .then(function (response) {
       console.log(response);
     })
