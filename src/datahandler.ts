@@ -13,9 +13,9 @@ const GetDataFromDB = async (localurl: string) => {
   }
 };
 
-const PostDataToDB = async (localurl: string, name: string) => {
+const PostDataToDB = async (localurl: string, workername: string) => {
   try {
-    let res = await axios.post(localurl, name);
+    let res = await axios.post(localurl, {name: workername});
     return res;
   } catch (error) {
     console.log(error);

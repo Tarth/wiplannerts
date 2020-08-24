@@ -84,7 +84,7 @@ const Description = () => {
 };
 
 const DateInput = () => {
-  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date | Date[]>([]);
 
   return (
     <div className="dateinput">
@@ -92,9 +92,8 @@ const DateInput = () => {
         value={startDate}
         dateFormat="dd/mm/yy"
         showTime={true}
-        hourFormat="24"
         disabledDays={[0, 6]}
-        // onChange={(e) => setStartDate(e.value)}
+        onChange={(e) => setStartDate(e.value)}
       ></Calendar>
     </div>
   );
