@@ -5,6 +5,10 @@
   grid-template-columns: repeat(7, 1fr);
 }
 
+/* span > input.p-inputtext {
+  display: none;
+} */
+
 form {
   grid-column: 1 / 3;
 }

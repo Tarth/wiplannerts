@@ -15,13 +15,13 @@ const GetDataFromDB = async (localurl: string) => {
 
 const PostDataToDB = async (localurl: string, workername: string) => {
   try {
-    let res = await axios.post(localurl, {name: workername});
+    let res = await axios.post(localurl, { name: workername });
     return res;
   } catch (error) {
     console.log(error);
   }
 };
-
+// Post a new worker into the DB
 export const PostWorker = async () => {
   PostDataToDB(`${url}/workers/add`, "Test")
     .then(function (response) {
