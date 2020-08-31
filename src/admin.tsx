@@ -10,8 +10,7 @@ import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
 import { GetWorkers } from "./datahandler";
 import { Worker } from "./models";
-import { parse, eachDayOfInterval } from "date-fns";
-import { start } from "repl";
+import { parse, format } from "date-fns";
 
 interface Props {
   workers: Worker[];
@@ -88,22 +87,19 @@ const Description = () => {
 
 const DateInput = () => {
   const [startDate, setStartDate] = useState<Date | Date[]>([]);
-  const [dateString, setDateString] = useState<string>("");
+  const [startDateStr, setStartDateStr] = useState<string>("");
 
   return (
     <div className="dateinput p-inputgroup">
       <InputMask
-        mask="99/99/9999 99:99"
-        placeholder="dd/mm/yyyy hh:mm"
-        value={startDate.toString()}
+        mask="99/99/99 99:99"
+        placeholder="dd/mm/åå tt:mm"
+        value={startDateStr}
         autoClear={false}
-        // onChange={(e) => {
-        //   setDateString(e.value);
-        // }}
         onComplete={(e) => {
-          const date = parse(e.value, "dd/MM/yyyy hh:mm", new Date());
+          const date = parse(e.value, "dd/MM/yy HH:mm", new Date());
           setStartDate(date);
-          console.log(startDate);
+          setStartDateStr(e.value);
         }}
       ></InputMask>
       <Calendar
@@ -111,7 +107,10 @@ const DateInput = () => {
         dateFormat="dd/mm/yy"
         showTime={true}
         disabledDays={[0, 6]}
-        onChange={(e) => setStartDate(e.value)}
+        onChange={(e) => {
+          setStartDate(e.value);
+          setStartDateStr(format(e.value as Date, "dd/MM/yy HH:mm"));
+        }}
         hideOnDateTimeSelect={true}
         showIcon
       ></Calendar>
