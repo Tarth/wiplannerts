@@ -18,9 +18,16 @@ interface Props {
   setSelectedWorkers: (worker: Worker[]) => void;
 }
 
+interface CalendarProps {
+  startDate: Date | Date[];
+  setStartDate: Date | Date[];
+}
+
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
+  const [startDate, setStartDate] = useState<Date | Date[]>([]);
+  const [endDate, setEndDate] = useState<Date | Date[]>([]);
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
@@ -33,9 +40,9 @@ export const EntryForm: React.FC = () => {
         <h3>Beskrivelse:</h3>
         <Description />
         <h3>Start dato:</h3>
-        <DateInput />
+        <DateInput startDate={startDate} setStartDate={setStartDate} />
         <h3>Slut dato:</h3>
-        <DateInput />
+        <DateInput startDate={endDate} setStartDate={setEndDate} />
         <h3>Tilføj medarbejdere:</h3>
         <WorkerListBox
           workers={workers}
@@ -85,8 +92,8 @@ const Description = () => {
   );
 };
 
-const DateInput = () => {
-  const [startDate, setStartDate] = useState<Date | Date[]>([]);
+const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
+  // const [startDate, setStartDate] = useState<Date | Date[]>([]);
   const [startDateStr, setStartDateStr] = useState<string>("");
 
   return (
