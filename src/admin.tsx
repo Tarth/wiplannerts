@@ -20,7 +20,7 @@ interface Props {
 
 interface CalendarProps {
   startDate: Date | Date[];
-  setStartDate: Date | Date[];
+  setStartDate: (date: Date | Date[]) => void;
 }
 
 export const EntryForm: React.FC = () => {
@@ -93,7 +93,6 @@ const Description = () => {
 };
 
 const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
-  // const [startDate, setStartDate] = useState<Date | Date[]>([]);
   const [startDateStr, setStartDateStr] = useState<string>("");
 
   return (
