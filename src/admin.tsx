@@ -7,10 +7,9 @@ import { ListBox } from "primereact/listbox";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
-import { Button } from "primereact/button";
 import { GetWorkers } from "./datahandler";
 import { Worker } from "./models";
-import { parse, format } from "date-fns";
+import { parse, format, isValid } from "date-fns";
 
 interface Props {
   workers: Worker[];
@@ -23,11 +22,17 @@ interface CalendarProps {
   setStartDate: (date: Date | Date[]) => void;
 }
 
+interface InputProps {
+  description: string;
+  setDescription: (description: string) => void;
+}
+
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [startDate, setStartDate] = useState<Date | Date[]>([]);
   const [endDate, setEndDate] = useState<Date | Date[]>([]);
+  const [description, setDescription] = useState<string>("");
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
@@ -38,7 +43,10 @@ export const EntryForm: React.FC = () => {
       <form>
         <h1>Tilføj malerjob:</h1>
         <h3>Beskrivelse:</h3>
-        <Description />
+        <Description
+          description={description}
+          setDescription={setDescription}
+        />
         <h3>Start dato:</h3>
         <DateInput startDate={startDate} setStartDate={setStartDate} />
         <h3>Slut dato:</h3>
@@ -84,28 +92,48 @@ const UpdateSelectedWorkers = (
   setSelectedWorkers(value);
 };
 
-const Description = () => {
+// Inputbox for the job description
+const Description: React.FC<InputProps> = ({ description, setDescription }) => {
   return (
     <div className="description">
-      <InputText id="description" />
+      <InputText
+        id="description"
+        value={description}
+        keyfilter={/^[^#<>*!]+$/}
+        onChange={(e) => {
+          setDescription(e.currentTarget.value);
+        }}
+      />
     </div>
   );
 };
 
 const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
   const [startDateStr, setStartDateStr] = useState<string>("");
+  const [isDateValid, setIsDateValid] = useState<boolean>(true);
 
   return (
     <div className="dateinput p-inputgroup">
       <InputMask
+        className={isDateValid ? "" : "p-error"}
         mask="99/99/99 99:99"
         placeholder="dd/mm/åå tt:mm"
+        style={isDateValid ? {} : { border: "3px solid #d81e1e" }}
         value={startDateStr}
         autoClear={false}
+        // onChange={() => {
+        //   setIsDateValid(true);
+        // }}
+        // brug onChange i stedet for onComplete, lav user input validation i onComplete
         onComplete={(e) => {
           const date = parse(e.value, "dd/MM/yy HH:mm", new Date());
-          setStartDate(date);
-          setStartDateStr(e.value);
+          if (isValid(date) === false) {
+            setIsDateValid(false);
+          } else {
+            setStartDate(date);
+            setStartDateStr(e.value);
+            setIsDateValid(true);
+          }
         }}
       ></InputMask>
       <Calendar
@@ -115,7 +143,10 @@ const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
         disabledDays={[0, 6]}
         onChange={(e) => {
           setStartDate(e.value);
-          setStartDateStr(format(e.value as Date, "dd/MM/yy HH:mm"));
+          // setStartDateStr(format(e.value as Date, "dd/MM/yy HH:mm"));
+          const date = format(e.value as Date, "dd/MM/yy HH:mm");
+          console.log("Onchange fired");
+          setStartDateStr(date);
         }}
         hideOnDateTimeSelect={true}
         showIcon
@@ -123,8 +154,3 @@ const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
     </div>
   );
 };
-
-// const IsDateValid = (dateString: string) => {
-//   const date = parse(dateString, "dd/MM/yyyy hh:mm", new Date());
-//   console.log(date);
-// };
