@@ -108,6 +108,7 @@ const Description: React.FC<InputProps> = ({ description, setDescription }) => {
   );
 };
 
+//Input for the Calendar field
 const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
   const [startDateStr, setStartDateStr] = useState<string>("");
   const [isDateValid, setIsDateValid] = useState<boolean>(true);
