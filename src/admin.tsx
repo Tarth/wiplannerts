@@ -7,14 +7,21 @@ import { ListBox } from "primereact/listbox";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
-import { GetWorkers } from "./datahandler";
-import { Worker } from "./models";
+import { GetWorkers, GetJobs } from "./datahandler";
+import { Worker, Job } from "./models";
 import { parse, format, isValid } from "date-fns";
 
 interface Props {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
+}
+
+interface JobListProps {
+  jobs: Job[];
+  selectedTasks: Job[];
+  setSelectedTasks: (job: Job[]) => void;
+
 }
 
 interface CalendarProps {
@@ -30,6 +37,8 @@ interface InputProps {
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
+  const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
+  const [selectedTasks, setSelectedTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
   const [startDate, setStartDate] = useState<Date | Date[]>([]);
   const [endDate, setEndDate] = useState<Date | Date[]>([]);
   const [description, setDescription] = useState<string>("");
@@ -37,6 +46,11 @@ export const EntryForm: React.FC = () => {
   if (workers.length === 0) {
     GetWorkers(setWorkers);
   }
+
+  if (tasks.length === 0) {
+    GetJobs(setTasks);
+  }
+
 
   return (
     <div className="body">
@@ -60,15 +74,29 @@ export const EntryForm: React.FC = () => {
       </form>
 
       <div className="deleteworker">
-        <WorkerListBox
-          workers={workers}
-          selectedWorkers={selectedWorkers}
-          setSelectedWorkers={setSelectedWorkers}
+        <JobListBox
+          jobs={tasks}
+          selectedTasks={selectedTasks}
+          setSelectedTasks={setSelectedTasks}
         />
       </div>
     </div>
   );
 };
+
+const JobListBox: React.FC<JobListProps> = ({jobs, selectedTasks, setSelectedTasks}) => {
+  console.log(jobs)
+  return (
+    <ListBox 
+      optionLabel="job" 
+      value={selectedTasks} 
+      options={jobs}
+      onChange={(e) => {
+        setSelectedTasks(e.value)
+      }}
+      />
+  )
+}
 
 const WorkerListBox: React.FC<Props> = ({
   workers,
