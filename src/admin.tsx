@@ -58,6 +58,14 @@ export const EntryForm: React.FC = () => {
           setSelectedWorkers={setSelectedWorkers}
         />
       </form>
+
+      <div className="deleteworker">
+        <WorkerListBox
+          workers={workers}
+          selectedWorkers={selectedWorkers}
+          setSelectedWorkers={setSelectedWorkers}
+        />
+      </div>
     </div>
   );
 };

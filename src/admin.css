@@ -16,6 +16,11 @@ form div {
   margin-bottom: 50px;
 }
 
+.deleteworker {
+  margin-top: 25px;
+  grid-column: 4 / 7;
+}
+
 h3,
 h1 {
   color: #424242;
