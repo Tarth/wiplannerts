@@ -110,29 +110,33 @@ const Description: React.FC<InputProps> = ({ description, setDescription }) => {
 
 //Input for the Calendar field
 const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
-  const [startDateStr, setStartDateStr] = useState<string>("");
+  const [dateStr, setDateStr] = useState<string>("");
   const [isDateValid, setIsDateValid] = useState<boolean>(true);
 
   return (
     <div className="dateinput p-inputgroup">
       <InputMask
-        className={isDateValid ? "" : "p-error"}
         mask="99/99/99 99:99"
         placeholder="dd/mm/åå tt:mm"
         style={isDateValid ? {} : { border: "3px solid #d81e1e" }}
-        value={startDateStr}
+        value={dateStr}
         autoClear={false}
-        // onChange={() => {
-        //   setIsDateValid(true);
-        // }}
-        // brug onChange i stedet for onComplete, lav user input validation i onComplete
+        onChange={(e) => {
+          if (e.value.indexOf("_") !== -1 || e.value === "") {
+            setIsDateValid(true);
+            // console.log(e.value);
+          }
+        }}
         onComplete={(e) => {
           const date = parse(e.value, "dd/MM/yy HH:mm", new Date());
           if (isValid(date) === false) {
+            // console.log("Date is false");
+            setDateStr(e.value);
             setIsDateValid(false);
           } else {
+            // console.log("Date is valid!");
             setStartDate(date);
-            setStartDateStr(e.value);
+            setDateStr(e.value);
             setIsDateValid(true);
           }
         }}
@@ -143,11 +147,10 @@ const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
         showTime={true}
         disabledDays={[0, 6]}
         onChange={(e) => {
-          setStartDate(e.value);
-          // setStartDateStr(format(e.value as Date, "dd/MM/yy HH:mm"));
           const date = format(e.value as Date, "dd/MM/yy HH:mm");
-          console.log("Onchange fired");
-          setStartDateStr(date);
+          setIsDateValid(true);
+          setStartDate(e.value);
+          setDateStr(date);
         }}
         hideOnDateTimeSelect={true}
         showIcon
