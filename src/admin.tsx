@@ -124,17 +124,14 @@ const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
         onChange={(e) => {
           if (e.value.indexOf("_") !== -1 || e.value === "") {
             setIsDateValid(true);
-            // console.log(e.value);
           }
         }}
         onComplete={(e) => {
           const date = parse(e.value, "dd/MM/yy HH:mm", new Date());
           if (isValid(date) === false) {
-            // console.log("Date is false");
             setDateStr(e.value);
             setIsDateValid(false);
           } else {
-            // console.log("Date is valid!");
             setStartDate(date);
             setDateStr(e.value);
             setIsDateValid(true);
