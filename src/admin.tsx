@@ -148,6 +148,7 @@ const Description: React.FC<InputProps> = ({ description, setDescription }) => {
 const DateInput: React.FC<CalendarProps> = ({ startDate, setStartDate }) => {
   const [dateStr, setDateStr] = useState<string>("");
   const [isDateValid, setIsDateValid] = useState<boolean>(true);
+//Arbejd ud fra en string state i stedet for en Date  
 
   return (
     <div className="dateinput p-inputgroup">
