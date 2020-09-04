@@ -15,8 +15,8 @@ export const EntryForm: React.FC = () => {
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
   const [selectedTasks, setSelectedTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
-  const [startDate, setStartDate] = useState<Date | Date[]>([]);
-  const [endDate, setEndDate] = useState<Date | Date[]>([]);
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
 
   if (workers.length === 0) {

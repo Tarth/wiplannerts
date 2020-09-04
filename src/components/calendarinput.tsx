@@ -4,14 +4,12 @@ import { InputMask } from "primereact/inputmask";
 import { parse, format, isValid } from "date-fns";
 
 interface CalendarProps {
-  date: Date | Date[];
-  setDate: (date: Date | Date[]) => void;
+  date: string | undefined;
+  setDate: (date: string | undefined) => void;
 }
 
 export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
-  const [dateStr, setDateStr] = useState<string>("");
   const [isDateValid, setIsDateValid] = useState<boolean>(true);
-  //Arbejd ud fra en string state i stedet for en Date
 
   return (
     <div className="dateinput p-inputgroup">
@@ -19,7 +17,7 @@ export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
         mask="99/99/99 99:99"
         placeholder="dd/mm/åå tt:mm"
         style={isDateValid ? {} : { border: "3px solid #d81e1e" }}
-        value={dateStr}
+        value={date}
         autoClear={false}
         onChange={(e) => {
           if (e.value.indexOf("_") !== -1 || e.value === "") {
@@ -29,25 +27,23 @@ export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
         onComplete={(e) => {
           const date = parse(e.value, "dd/MM/yy HH:mm", new Date());
           if (isValid(date) === false) {
-            setDateStr(e.value);
+            setDate(e.value);
             setIsDateValid(false);
           } else {
-            setDate(date);
-            setDateStr(e.value);
+            setDate(e.value);
             setIsDateValid(true);
           }
         }}
       ></InputMask>
       <Calendar
-        value={date}
+        value={parse(date as string, "dd/MM/yy HH:mm", new Date())}
         dateFormat="dd/mm/yy"
         showTime={true}
         disabledDays={[0, 6]}
         onChange={(e) => {
           const date = format(e.value as Date, "dd/MM/yy HH:mm");
           setIsDateValid(true);
-          setDate(e.value);
-          setDateStr(date);
+          setDate(date);
         }}
         hideOnDateTimeSelect={true}
         showIcon
