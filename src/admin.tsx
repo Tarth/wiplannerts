@@ -8,7 +8,7 @@ import { Worker, Job } from "./models";
 import { DateInput } from "./components/calendarinput";
 import { Description } from "./components/descriptioninput";
 import { WorkerListBox } from "./components/workerlistbox";
-import { JobListBox } from "./components/joblistbox";
+import { JobListBox } from "./components/joblisttable";
 
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
