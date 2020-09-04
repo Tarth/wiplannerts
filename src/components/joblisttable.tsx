@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Job } from "../models";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { format } from "date-fns";
 
 interface JobListProps {
   jobs: Job[];
@@ -14,24 +15,27 @@ interface jobsstr {
   start: string;
   end: string;
 }
+
 export const JobListBox: React.FC<JobListProps> = ({
   jobs,
   selectedTasks,
   setSelectedTasks,
 }) => {
-  // lav nyt array hvor tingene er konverteret til et string array
-  let [jobsstr] = useState<jobsstr>();
+  let [jobsstr] = useState<jobsstr[]>([]);
+
   jobsstr = jobs.map((x) => ({
     description: x.description,
-    start: x.start.toString,
-    end: x.end.toString,
+    start: format(x.start, "dd/MM/yy - HH:mm"),
+    end: format(x.end, "dd/MM/yy - HH:mm"),
   }));
 
+  console.log(jobsstr);
   return (
     <div>
-      <DataTable value={jobs}>
+      <DataTable value={jobsstr}>
         <Column field="description" header="Beskrivelse"></Column>
-        <Column field="username" header="Navn"></Column>
+        <Column field="start" header="Start dato"></Column>
+        <Column field="end" header="Slut dato"></Column>
       </DataTable>
     </div>
   );
