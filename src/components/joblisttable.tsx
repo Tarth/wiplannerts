@@ -14,6 +14,7 @@ interface jobsstr {
   description: string;
   start: string;
   end: string;
+  name: string;
 }
 
 export const JobListBox: React.FC<JobListProps> = ({
@@ -27,15 +28,17 @@ export const JobListBox: React.FC<JobListProps> = ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
     end: format(x.end, "dd/MM/yy - HH:mm"),
+    name: x.username,
   }));
 
-  console.log(jobsstr);
+  console.log(jobs);
   return (
     <div>
       <DataTable value={jobsstr}>
         <Column field="description" header="Beskrivelse"></Column>
         <Column field="start" header="Start dato"></Column>
         <Column field="end" header="Slut dato"></Column>
+        <Column field="name" header="Navn"></Column>
       </DataTable>
     </div>
   );
