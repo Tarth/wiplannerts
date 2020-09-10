@@ -28,14 +28,12 @@ export const JobListBox: React.FC<JobListProps> = ({
   let [jobsstr] = useState<jobsstr[]>([]);
   let [selectedDate, setSelectedDate] = useState<Date | Date[]>();
 
-  // let allIdsFromDB: Number[] = jobs.map((x) => x.id);
-  // let uniqIds = allIdsFromDB.filter((id, index) => {
-  //   return allIdsFromDB.indexOf(id) === index;
-  // });
+  // Find unique jobs in the jobs array
+  const uniqJobs = jobs.filter(
+    (job, i, arr) => arr.findIndex((t) => t.id === job.id) === i
+  );
 
-  jobs.filter((x) => jobs.indexOf(x.id) === )
-
-  jobsstr = jobs.map((x) => ({
+  jobsstr = uniqJobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
     end: format(x.end, "dd/MM/yy - HH:mm"),
@@ -43,28 +41,27 @@ export const JobListBox: React.FC<JobListProps> = ({
     id: x.id.toString(),
   }));
 
-  // console.log(jobs);
-  // console.log(selectedTasks);
-
   const dateFilter = (
     <Calendar
       value={selectedDate}
-      onChange={(e) => setSelectedDate(e.value)}
-      dateFormat="dd/MM/yy"
-      className="p-column-filter"
-      placeholder="Registration Date"
-    />
+      dateFormat="dd/mm/yy"
+      disabledDays={[0, 6]}
+      onChange={(e) => {
+        setSelectedDate(e.value);
+      }}
+      hideOnDateTimeSelect={true}
+      hourFormat="24"
+      autoZIndex={true}
+    ></Calendar>
   );
 
   const filterDate = (value: string, filter: Date | Date[] | undefined) => {
     if (filter === undefined || filter === null) {
       return true;
     }
-
     if (value === undefined || value === null) {
       return false;
     }
-
     return value === format(filter as Date, "dd/MM/yy");
   };
 
@@ -91,7 +88,6 @@ export const JobListBox: React.FC<JobListProps> = ({
         paginatorLeft={paginatorLeft}
         paginatorRight={paginatorRight}
       >
-        <Column field="id" header="ID"></Column>
         <Column
           field="start"
           header="Start dato"

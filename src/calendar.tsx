@@ -78,6 +78,9 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
     return allNamesFromDB.indexOf(name) === index;
   });
 
+  console.log(allNamesFromDB);
+  console.log(uniqWorkers);
+
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
     sortedByWorker.push(tasks.filter((x) => x.username === uniqWorkers[i]));

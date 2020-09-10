@@ -36,6 +36,7 @@ export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
         }}
       ></InputMask>
       <Calendar
+        className="datepicker"
         value={parse(date as string, "dd/MM/yy HH:mm", new Date())}
         dateFormat="dd/mm/yy"
         showTime={true}
