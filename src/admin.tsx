@@ -5,7 +5,6 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "./datahandler";
 import { Worker, Job } from "./models";
-import { Calendar } from "primereact/calendar";
 import { DateInput } from "./components/calendarinput";
 import { Description } from "./components/descriptioninput";
 import { WorkerListBox } from "./components/workerlistbox";
@@ -19,7 +18,6 @@ export const EntryForm: React.FC = () => {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
-  let [selectedDate, setSelectedDate] = useState<Date | Date[]>();
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
