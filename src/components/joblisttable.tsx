@@ -51,7 +51,7 @@ export const JobListBox: React.FC<JobListProps> = ({
       }}
       hideOnDateTimeSelect={true}
       hourFormat="24"
-      autoZIndex={true}
+      showTime={true}
     ></Calendar>
   );
 
