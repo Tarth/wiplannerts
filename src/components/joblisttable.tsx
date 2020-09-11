@@ -28,12 +28,23 @@ export const JobListBox: React.FC<JobListProps> = ({
   let [jobsstr] = useState<jobsstr[]>([]);
   let [selectedDate, setSelectedDate] = useState<Date | Date[]>();
 
-  // Find unique jobs in the jobs array
-  const uniqJobs = jobs.filter(
-    (job, i, arr) => arr.findIndex((t) => t.id === job.id) === i
-  );
+  // find the jobs with the same id and gather the usernames into 1 entry and display them
+  let prevId = -1;
+  let str = "";
 
-  jobsstr = uniqJobs.map((x) => ({
+  jobs.map((x, index, arr) => {
+    if (x.id === prevId) {
+      str = str.concat(", " + x.username);
+      const objIndex = arr.findIndex((obj) => obj.id === index);
+      arr[objIndex].username = str;
+      arr.splice(index, 1);
+    }
+    str = x.username;
+    prevId = x.id;
+    return x;
+  });
+
+  jobsstr = jobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
     end: format(x.end, "dd/MM/yy - HH:mm"),
@@ -50,8 +61,9 @@ export const JobListBox: React.FC<JobListProps> = ({
         setSelectedDate(e.value);
       }}
       hideOnDateTimeSelect={true}
-      hourFormat="24"
-      showTime={true}
+      // hourFormat="24"
+      // showTime={true}
+      placeholder="Søg dato"
     ></Calendar>
   );
 
@@ -107,3 +119,8 @@ export const JobListBox: React.FC<JobListProps> = ({
     </div>
   );
 };
+
+// // Find unique jobs in the jobs array
+// const uniqJobs = jobs.filter(
+//   (job, i, arr) => arr.findIndex((t) => t.id === job.id) === i
+// );

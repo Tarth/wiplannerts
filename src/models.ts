@@ -3,7 +3,7 @@ export interface Job {
   description: string;
   start: Date;
   end: Date;
-  id: Number;
+  id: number;
 }
 export interface DbJob {
   name: string;
@@ -13,7 +13,7 @@ export interface DbJob {
   job_id: number;
 }
 export interface Worker {
-  id: Number;
+  id: number;
   name: string;
 }
 
