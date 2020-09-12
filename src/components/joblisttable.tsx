@@ -29,20 +29,30 @@ export const JobListBox: React.FC<JobListProps> = ({
   let [selectedDate, setSelectedDate] = useState<Date | Date[]>();
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
-  let prevId = -1;
+  let prevId = 0;
+  let firstIndexOfDub = 0;
   let str = "";
 
   jobs.map((x, index, arr) => {
     if (x.id === prevId) {
-      str = str.concat(", " + x.username);
-      const objIndex = arr.findIndex((obj) => obj.id === index);
-      arr[objIndex].username = str;
-      arr.splice(index, 1);
+      console.log(x);
+      // str = str.concat(`, ${x.username}`);
     }
-    str = x.username;
     prevId = x.id;
     return x;
   });
+
+  // jobs.map((x, index, arr) => {
+  //   if (x.id === prevId) {
+  //     str = str.concat(", " + x.username);
+  //     const objIndex = arr.findIndex((obj) => obj.id === index);
+  //     arr[objIndex].username = str;
+  //     arr.splice(index, 1);
+  //   }
+  //   str = x.username;
+  //   prevId = x.id;
+  //   return x;
+  // });
 
   jobsstr = jobs.map((x) => ({
     description: x.description,
