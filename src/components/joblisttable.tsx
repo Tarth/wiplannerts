@@ -30,29 +30,20 @@ export const JobListBox: React.FC<JobListProps> = ({
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let prevId = 0;
-  let firstIndexOfDub = 0;
   let str = "";
 
   jobs.map((x, index, arr) => {
     if (x.id === prevId) {
-      console.log(x);
-      // str = str.concat(`, ${x.username}`);
+      const objIndex = arr.findIndex((obj) => obj.id === x.id);
+      str = str.concat(", " + x.username);
+      arr[objIndex].username = str;
+      arr.splice(index, 1);
+    } else {
+      str = x.username;
     }
     prevId = x.id;
     return x;
   });
-
-  // jobs.map((x, index, arr) => {
-  //   if (x.id === prevId) {
-  //     str = str.concat(", " + x.username);
-  //     const objIndex = arr.findIndex((obj) => obj.id === index);
-  //     arr[objIndex].username = str;
-  //     arr.splice(index, 1);
-  //   }
-  //   str = x.username;
-  //   prevId = x.id;
-  //   return x;
-  // });
 
   jobsstr = jobs.map((x) => ({
     description: x.description,
@@ -105,7 +96,7 @@ export const JobListBox: React.FC<JobListProps> = ({
         metaKeySelection={false}
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
-        rows={10}
+        rows={20}
         rowsPerPageOptions={[10, 20, 50]}
         paginatorLeft={paginatorLeft}
         paginatorRight={paginatorRight}
