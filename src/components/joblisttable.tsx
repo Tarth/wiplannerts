@@ -45,6 +45,7 @@ export const JobListBox: React.FC<JobListProps> = ({
     return x;
   });
 
+  // convert the datatypes to strings, so they can be displayed in the data table
   jobsstr = jobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
@@ -62,20 +63,20 @@ export const JobListBox: React.FC<JobListProps> = ({
         setSelectedDate(e.value);
       }}
       hideOnDateTimeSelect={true}
-      // hourFormat="24"
-      // showTime={true}
       placeholder="Søg dato"
     ></Calendar>
   );
 
   const filterDate = (value: string, filter: Date | Date[] | undefined) => {
-    if (filter === undefined || filter === null) {
-      return true;
-    }
-    if (value === undefined || value === null) {
-      return false;
-    }
-    return value === format(filter as Date, "dd/MM/yy");
+    console.log(value);
+    console.log(filter);
+    // if (filter === undefined || filter === null) {
+    //   return true;
+    // }
+    // if (value === undefined || value === null) {
+    //   return false;
+    // }
+    // return value === format(filter as Date, "dd/MM/yy");
   };
 
   const paginatorLeft = (
@@ -88,11 +89,14 @@ export const JobListBox: React.FC<JobListProps> = ({
     <div>
       <DataTable
         value={jobsstr}
+        editMode="row"
+        onRowEditInit={() => console.log("RowInit")}
+        onRowEditCancel={() => console.log("Row Cancel")}
+        dataKey="id"
         paginator
         selection={selectedTasks}
         onSelectionChange={(e) => setSelectedTasks(e.value)}
         selectionMode="multiple"
-        dataKey="id"
         metaKeySelection={false}
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
@@ -106,7 +110,8 @@ export const JobListBox: React.FC<JobListProps> = ({
           header="Start dato"
           filter
           filterElement={dateFilter}
-          filterFunction={(e) => filterDate(e.value, selectedDate)}
+          // filterFunction={(e) => filterDate(e.value, selectedDate)}
+          filterFunction={() => filterDate}
         ></Column>
         <Column field="end" header="Slut dato"></Column>
         <Column field="description" header="Beskrivelse"></Column>
@@ -115,13 +120,9 @@ export const JobListBox: React.FC<JobListProps> = ({
           header="Navn"
           filter
           filterPlaceholder="Søg navn"
+          filterMatchMode="contains"
         ></Column>
       </DataTable>
     </div>
   );
 };
-
-// // Find unique jobs in the jobs array
-// const uniqJobs = jobs.filter(
-//   (job, i, arr) => arr.findIndex((t) => t.id === job.id) === i
-// );

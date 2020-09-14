@@ -3,6 +3,7 @@ import "./admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
+import { Button } from "primereact/button";
 import { GetWorkers, GetJobs } from "./datahandler";
 import { Worker, Job } from "./models";
 import { DateInput } from "./components/calendarinput";
@@ -14,7 +15,7 @@ export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
-  const [selectedTasks, setSelectedTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
+  const [selectedTasks, setSelectedTasks] = useState<Job[]>([]);
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
@@ -29,6 +30,17 @@ export const EntryForm: React.FC = () => {
 
   return (
     <div className="body">
+      <Button
+        className="addJobButton"
+        label="Tilføj job"
+        icon="pi pi-plus"
+        onClick={() => console.log("Add Job")}
+      ></Button>
+      <Button
+        className="editJobButton"
+        label="Rediger job"
+        icon="pi pi-pencil"
+      ></Button>
       <form>
         <h1>Tilføj malerjob:</h1>
         <h3>Beskrivelse:</h3>
