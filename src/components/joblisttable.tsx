@@ -67,7 +67,7 @@ export const JobListBox: React.FC<JobListProps> = ({
     ></Calendar>
   );
 
-  const filterDate = (value: string, filter: Date | Date[] | undefined) => {
+  const filterDate = (value: string | undefined, filter: Date | undefined) => {
     console.log(value);
     console.log(filter);
     // if (filter === undefined || filter === null) {
@@ -109,12 +109,23 @@ export const JobListBox: React.FC<JobListProps> = ({
           field="start"
           header="Start dato"
           filter
-          filterElement={dateFilter}
-          // filterFunction={(e) => filterDate(e.value, selectedDate)}
-          filterFunction={() => filterDate}
+          filterMatchMode="contains"
+          filterPlaceholder="Søg dato"
         ></Column>
-        <Column field="end" header="Slut dato"></Column>
-        <Column field="description" header="Beskrivelse"></Column>
+        <Column
+          field="end"
+          header="Slut dato"
+          filter
+          filterMatchMode="contains"
+          filterPlaceholder="Søg dato"
+        ></Column>
+        <Column
+          field="description"
+          header="Beskrivelse"
+          filter
+          filterMatchMode="contains"
+          filterPlaceholder="Søg beskrivelse"
+        ></Column>
         <Column
           field="name"
           header="Navn"
