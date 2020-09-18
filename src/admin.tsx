@@ -6,9 +6,6 @@ import "primereact/resources/primereact.css";
 import { Button } from "primereact/button";
 import { GetWorkers, GetJobs } from "./datahandler";
 import { Worker, Job } from "./models";
-// import { DateInput } from "./components/calendarinput";
-// import { Description } from "./components/descriptioninput";
-// import { WorkerListBox } from "./components/workerlistbox";
 import { AddJobForm } from "./components/jobform";
 import { JobListBox } from "./components/joblisttable";
 
@@ -20,7 +17,7 @@ export const EntryForm: React.FC = () => {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
-  const [views, setViews] = useState<string>("addjob");
+  const [views, setViews] = useState<string>("addjob"); // This state controls which view is drawn on the admin page
   let view;
 
   if (workers.length === 0) {

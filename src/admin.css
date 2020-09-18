@@ -14,6 +14,14 @@
 div.buttongroup > button {
   margin-right: 15px;
 }
+.leftrightbtngrp {
+  display: flex;
+  justify-content: center;
+}
+div.leftrightbtngrp > button {
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
 .deleteworker {
   margin-top: 25px;
   grid-column: 3 / 14;

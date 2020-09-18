@@ -3,6 +3,7 @@ import "./index.css";
 import { GetJobs } from "./datahandler";
 import { Job } from "./models";
 import { addDays, startOfWeek, format } from "date-fns";
+import { Button } from "primereact/button";
 import { da } from "date-fns/locale";
 import { NameBackgroundColor } from "./colorcodes";
 
@@ -12,9 +13,13 @@ interface Props {
   currentDate?: Date;
 }
 
+interface DateProp {
+  currentDate: Date;
+}
+
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date(2020, 6, 7));
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2020, 6, 27));
   //Use this as a list of names
   if (tasks.length === 0) {
     GetJobs(setTasks);
@@ -22,17 +27,22 @@ export const Calendar: React.FC = () => {
 
   return (
     <>
-      <DisplayHeaders />
+      <DisplayHeaders currentDate={currentDate} />
+      <div className="leftrightbtngrp">
+        <Button icon="pi pi-arrow-left"></Button>
+        <Button icon="pi pi-arrow-right"></Button>
+      </div>
+
       <div className="workercontainer">
-        <DisplayWeekDays />
-        <AllWorkers tasks={tasks} />
+        <DisplayWeekDays currentDate={currentDate} />
+        <AllWorkers tasks={tasks} currentDate={currentDate} />
       </div>
     </>
   );
 };
 
-const DisplayHeaders: React.FC = () => {
-  const initialDate = new Date(2020, 6, 27);
+const DisplayHeaders: React.FC<DateProp> = ({ currentDate }) => {
+  const initialDate = startOfWeek(currentDate, { weekStartsOn: 1 });
   return (
     <>
       <div className="headermonthandyear">
@@ -47,9 +57,9 @@ const DisplayHeaders: React.FC = () => {
     </>
   );
 };
-
-const DisplayWeekDays: React.FC = () => {
-  const firstDayOfWeek = startOfWeek(new Date(2020, 6, 27), {
+// Display the headers of the weekdays in the calendar ie Mon, tue etc with dates
+const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
+  const firstDayOfWeek = startOfWeek(currentDate, {
     weekStartsOn: 1,
   });
   const numberOfDays = 5;
@@ -70,7 +80,7 @@ const DisplayWeekDays: React.FC = () => {
   );
 };
 
-const AllWorkers: React.FC<Props> = ({ tasks }) => {
+const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
 
@@ -92,7 +102,7 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
     <>
       {sortedByWorker.map((x, i) => (
         <div className="worker">
-          <WeeklyTasks tasks={x} index={i} />
+          <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
         </div>
       ))}
     </>
@@ -104,7 +114,7 @@ const WeeklyTasks: React.FC<Props> = ({ tasks, index, currentDate }) => {
   const numberOfDays: Number = 5;
   const oneWorkerWeekData = [];
 
-  const firstDayOfWeek = startOfWeek(new Date(2020, 6, 27), {
+  const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
 
