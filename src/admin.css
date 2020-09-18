@@ -1,30 +1,27 @@
 .body {
   width: 95%;
   margin: 50px auto;
-  display: grid;
-  grid-template-columns: repeat(13, 1fr);
 }
 
 .datepicker > input {
   display: none;
 }
 
-form {
-  grid-column: 1 / 3;
-}
-form div {
+.buttongroup {
+  display: flex;
   margin-bottom: 50px;
 }
-
+div.buttongroup > button {
+  margin-right: 15px;
+}
 .deleteworker {
   margin-top: 25px;
   grid-column: 3 / 14;
 }
 
-.addJobButton {
-  grid-column: 1 / 2;
+.workername {
+  margin: auto;
 }
-
 h3,
 h1 {
   color: #424242;

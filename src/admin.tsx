@@ -6,9 +6,10 @@ import "primereact/resources/primereact.css";
 import { Button } from "primereact/button";
 import { GetWorkers, GetJobs } from "./datahandler";
 import { Worker, Job } from "./models";
-import { DateInput } from "./components/calendarinput";
-import { Description } from "./components/descriptioninput";
-import { WorkerListBox } from "./components/workerlistbox";
+// import { DateInput } from "./components/calendarinput";
+// import { Description } from "./components/descriptioninput";
+// import { WorkerListBox } from "./components/workerlistbox";
+import { AddJobForm } from "./components/jobform";
 import { JobListBox } from "./components/joblisttable";
 
 export const EntryForm: React.FC = () => {
@@ -19,6 +20,8 @@ export const EntryForm: React.FC = () => {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
+  const [views, setViews] = useState<string>("addjob");
+  let view;
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
@@ -28,38 +31,24 @@ export const EntryForm: React.FC = () => {
     GetJobs(setTasks);
   }
 
-  return (
-    <div className="body">
-      <Button
-        className="addJobButton"
-        label="Tilføj job"
-        icon="pi pi-plus"
-        onClick={() => console.log("Add Job")}
-      ></Button>
-      <Button
-        className="editJobButton"
-        label="Rediger job"
-        icon="pi pi-pencil"
-      ></Button>
-      <form>
-        <h1>Tilføj malerjob:</h1>
-        <h3>Beskrivelse:</h3>
-        <Description
+  if (views === "addjob") {
+    view = (
+      <div>
+        <AddJobForm
           description={description}
           setDescription={setDescription}
-        />
-        <h3>Start dato:</h3>
-        <DateInput date={startDate} setDate={setStartDate} />
-        <h3>Slut dato:</h3>
-        <DateInput date={endDate} setDate={setEndDate} />
-        <h3>Tilføj medarbejdere:</h3>
-        <WorkerListBox
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
           workers={workers}
           selectedWorkers={selectedWorkers}
           setSelectedWorkers={setSelectedWorkers}
-        />
-      </form>
-
+        ></AddJobForm>
+      </div>
+    );
+  } else {
+    view = (
       <div className="deleteworker">
         <JobListBox
           jobs={tasks}
@@ -67,6 +56,26 @@ export const EntryForm: React.FC = () => {
           setSelectedTasks={setSelectedTasks}
         />
       </div>
+    );
+  }
+
+  return (
+    <div className="body">
+      <div className="buttongroup">
+        <Button
+          className="addJobButton"
+          label="Tilføj job"
+          icon="pi pi-plus"
+          onClick={() => setViews("addjob")}
+        ></Button>
+        <Button
+          className="editJobButton"
+          label="Rediger job"
+          icon="pi pi-pencil"
+          onClick={() => setViews("")}
+        ></Button>
+      </div>
+      {view}
     </div>
   );
 };

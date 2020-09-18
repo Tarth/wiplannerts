@@ -9,10 +9,12 @@ import { NameBackgroundColor } from "./colorcodes";
 interface Props {
   tasks: Job[];
   index?: number;
+  currentDate?: Date;
 }
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2020, 6, 7));
   //Use this as a list of names
   if (tasks.length === 0) {
     GetJobs(setTasks);
@@ -98,7 +100,7 @@ const AllWorkers: React.FC<Props> = ({ tasks }) => {
 };
 
 //Display all tasks of 1 worker during a week
-const WeeklyTasks: React.FC<Props> = ({ tasks, index }) => {
+const WeeklyTasks: React.FC<Props> = ({ tasks, index, currentDate }) => {
   const numberOfDays: Number = 5;
   const oneWorkerWeekData = [];
 
@@ -131,10 +133,13 @@ const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
   const color = NameBackgroundColor(index);
   return (
     <>
-      <div className="workerjobs">
+      <div className="workerjobs" style={{ minHeight: "44px" }}>
         {tasks.map((x) => (
           <div className="workerjob" style={{ backgroundColor: color }}>
-            {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+            <div>{x.description}</div>
+            <div>
+              {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+            </div>
           </div>
         ))}
       </div>
