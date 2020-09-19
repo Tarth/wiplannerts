@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./index.css";
 import { GetJobs } from "./datahandler";
 import { Job } from "./models";
-import { addDays, startOfWeek, format } from "date-fns";
+import { addDays, subDays, startOfWeek, format } from "date-fns";
 import { Button } from "primereact/button";
 import { da } from "date-fns/locale";
 import { NameBackgroundColor } from "./colorcodes";
@@ -29,8 +29,14 @@ export const Calendar: React.FC = () => {
     <>
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
-        <Button icon="pi pi-arrow-left"></Button>
-        <Button icon="pi pi-arrow-right"></Button>
+        <Button
+          icon="pi pi-arrow-left"
+          onClick={() => setCurrentDate(subDays(currentDate, 7))}
+        ></Button>
+        <Button
+          icon="pi pi-arrow-right"
+          onClick={() => setCurrentDate(addDays(currentDate, 7))}
+        ></Button>
       </div>
 
       <div className="workercontainer">
@@ -83,15 +89,12 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
 const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
-
+  console.log(tasks);
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
     return allNamesFromDB.indexOf(name) === index;
   });
-
-  console.log(allNamesFromDB);
-  console.log(uniqWorkers);
 
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
@@ -121,7 +124,10 @@ const WeeklyTasks: React.FC<Props> = ({ tasks, index, currentDate }) => {
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
-        (x) => x.start.getDate() === addDays(firstDayOfWeek, i).getDate()
+        (x) =>
+          x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
+          x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
+          x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
       )
     );
   }
