@@ -11,6 +11,13 @@ interface CalendarProps {
 export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
   const [isDateValid, setIsDateValid] = useState<boolean>(true);
 
+  let iniDate;
+  if (date === undefined) {
+    iniDate = new Date();
+  } else {
+    iniDate = parse(date, "dd/MM/yy HH:mm", new Date());
+  }
+
   return (
     <div className="dateinput p-inputgroup">
       <InputMask
@@ -37,10 +44,11 @@ export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
       ></InputMask>
       <Calendar
         className="datepicker"
-        value={parse(date as string, "dd/MM/yy HH:mm", new Date())}
+        value={iniDate}
         dateFormat="dd/mm/yy"
         showTime={true}
         disabledDays={[0, 6]}
+        showOnFocus={false}
         onChange={(e) => {
           const date = format(e.value as Date, "dd/MM/yy HH:mm");
           setIsDateValid(true);

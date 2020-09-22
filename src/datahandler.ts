@@ -1,3 +1,4 @@
+import { worker } from "cluster";
 import { Job, DbJob, Worker } from "./models";
 // import { stringify } from "querystring";
 
@@ -22,8 +23,8 @@ const PostDataToDB = async (localurl: string, workername: string) => {
   }
 };
 // Post a new worker into the DB
-export const PostWorker = async () => {
-  PostDataToDB(`${url}/workers/add`, "Test")
+export const PostWorker = async (workername: string) => {
+  PostDataToDB(`${url}/workers/add`, workername)
     .then(function (response) {
       console.log(response);
     })
@@ -31,6 +32,8 @@ export const PostWorker = async () => {
       console.log(error);
     });
 };
+
+// PostWorker("Test");
 
 export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
   GetDataFromDB(`${url}/workers`)

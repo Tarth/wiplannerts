@@ -1,5 +1,7 @@
 import React from "react";
+import { Button } from "primereact/button";
 import { Worker } from "../models";
+import { PostWorker } from "../datahandler";
 import { DateInput } from "./calendarinput";
 import { Description } from "./descriptioninput";
 import { WorkerListBox } from "./workerlistbox";
@@ -41,6 +43,12 @@ export const AddJobForm: React.FC<JobFormProp> = ({
         selectedWorkers={selectedWorkers}
         setSelectedWorkers={setSelectedWorkers}
       />
+      <Button
+        label="Tilføj til kalender"
+        onClick={() => {
+          PostWorker("Test");
+        }}
+      ></Button>
     </form>
   );
 };

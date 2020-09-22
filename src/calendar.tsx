@@ -89,7 +89,6 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
 const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
-  console.log(tasks);
   // Find unique workers
   allNamesFromDB = tasks.map((x) => x.username);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {

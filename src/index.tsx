@@ -20,7 +20,7 @@ const Tabmenu: React.FC = () => {
       command: () => setActiveItem(items[1]),
     },
   ];
-  const initialItem = initialItems[0];
+  const initialItem = initialItems[1];
 
   const [items] = useState<MenuItem[]>(initialItems);
   const [activeItem, setActiveItem] = useState<MenuItem>(initialItem);

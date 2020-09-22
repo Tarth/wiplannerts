@@ -64,14 +64,13 @@ div.leftrightbtngrp > button {
   font-family: "Fjalla One", sans-serif;
   background-color: #dbdbd9;
   width: 100%;
-  margin: 50px auto 20px;
+  margin: 50px auto 50px;
   padding: 20px 0;
 }
 
 .headermonth {
   text-transform: uppercase;
   color: #db5e26;
-  justify-self: end;
 }
 
 .headeryear {
