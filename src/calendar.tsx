@@ -24,7 +24,7 @@ export const Calendar: React.FC = () => {
   if (tasks.length === 0) {
     GetJobs(setTasks);
   }
-
+  console.log(tasks);
   return (
     <>
       <DisplayHeaders currentDate={currentDate} />
