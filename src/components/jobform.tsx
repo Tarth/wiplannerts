@@ -46,7 +46,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       <Button
         label="Tilføj til kalender"
         onClick={() => {
-          PostWorker("Test");
+          PostWorker("Bo");
         }}
       ></Button>
     </form>

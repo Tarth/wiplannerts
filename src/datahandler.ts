@@ -1,6 +1,4 @@
-import { worker } from "cluster";
 import { Job, DbJob, Worker } from "./models";
-// import { stringify } from "querystring";
 
 const url = "http://localhost:3003";
 const axios = require("axios").default;
@@ -32,8 +30,6 @@ export const PostWorker = async (workername: string) => {
       console.log(error);
     });
 };
-
-// PostWorker("Test");
 
 export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
   GetDataFromDB(`${url}/workers`)
