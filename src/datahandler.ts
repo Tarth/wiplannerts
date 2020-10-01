@@ -31,6 +31,7 @@ export const PostWorker = async (workername: string) => {
     });
 };
 
+// Post a new job into the DB
 const PostJobToDB = async (
   localurl: string,
   start_date: string,
@@ -51,7 +52,6 @@ const PostJobToDB = async (
   }
 };
 
-// Post a new job into the DB
 export const PostJob = async (
   start_date: string,
   end_date: string,

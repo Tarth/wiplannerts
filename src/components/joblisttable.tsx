@@ -3,7 +3,6 @@ import { Job } from "../models";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-// import { Calendar } from "primereact/calendar";
 import { format } from "date-fns";
 
 interface JobListProps {
@@ -26,7 +25,6 @@ export const JobListBox: React.FC<JobListProps> = ({
   setSelectedTasks,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
-  // let [selectedDate, setSelectedDate] = useState<Date | Date[]>();
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let prevId = 0;
@@ -53,31 +51,6 @@ export const JobListBox: React.FC<JobListProps> = ({
     name: x.username,
     id: x.id.toString(),
   }));
-
-  // const dateFilter = (
-  //   <Calendar
-  //     value={selectedDate}
-  //     dateFormat="dd/mm/yy"
-  //     disabledDays={[0, 6]}
-  //     onChange={(e) => {
-  //       setSelectedDate(e.value);
-  //     }}
-  //     hideOnDateTimeSelect={true}
-  //     placeholder="Søg dato"
-  //   ></Calendar>
-  // );
-
-  // const filterDate = (value: string | undefined, filter: Date | undefined) => {
-  //   console.log(value);
-  //   console.log(filter);
-  //   // if (filter === undefined || filter === null) {
-  //   //   return true;
-  //   // }
-  //   // if (value === undefined || value === null) {
-  //   //   return false;
-  //   // }
-  //   // return value === format(filter as Date, "dd/MM/yy");
-  // };
 
   const paginatorLeft = (
     <Button type="button" icon="pi pi-refresh" className="p-button-text" />
@@ -134,6 +107,12 @@ export const JobListBox: React.FC<JobListProps> = ({
           filterMatchMode="contains"
         ></Column>
       </DataTable>
+      <Button
+        label="Slet markerede jobs"
+        onClick={() => {
+          console.log("Click");
+        }}
+      ></Button>
     </div>
   );
 };
