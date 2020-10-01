@@ -35,13 +35,15 @@ const PostJobToDB = async (
   localurl: string,
   start_date: string,
   end_date: string,
-  description: string
+  description: string,
+  workersOnJob: number[]
 ) => {
   try {
     let res = await axios.post(localurl, {
       startdate: start_date,
       enddate: end_date,
       description: description,
+      workerId: workersOnJob,
     });
     return res;
   } catch (error) {
@@ -49,13 +51,20 @@ const PostJobToDB = async (
   }
 };
 
-// Post a new worker into the DB
+// Post a new job into the DB
 export const PostJob = async (
   start_date: string,
   end_date: string,
-  description: string
+  description: string,
+  workersOnJob: number[]
 ) => {
-  PostJobToDB(`${url}/jobs/add`, start_date, end_date, description)
+  PostJobToDB(
+    `${url}/jobs/add`,
+    start_date,
+    end_date,
+    description,
+    workersOnJob
+  )
     .then(function (response) {
       console.log(response);
     })
@@ -63,8 +72,6 @@ export const PostJob = async (
       console.log(error);
     });
 };
-
-PostJob("2020-08-03 09:15:00", "2020-08-04 09:15:00", "Test2");
 
 export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
   GetDataFromDB(`${url}/workers`)

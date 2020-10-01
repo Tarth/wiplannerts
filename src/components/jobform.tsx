@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "primereact/button";
 import { Worker } from "../models";
-import { PostWorker, PostJob } from "../datahandler";
+import { PostJob } from "../datahandler";
 import { DateInput } from "./calendarinput";
 import { Description } from "./descriptioninput";
 import { WorkerListBox } from "./workerlistbox";
@@ -46,8 +46,12 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       <Button
         label="Tilføj til kalender"
         onClick={() => {
-          // PostWorker("Bo");
-          PostJob("2020-08-03 09:15:00", "2020-08-04 09:15:00", "Test2");
+          PostJob(
+            startDate as string,
+            endDate as string,
+            description,
+            selectedWorkers.map((x) => x.id)
+          );
         }}
       ></Button>
     </form>
