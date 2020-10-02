@@ -20,6 +20,7 @@ const PostWorkerToDB = async (localurl: string, workername: string) => {
     console.log(error);
   }
 };
+
 // Post a new worker into the DB
 export const PostWorker = async (workername: string) => {
   PostWorkerToDB(`${url}/workers/add`, workername)

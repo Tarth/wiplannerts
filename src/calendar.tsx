@@ -3,8 +3,8 @@ import "./index.css";
 import { GetJobs } from "./datahandler";
 import { Job } from "./models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
-import { Button } from "primereact/button";
 import { da } from "date-fns/locale";
+import { Button } from "primereact/button";
 import { NameBackgroundColor } from "./colorcodes";
 
 interface Props {
@@ -24,7 +24,6 @@ export const Calendar: React.FC = () => {
   if (tasks.length === 0) {
     GetJobs(setTasks);
   }
-  console.log(tasks);
   return (
     <>
       <DisplayHeaders currentDate={currentDate} />
