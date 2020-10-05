@@ -25,12 +25,11 @@ export const JobListBox: React.FC<JobListProps> = ({
   setSelectedTasks,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
-
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let prevId = 0;
   let str = "";
 
-  jobs.map((x, index, arr) => {
+  let concatJobs = jobs.map((x, index, arr) => {
     if (x.id === prevId) {
       const objIndex = arr.findIndex((obj) => obj.id === x.id);
       str = str.concat(", " + x.username);
@@ -40,9 +39,10 @@ export const JobListBox: React.FC<JobListProps> = ({
       str = x.username;
     }
     prevId = x.id;
-    return x;
+    // return x;
   });
 
+  console.log(concatJobs);
   // convert the datatypes to strings, so they can be displayed in the data table
   jobsstr = jobs.map((x) => ({
     description: x.description,
