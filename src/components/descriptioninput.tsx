@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
+import TextField from "@material-ui/core/TextField";
 
 interface InputProps {
   description: string;
@@ -10,16 +11,36 @@ export const Description: React.FC<InputProps> = ({
   description,
   setDescription,
 }) => {
+  const [isInputValid, setIsInputValid] = useState(true);
+  const invalidInput = /[!"#$%/{()=}?+<>*[\]']/g;
+
   return (
     <div className="description">
-      <InputText
+      <TextField
+        variant="filled"
+        error={isInputValid ? false : true}
+        helperText={isInputValid ? "" : "Ugyldige tegn"}
+        defaultValue=""
+        autoFocus={true}
+        onChange={(e) => {
+          //Check if input matches any special chars
+          if (invalidInput.test(e.target.value) === false) {
+            setIsInputValid(true);
+            setDescription(e.target.value);
+          } else {
+            setIsInputValid(false);
+          }
+        }}
+      ></TextField>
+
+      {/* <InputText
         id="description"
         value={description}
         keyfilter={/^[^#<>*!]+$/}
         onChange={(e) => {
           setDescription(e.currentTarget.value);
         }}
-      />
+      /> */}
     </div>
   );
 };

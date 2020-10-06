@@ -4,7 +4,7 @@ import { Worker } from "../models";
 import { PostJob } from "../datahandler";
 import { DateInput } from "./calendarinput";
 import { Description } from "./descriptioninput";
-import { WorkerListBox } from "./workerlistbox";
+import { WorkerListBox, CheckboxList } from "./workerlistbox";
 
 interface JobFormProp {
   description: string;
@@ -43,6 +43,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
         selectedWorkers={selectedWorkers}
         setSelectedWorkers={setSelectedWorkers}
       />
+      <CheckboxList></CheckboxList>
+
       <Button
         label="Tilføj til kalender"
         onClick={() => {
