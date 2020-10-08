@@ -1,5 +1,4 @@
 import React from "react";
-import { ListBox } from "primereact/listbox";
 import { Worker } from "../models";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -14,34 +13,6 @@ interface Props {
   setSelectedWorkers: (worker: Worker[]) => void;
 }
 
-export const WorkerListBox: React.FC<Props> = ({
-  workers,
-  selectedWorkers,
-  setSelectedWorkers,
-}) => {
-  return (
-    <div className="workers">
-      <ListBox
-        optionLabel="name"
-        value={selectedWorkers}
-        options={workers}
-        multiple={true}
-        onChange={(e) => {
-          UpdateSelectedWorkers(e.value as Worker[], setSelectedWorkers);
-        }}
-      />
-    </div>
-  );
-};
-
-// This method is used to show how to call an external funtion. Its getting called from Listbox
-const UpdateSelectedWorkers = (
-  value: Worker[],
-  setSelectedWorkers: (input: Worker[]) => void
-) => {
-  setSelectedWorkers(value);
-};
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -52,45 +23,48 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function CheckboxList() {
+export const CheckboxList: React.FC<Props> = ({
+  workers,
+  selectedWorkers,
+  setSelectedWorkers,
+}) => {
   const classes = useStyles();
-  const [checked, setChecked] = React.useState([0]);
 
-  const handleToggle = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = (worker: Worker) => () => {
+    const currentIndex = selectedWorkers.indexOf(worker);
+    const newChecked = [...selectedWorkers];
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(worker);
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    setChecked(newChecked);
+    setSelectedWorkers(newChecked);
   };
-
   return (
     <List className={classes.root}>
-      {[0, 1, 2, 3].map((value) => {
-        const labelId = `checkbox-list-label-${value}`;
+      {workers.map((e) => {
+        const labelId = `checkbox-list-label-${e.id}`;
 
         return (
           <ListItem
-            key={value}
+            key={e.id}
             role={undefined}
             dense
             button
-            onClick={handleToggle(value)}
+            selected
+            onClick={handleToggle(e)}
           >
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={checked.indexOf(value) !== -1}
+                checked={selectedWorkers.indexOf(e) !== -1}
                 tabIndex={-1}
                 disableRipple
                 inputProps={{ "aria-labelledby": labelId }}
               />
             </ListItemIcon>
-            <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+            <ListItemText id={labelId} primary={e.name} />
             {/* <ListItemSecondaryAction>
               <IconButton edge="end" aria-label="comments">
                 <CommentIcon />
@@ -101,4 +75,32 @@ export function CheckboxList() {
       })}
     </List>
   );
-}
+};
+
+// export const WorkerListBox: React.FC<Props> = ({
+//   workers,
+//   selectedWorkers,
+//   setSelectedWorkers,
+// }) => {
+//   return (
+//     <div className="workers">
+//       <ListBox
+//         optionLabel="name"
+//         value={selectedWorkers}
+//         options={workers}
+//         multiple={true}
+//         onChange={(e) => {
+//           UpdateSelectedWorkers(e.value as Worker[], setSelectedWorkers);
+//         }}
+//       />
+//     </div>
+//   );
+// };
+
+// This method is used to show how to call an external funtion. Its getting called from Listbox
+// const UpdateSelectedWorkers = (
+//   value: Worker[],
+//   setSelectedWorkers: (input: Worker[]) => void
+// ) => {
+//   setSelectedWorkers(value);
+// };

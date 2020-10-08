@@ -30,6 +30,7 @@ export const EntryForm: React.FC = () => {
     GetJobs(setTasks);
   }
 
+  console.log(selectedWorkers);
   if (views === "addjob") {
     view = (
       <div>
