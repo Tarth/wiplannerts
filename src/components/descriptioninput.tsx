@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { InputText } from "primereact/inputtext";
 import TextField from "@material-ui/core/TextField";
 
 interface InputProps {
@@ -32,15 +31,6 @@ export const Description: React.FC<InputProps> = ({
           }
         }}
       ></TextField>
-
-      {/* <InputText
-        id="description"
-        value={description}
-        keyfilter={/^[^#<>*!]+$/}
-        onChange={(e) => {
-          setDescription(e.currentTarget.value);
-        }}
-      /> */}
     </div>
   );
 };

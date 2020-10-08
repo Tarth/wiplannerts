@@ -61,6 +61,7 @@ export const CheckboxList: React.FC<Props> = ({
                 checked={selectedWorkers.indexOf(e) !== -1}
                 tabIndex={-1}
                 disableRipple
+                color="default"
                 inputProps={{ "aria-labelledby": labelId }}
               />
             </ListItemIcon>

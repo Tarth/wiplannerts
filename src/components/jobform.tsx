@@ -1,5 +1,7 @@
-import React from "react";
-import { Button } from "primereact/button";
+import React, { useState } from "react";
+import Button from "@material-ui/core/Button";
+import Alert from "@material-ui/lab/Alert";
+import SaveIcon from "@material-ui/icons/Save";
 import { Worker } from "../models";
 import { PostJob } from "../datahandler";
 import { DateInput } from "./calendarinput";
@@ -38,11 +40,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       <h3>Slut dato:</h3>
       <DateInput date={endDate} setDate={setEndDate} />
       <h3>Tilføj medarbejdere:</h3>
-      {/* <WorkerListBox
-        workers={workers}
-        selectedWorkers={selectedWorkers}
-        setSelectedWorkers={setSelectedWorkers}
-      /> */}
+
       <CheckboxList
         workers={workers}
         selectedWorkers={selectedWorkers}
@@ -50,16 +48,28 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       ></CheckboxList>
 
       <Button
-        label="Tilføj til kalender"
+        variant="contained"
+        color="primary"
+        startIcon={<SaveIcon />}
         onClick={() => {
-          PostJob(
-            startDate as string,
-            endDate as string,
-            description,
-            selectedWorkers.map((x) => x.id)
-          );
+          if (
+            description === "" ||
+            startDate === "" ||
+            endDate === "" ||
+            workers === []
+          ) {
+          } else {
+            PostJob(
+              startDate as string,
+              endDate as string,
+              description,
+              selectedWorkers.map((x) => x.id)
+            );
+          }
         }}
-      ></Button>
+      >
+        Tilføj til kalender
+      </Button>
     </form>
   );
 };

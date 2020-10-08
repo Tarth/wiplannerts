@@ -3,12 +3,13 @@ import "./admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
-// import { Button } from "primereact/button";
 import { GetWorkers, GetJobs } from "./datahandler";
 import { Worker, Job } from "./models";
 import { AddJobForm } from "./components/jobform";
 import { JobListBox } from "./components/joblisttable";
 import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Create";
 import "fontsource-roboto";
 
 export const EntryForm: React.FC = () => {
@@ -62,24 +63,18 @@ export const EntryForm: React.FC = () => {
   return (
     <div className="body">
       <div className="buttongroup">
-        {/* <Button
-          className="addJobButton"
-          label="Tilføj job"
-          icon="pi pi-plus"
-          onClick={() => setViews("addjob")}
-        ></Button>
         <Button
-          className="editJobButton"
-          label="Rediger job"
-          icon="pi pi-pencil"
-          onClick={() => setViews("")}
-        ></Button> */}
-        <Button variant="contained" onClick={() => setViews("addjob")}>
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => setViews("addjob")}
+        >
           Tilføj Job
         </Button>
         <Button
           variant="contained"
           color="primary"
+          startIcon={<EditIcon />}
           onClick={() => setViews("")}
         >
           Rediger Job
