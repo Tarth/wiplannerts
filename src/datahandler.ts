@@ -95,7 +95,7 @@ export const GetJobs = async (setState: (jobs: Job[]) => void) => {
           ({
             description: x.description,
             id: x.job_id,
-            username: x.name,
+            worker: { id: x.worker_id, name: x.name },
             start: new Date(x.start_date),
             end: new Date(x.end_date),
           } as Job)

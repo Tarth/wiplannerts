@@ -1,11 +1,19 @@
 export interface Job {
-  username: string;
+  worker: Worker;
+  description: string;
+  start: Date;
+  end: Date;
+  id: number;
+}
+export interface JobWithWorkers {
+  workers: Worker[];
   description: string;
   start: Date;
   end: Date;
   id: number;
 }
 export interface DbJob {
+  worker_id: number;
   name: string;
   description: string;
   start_date: string;

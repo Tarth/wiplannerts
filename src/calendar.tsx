@@ -89,14 +89,14 @@ const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
   // Find unique workers
-  allNamesFromDB = tasks.map((x) => x.username);
+  allNamesFromDB = tasks.map((x) => x.worker.name);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
     return allNamesFromDB.indexOf(name) === index;
   });
 
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
-    sortedByWorker.push(tasks.filter((x) => x.username === uniqWorkers[i]));
+    sortedByWorker.push(tasks.filter((x) => x.worker.name === uniqWorkers[i]));
   }
 
   return (
@@ -164,7 +164,7 @@ const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
 const DisplayWorkerName: React.FC<Props> = ({ tasks }) => {
   const nameToDisplay = [];
   if (tasks.length !== 0) {
-    nameToDisplay.push(tasks[0].username);
+    nameToDisplay.push(tasks[0].worker.name);
   }
   return <div className="workername">{nameToDisplay}</div>;
 };

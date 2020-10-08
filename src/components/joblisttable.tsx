@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Job } from "../models";
+import { Job, JobWithWorkers } from "../models";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
@@ -26,29 +26,40 @@ export const JobListBox: React.FC<JobListProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   // find the jobs with the same id and gather the usernames into 1 entry and display them
-  let prevId = 0;
-  let str = "";
 
-  let concatJobs = jobs.map((x, index, arr) => {
-    if (x.id === prevId) {
-      const objIndex = arr.findIndex((obj) => obj.id === x.id);
-      str = str.concat(", " + x.username);
-      arr[objIndex].username = str;
-      arr.splice(index, 1);
+  let concatJobs2: JobWithWorkers[] = [];
+
+  jobs.forEach((x) => {
+    let job = concatJobs2.find((y) => y.id === x.id);
+
+    if (job !== undefined) {
+      let jobwithworker = job.workers.find((z) => z.id === x.worker.id);
+      if (jobwithworker === undefined) {
+        job.workers.push(x.worker);
+      }
     } else {
-      str = x.username;
+      const newjob: JobWithWorkers = {
+        description: x.description,
+        end: x.end,
+        id: x.id,
+        start: x.start,
+        workers: [x.worker],
+      };
+      concatJobs2.push(newjob);
     }
-    prevId = x.id;
-    // return x;
   });
+  console.log(concatJobs2);
 
-  console.log(concatJobs);
   // convert the datatypes to strings, so they can be displayed in the data table
-  jobsstr = jobs.map((x) => ({
+  jobsstr = concatJobs2.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
     end: format(x.end, "dd/MM/yy - HH:mm"),
-    name: x.username,
+    name: x.workers
+      .map((y) => {
+        return " " + y.name;
+      })
+      .toString(),
     id: x.id.toString(),
   }));
 
