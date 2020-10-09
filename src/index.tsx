@@ -6,7 +6,6 @@ import { TabMenu } from "primereact/tabmenu";
 import { Calendar } from "./calendar";
 import { EntryForm } from "./admin";
 import { MenuItem } from "./models";
-
 const Tabmenu: React.FC = () => {
   const initialItems: MenuItem[] = [
     {
@@ -33,10 +32,10 @@ const Tabmenu: React.FC = () => {
   }
 
   return (
-    <div>
+    <>
       <TabMenu model={items} activeItem={initialItem} />
       {displaycontent}
-    </div>
+    </>
   );
 };
 

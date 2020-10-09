@@ -5,6 +5,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
 import Checkbox from "@material-ui/core/Checkbox";
 
 interface Props {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       maxWidth: 240,
       backgroundColor: theme.palette.background.paper,
+      padding: "0px",
     },
   })
 );
@@ -42,7 +44,14 @@ export const CheckboxList: React.FC<Props> = ({
     setSelectedWorkers(newChecked);
   };
   return (
-    <List className={classes.root}>
+    <List
+      className={classes.root}
+      subheader={
+        <ListSubheader component="div" id="nested-list-subheader">
+          Medarbejdere:
+        </ListSubheader>
+      }
+    >
       {workers.map((e) => {
         const labelId = `checkbox-list-label-${e.id}`;
 
@@ -66,11 +75,6 @@ export const CheckboxList: React.FC<Props> = ({
               />
             </ListItemIcon>
             <ListItemText id={labelId} primary={e.name} />
-            {/* <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <CommentIcon />
-              </IconButton>
-            </ListItemSecondaryAction> */}
           </ListItem>
         );
       })}

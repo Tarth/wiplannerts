@@ -19,6 +19,8 @@ export const Description: React.FC<InputProps> = ({
         variant="filled"
         error={isInputValid ? false : true}
         helperText={isInputValid ? "" : "Ugyldige tegn"}
+        fullWidth
+        label="Beskrivelse"
         defaultValue=""
         autoFocus={true}
         onChange={(e) => {

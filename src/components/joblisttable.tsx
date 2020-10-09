@@ -25,33 +25,34 @@ export const JobListBox: React.FC<JobListProps> = ({
   setSelectedTasks,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
+
   // find the jobs with the same id and gather the usernames into 1 entry and display them
-
-  let concatJobs2: JobWithWorkers[] = [];
-
-  jobs.forEach((x) => {
-    let job = concatJobs2.find((y) => y.id === x.id);
-
+  let concatJobs: JobWithWorkers[] = [];
+  jobs.forEach((jobItem) => {
+    let job = concatJobs.find(
+      (concatJobItem) => concatJobItem.id === jobItem.id
+    );
     if (job !== undefined) {
-      let jobwithworker = job.workers.find((z) => z.id === x.worker.id);
+      let jobwithworker = job.workers.find(
+        (worker) => worker.id === jobItem.worker.id
+      );
       if (jobwithworker === undefined) {
-        job.workers.push(x.worker);
+        job.workers.push(jobItem.worker);
       }
     } else {
       const newjob: JobWithWorkers = {
-        description: x.description,
-        end: x.end,
-        id: x.id,
-        start: x.start,
-        workers: [x.worker],
+        description: jobItem.description,
+        end: jobItem.end,
+        id: jobItem.id,
+        start: jobItem.start,
+        workers: [jobItem.worker],
       };
-      concatJobs2.push(newjob);
+      concatJobs.push(newjob);
     }
   });
-  console.log(concatJobs2);
 
   // convert the datatypes to strings, so they can be displayed in the data table
-  jobsstr = concatJobs2.map((x) => ({
+  jobsstr = concatJobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
     end: format(x.end, "dd/MM/yy - HH:mm"),

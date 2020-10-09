@@ -5,13 +5,19 @@ import TextField from "@material-ui/core/TextField";
 interface CalendarProps {
   date: string | undefined;
   setDate: (date: string | undefined) => void;
+  isDateValid: boolean;
+  setIsDateValid: (isDateValid: boolean) => void;
 }
 
-export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
-  const [isDateValid, setIsDateValid] = useState<boolean>(true);
+export const DateInput: React.FC<CalendarProps> = ({
+  date,
+  setDate,
+  isDateValid,
+  setIsDateValid,
+}) => {
   return (
     <>
-      <div>
+      <div className="calendar">
         <TextField
           id="time"
           label="Dato/Tid"
@@ -19,6 +25,7 @@ export const DateInput: React.FC<CalendarProps> = ({ date, setDate }) => {
           defaultValue=""
           variant="filled"
           error={isDateValid ? false : true}
+          helperText={isDateValid ? "" : "Ugyldig Dato"}
           onChange={(e) => {
             if (isValid(Date.parse(e.target.value)) === true) {
               setIsDateValid(true);
