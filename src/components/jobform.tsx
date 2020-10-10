@@ -9,6 +9,7 @@ import { PostJob } from "../datahandler";
 import { DateInput } from "./calendarinput";
 import { Description } from "./descriptioninput";
 import { CheckboxList } from "./workerlistbox";
+import { AlertTitle } from "@material-ui/lab";
 
 interface JobFormProp {
   description: string;
@@ -53,20 +54,26 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   if (activeAlert === "error") {
     alert = (
       <Alert severity="error">
-        Noget gik galt! Alle felter skal være udfyldt korrekt
+        <AlertTitle>Fejl</AlertTitle>
+        Alle felter skal være udfyldt korrekt.
       </Alert>
     );
   } else if (activeAlert === "success") {
-    alert = <Alert severity="success">Job tilføjet til kalenderen</Alert>;
+    alert = (
+      <Alert severity="success">
+        <AlertTitle>Succes</AlertTitle>
+        Job tilføjet til kalenderen
+      </Alert>
+    );
   } else {
     alert = <div></div>;
   }
 
   return (
     <>
-      <Box display="flex">
-        {alert}
-        <Box className={classes.leftContainer}>
+      <div className="alertDiv">{alert}</div>
+      <div className="parentDiv">
+        <div className="leftContainer">
           <Description
             description={description}
             setDescription={setDescription}
@@ -83,7 +90,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
             isDateValid={isEndValid}
             setIsDateValid={setIsEndValid}
           />
-        </Box>
+        </div>
+
         <div className="rightContainer">
           <CheckboxList
             workers={workers}
@@ -91,34 +99,36 @@ export const AddJobForm: React.FC<JobFormProp> = ({
             setSelectedWorkers={setSelectedWorkers}
           ></CheckboxList>
         </div>
-      </Box>
-      <Button
-        // className="addJobButton"
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        startIcon={<SaveIcon />}
-        onClick={() => {
-          if (
-            description === "" ||
-            isStartValid === false ||
-            isEndValid === false ||
-            workers === []
-          ) {
-            setActiveAlert("error");
-          } else {
-            setActiveAlert("success");
-            // PostJob(
-            //   startDate as string,
-            //   endDate as string,
-            //   description,
-            //   selectedWorkers.map((x) => x.id)
-            // );
-          }
-        }}
-      >
-        Tilføj til kalender
-      </Button>
+        <div className="buttonContainer">
+          <Button
+            // className="addJobButton"
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            startIcon={<SaveIcon />}
+            onClick={() => {
+              if (
+                description === "" ||
+                isStartValid === false ||
+                isEndValid === false ||
+                workers === []
+              ) {
+                setActiveAlert("error");
+              } else {
+                setActiveAlert("success");
+                // PostJob(
+                //   startDate as string,
+                //   endDate as string,
+                //   description,
+                //   selectedWorkers.map((x) => x.id)
+                // );
+              }
+            }}
+          >
+            Tilføj til kalender
+          </Button>
+        </div>
+      </div>
     </>
   );
 };

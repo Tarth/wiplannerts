@@ -24,6 +24,7 @@ export const DateInput: React.FC<CalendarProps> = ({
           type="datetime-local"
           defaultValue=""
           variant="filled"
+          fullWidth
           error={isDateValid ? false : true}
           helperText={isDateValid ? "" : "Ugyldig Dato"}
           onChange={(e) => {
