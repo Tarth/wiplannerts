@@ -123,7 +123,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                 isEndValid === false ||
                 workers === []
               ) {
-                setActiveAlert("error");
+                setUsrAlert({type: "error", title: "Fejl", text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme"});
               } else {
                 const returnmsg = PostJob(
                   startDate as string,
