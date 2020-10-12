@@ -8,7 +8,7 @@ const GetDataFromDB = async (localurl: string) => {
     let res = await axios.get(localurl);
     return res;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -17,7 +17,7 @@ const PostWorkerToDB = async (localurl: string, workername: string) => {
     let res = await axios.post(localurl, { name: workername });
     return res;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -25,10 +25,10 @@ const PostWorkerToDB = async (localurl: string, workername: string) => {
 export const PostWorker = async (workername: string) => {
   PostWorkerToDB(`${url}/workers/add`, workername)
     .then(function (response) {
-      console.log(response);
+      return response;
     })
     .catch(function (error) {
-      console.log(error);
+      return error;
     });
 };
 
@@ -49,7 +49,7 @@ const PostJobToDB = async (
     });
     return res;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
@@ -82,7 +82,7 @@ export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
       setState(data);
     })
     .catch((e) => {
-      console.log(e);
+      return e;
     });
 };
 
@@ -103,6 +103,6 @@ export const GetJobs = async (setState: (jobs: Job[]) => void) => {
       setState(data);
     })
     .catch((e) => {
-      console.log(e);
+      return e;
     });
 };

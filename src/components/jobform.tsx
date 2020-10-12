@@ -30,7 +30,7 @@ interface AlertProp {
 
 const useStyles = makeStyles({
   button: {
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    // background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
     marginTop: "50px",
   },
   leftContainer: {
@@ -71,17 +71,19 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 
   if (usrAlert.type !== undefined) {
     alert = (
-      <UserAlertHandler type={usrAlert.type} title={usrAlert.title} text={usrAlert.text}></UserAlertHandler>
+      <div className="alertDiv">
+        <UserAlertHandler type={usrAlert.type} title={usrAlert.title} text={usrAlert.text}></UserAlertHandler>
+      </div>
     );
   } else {
     alert = (
-      <div></div>
+      <div className="alertDiv"></div>
     );
     }
 
   return (
     <>
-      <div className="alertDiv">{alert}</div>
+      {alert}
       <div className="parentDiv">
         <div className="leftContainer">
           <Description
@@ -122,7 +124,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                 isEndValid === false ||
                 workers === []
               ) {
-                setUsrAlert({type: "error", title: "Fejl", text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme"});
+                setUsrAlert({type: "error", title: "Fejl", text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme."});
               } else {
                 const returnmsg = PostJob(
                   startDate as string,
@@ -131,10 +133,15 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                   selectedWorkers.map((x) => x.id)
                   );
                   returnmsg.then(() => {
-                    setUsrAlert({type: "success", title: "Succes", text: "Job tilføjet til kalenderen"})
+                    setUsrAlert({type: "success", title: "Succes", text: "Job tilføjet til kalenderen."})
+                    console.log(returnmsg);
                   }, () => {
-                    setUsrAlert({type: "error", title: "Fejl", text: "Job tilføjet til kalenderen"})
+                    setUsrAlert({type: "error", title: "Fejl", text: "Job bliv ikke tilføjet til kalenderen. Kontakt Winoto support"})
                 })
+                  .catch(error => {
+                    console.log(error)
+                  }
+                )
               }
             }}
           >
