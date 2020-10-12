@@ -63,7 +63,6 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 }) => {
   const [isStartValid, setIsStartValid] = useState(true);
   const [isEndValid, setIsEndValid] = useState(true);
-  const [activeAlert, setActiveAlert] = useState("");
   const [usrAlert, setUsrAlert] = useState<AlertProp>({type: undefined, title: "", text: ""});
 
   let alert;

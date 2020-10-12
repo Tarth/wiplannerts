@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./css/index.css";
+// import "./css/index.css";
 import { GetJobs } from "./datahandler";
 import { Job } from "./models/models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
