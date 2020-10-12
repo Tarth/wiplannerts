@@ -1,4 +1,4 @@
-import { Job, DbJob, Worker } from "./models";
+import { Job, DbJob, Worker } from "./models/models";
 
 const url = "http://localhost:3003";
 const axios = require("axios").default;
@@ -67,10 +67,10 @@ export const PostJob = async (
     workersOnJob
   )
     .then(function (response) {
-      console.log(response);
+      return response;
     })
     .catch(function (error) {
-      console.log(error);
+      return error;
     });
 };
 

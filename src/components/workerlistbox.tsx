@@ -1,5 +1,5 @@
 import React from "react";
-import { Worker } from "../models";
+import { Worker } from "../models/models";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";

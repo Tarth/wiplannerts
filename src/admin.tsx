@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./admin.css";
+import "./css/admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "./datahandler";
-import { Worker, Job } from "./models";
+import { Worker, Job } from "./models/models";
 import { AddJobForm } from "./components/jobform";
 import { JobListBox } from "./components/joblisttable";
 import Button from "@material-ui/core/Button";

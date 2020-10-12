@@ -1,11 +1,11 @@
 import ReactDOM from "react-dom";
 import React, { useState } from "react";
 import * as serviceWorker from "./serviceWorker";
-import "./index.css";
+import "./css/index.css";
 import { TabMenu } from "primereact/tabmenu";
 import { Calendar } from "./calendar";
 import { EntryForm } from "./admin";
-import { MenuItem } from "./models";
+import { MenuItem } from "./models/models";
 const Tabmenu: React.FC = () => {
   const initialItems: MenuItem[] = [
     {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Job, JobWithWorkers } from "../models";
+import { Job, JobWithWorkers } from "../models/models";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
