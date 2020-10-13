@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { Job, JobWithWorkers } from "../models/models";
-import { DataTable } from "primereact/datatable";
+// import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
-import { Column } from "primereact/column";
+// import { Column } from "primereact/column";
 import { format } from "date-fns";
+import {
+  DataGrid,
+  ColDef,
+  ValueFormatterParams,
+  RowData,
+} from "@material-ui/data-grid";
+import { useDemoData } from "@material-ui/x-grid-data-generator";
 
 interface JobListProps {
   jobs: Job[];
-  selectedTasks: Job[];
-  setSelectedTasks: (job: Job[]) => void;
+  selectedTasks: RowData[];
+  setSelectedTasks: (job: RowData[]) => void;
 }
 
 interface jobsstr {
   description: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   name: string;
   id: string;
 }
@@ -25,6 +32,26 @@ export const JobListBox: React.FC<JobListProps> = ({
   setSelectedTasks,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
+
+  const columns: ColDef[] = [
+    { field: "id", hide: true },
+    { field: "description", headerName: "Beskrivelse", width: 300 },
+    {
+      field: "start",
+      headerName: "Start dato",
+      width: 150,
+      valueFormatter: (params: ValueFormatterParams) =>
+        format(params.value as Date, "dd/MM/yy - HH:mm"),
+    },
+    {
+      field: "end",
+      headerName: "Slut dato",
+      width: 150,
+      valueFormatter: (params: ValueFormatterParams) =>
+        format(params.value as Date, "dd/MM/yy - HH:mm"),
+    },
+    { field: "name", headerName: "Navn", width: 300 },
+  ];
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: JobWithWorkers[] = [];
@@ -51,11 +78,10 @@ export const JobListBox: React.FC<JobListProps> = ({
     }
   });
 
-  // convert the datatypes to strings, so they can be displayed in the data table
   jobsstr = concatJobs.map((x) => ({
     description: x.description,
-    start: format(x.start, "dd/MM/yy - HH:mm"),
-    end: format(x.end, "dd/MM/yy - HH:mm"),
+    start: x.start,
+    end: x.end,
     name: x.workers
       .map((y) => {
         return " " + y.name;
@@ -64,15 +90,46 @@ export const JobListBox: React.FC<JobListProps> = ({
     id: x.id.toString(),
   }));
 
-  const paginatorLeft = (
-    <Button type="button" icon="pi pi-refresh" className="p-button-text" />
-  );
-  const paginatorRight = (
-    <Button type="button" icon="pi pi-cloud" className="p-button-text" />
-  );
+  const { data } = useDemoData({
+    dataSet: "Commodity",
+    rowLength: 10,
+    maxColumns: 6,
+  });
+
+  // TODO: https://github.com/mui-org/material-ui-x/issues/246
+  const [selection, setSelection] = React.useState<RowData[]>([]);
+
+  // const paginatorLeft = (
+  //   <Button type="button" icon="pi pi-refresh" className="p-button-text" />
+  // );
+  // const paginatorRight = (
+  //   <Button type="button" icon="pi pi-cloud" className="p-button-text" />
+  // );
   return (
-    <div>
-      <DataTable
+    <div style={{ width: "60%" }}>
+      {/* <DataGrid
+        rows={jobsstr}
+        columns={columns}
+        autoHeight={true}
+        pagination
+        pageSize={10}
+        checkboxSelection={true}
+        onSelectionChange={(newSelection) => {
+          // setSelectedTasks(newSelection.rows);
+          console.log(newSelection.rows);
+        }}
+      ></DataGrid> */}
+
+      <DataGrid
+        checkboxSelection
+        onSelectionChange={(newSelection) => {
+          setSelection(newSelection.rows);
+          console.log(selection);
+        }}
+        autoHeight={true}
+        {...data}
+      />
+      {/* <DataTable
         value={jobsstr}
         editMode="row"
         onRowEditInit={() => console.log("RowInit")}
@@ -118,7 +175,7 @@ export const JobListBox: React.FC<JobListProps> = ({
           filterPlaceholder="Søg navn"
           filterMatchMode="contains"
         ></Column>
-      </DataTable>
+      </DataTable> */}
       <Button
         label="Slet markerede jobs"
         onClick={() => {
