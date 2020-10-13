@@ -136,7 +136,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                     setUsrAlert({type: "success", title: "Succes", text: "Job tilføjet til kalenderen."})
                     console.log(returnmsg);
                   }, () => {
-                    setUsrAlert({type: "error", title: "Fejl", text: "Job bliv ikke tilføjet til kalenderen. Kontakt Winoto support"})
+                    setUsrAlert({type: "error", title: "Fejl", text: "Job blev ikke tilføjet til kalenderen. Kontakt Winoto support"})
                 })
                   .catch(error => {
                     console.log(error)
