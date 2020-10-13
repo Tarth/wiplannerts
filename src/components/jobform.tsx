@@ -38,17 +38,18 @@ const useStyles = makeStyles({
   },
 });
 
-const UserAlertHandler: React.FC<AlertProp> = ({type, title, text}) => {
-  if (type !== undefined){
-    return (  
+const UserAlertHandler: React.FC<AlertProp> = ({ type, title, text }) => {
+  if (type !== undefined) {
+    return (
       <Alert severity={type}>
-      <AlertTitle>{title}</AlertTitle>
-      {text}
-      </Alert>)
+        <AlertTitle>{title}</AlertTitle>
+        {text}
+      </Alert>
+    );
   } else {
-    return <div></div>
+    return <div></div>;
   }
-}
+};
 
 export const AddJobForm: React.FC<JobFormProp> = ({
   description,
@@ -63,7 +64,11 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 }) => {
   const [isStartValid, setIsStartValid] = useState(true);
   const [isEndValid, setIsEndValid] = useState(true);
-  const [usrAlert, setUsrAlert] = useState<AlertProp>({type: undefined, title: "", text: ""});
+  const [usrAlert, setUsrAlert] = useState<AlertProp>({
+    type: undefined,
+    title: "",
+    text: "",
+  });
 
   let alert;
 
@@ -72,14 +77,16 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   if (usrAlert.type !== undefined) {
     alert = (
       <div className="alertDiv">
-        <UserAlertHandler type={usrAlert.type} title={usrAlert.title} text={usrAlert.text}></UserAlertHandler>
+        <UserAlertHandler
+          type={usrAlert.type}
+          title={usrAlert.title}
+          text={usrAlert.text}
+        ></UserAlertHandler>
       </div>
     );
   } else {
-    alert = (
-      <div className="alertDiv"></div>
-    );
-    }
+    alert = <div className="alertDiv"></div>;
+  }
 
   return (
     <>
@@ -124,24 +131,41 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                 isEndValid === false ||
                 workers === []
               ) {
-                setUsrAlert({type: "error", title: "Fejl", text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme."});
+                setUsrAlert({
+                  type: "error",
+                  title: "Fejl",
+                  text:
+                    "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+                });
               } else {
                 const returnmsg = PostJob(
                   startDate as string,
                   endDate as string,
                   description,
                   selectedWorkers.map((x) => x.id)
-                  );
-                  returnmsg.then(() => {
-                    setUsrAlert({type: "success", title: "Succes", text: "Job tilføjet til kalenderen."})
-                    console.log(returnmsg);
-                  }, () => {
-                    setUsrAlert({type: "error", title: "Fejl", text: "Job blev ikke tilføjet til kalenderen. Kontakt Winoto support"})
-                })
-                  .catch(error => {
-                    console.log(error)
-                  }
-                )
+                );
+                returnmsg
+                  .then(
+                    () => {
+                      setUsrAlert({
+                        type: "success",
+                        title: "Succes",
+                        text: "Job tilføjet til kalenderen.",
+                      });
+                      console.log(returnmsg);
+                    },
+                    () => {
+                      setUsrAlert({
+                        type: "error",
+                        title: "Fejl",
+                        text:
+                          "Job blev ikke tilføjet til kalenderen. Kontakt Winoto support",
+                      });
+                    }
+                  )
+                  .catch((error) => {
+                    console.log(error);
+                  });
               }
             }}
           >
