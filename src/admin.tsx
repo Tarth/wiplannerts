@@ -20,8 +20,10 @@ export const EntryForm: React.FC = () => {
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
-  const [views, setViews] = useState<string>("addjob"); // This state controls which view is drawn on the admin page
+  const [views, setViews] = useState<string>(""); // This state controls which view is drawn on the admin page
   let view;
+
+  console.log(selectedTasks);
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
