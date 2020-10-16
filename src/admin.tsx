@@ -10,20 +10,19 @@ import { JobListBox } from "./components/joblisttable";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
+import { RowData } from "@material-ui/data-grid";
 import "fontsource-roboto";
 
 export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
-  const [selectedTasks, setSelectedTasks] = useState<Job[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<RowData[]>([]);
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
   const [views, setViews] = useState<string>(""); // This state controls which view is drawn on the admin page
   let view;
-
-  console.log(selectedTasks);
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
