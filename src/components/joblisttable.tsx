@@ -14,7 +14,9 @@ interface JobListProps {
 interface jobsstr {
   description: string;
   start: string;
+  // start: Date;
   end: string;
+  // end: Date;
   name: string;
   id: string;
 }
@@ -55,7 +57,9 @@ export const JobListBox: React.FC<JobListProps> = ({
   jobsstr = concatJobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
+    // start: x.start,
     end: format(x.end, "dd/MM/yy - HH:mm"),
+    // end: x.end,
     name: x.workers
       .map((y) => {
         return " " + y.name;
@@ -70,19 +74,16 @@ export const JobListBox: React.FC<JobListProps> = ({
   const paginatorRight = (
     <Button type="button" icon="pi pi-cloud" className="p-button-text" />
   );
+
   return (
     <div>
       <DataTable
         value={jobsstr}
-        editMode="row"
-        onRowEditInit={() => console.log("RowInit")}
-        onRowEditCancel={() => console.log("Row Cancel")}
         dataKey="id"
         paginator
         selection={selectedTasks}
         onSelectionChange={(e) => setSelectedTasks(e.value)}
-        selectionMode="multiple"
-        metaKeySelection={false}
+        selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
         rows={20}
