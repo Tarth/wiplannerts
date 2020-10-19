@@ -23,8 +23,6 @@ export const EntryForm: React.FC = () => {
   const [views, setViews] = useState<string>(""); // This state controls which view is drawn on the admin page
   let view;
 
-  console.log(selectedTasks);
-
   if (workers.length === 0) {
     GetWorkers(setWorkers);
   }

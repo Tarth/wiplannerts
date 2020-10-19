@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Job, JobWithWorkers } from "../models/models";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { DataTable } from "primereact/datatable";
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
 
@@ -68,12 +69,12 @@ export const JobListBox: React.FC<JobListProps> = ({
     id: x.id.toString(),
   }));
 
-  const paginatorLeft = (
-    <Button type="button" icon="pi pi-refresh" className="p-button-text" />
-  );
-  const paginatorRight = (
-    <Button type="button" icon="pi pi-cloud" className="p-button-text" />
-  );
+  // const paginatorLeft = (
+  //   <Button type="button" icon="pi pi-refresh" className="p-button-text" />
+  // );
+  // const paginatorRight = (
+  //   <Button type="button" icon="pi pi-cloud" className="p-button-text" />
+  // );
 
   return (
     <div>
@@ -86,10 +87,10 @@ export const JobListBox: React.FC<JobListProps> = ({
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
-        rows={20}
+        rows={10}
         rowsPerPageOptions={[10, 20, 50]}
-        paginatorLeft={paginatorLeft}
-        paginatorRight={paginatorRight}
+        // paginatorLeft={paginatorLeft}
+        // paginatorRight={paginatorRight}
       >
         <Column
           field="start"
@@ -121,11 +122,13 @@ export const JobListBox: React.FC<JobListProps> = ({
         ></Column>
       </DataTable>
       <Button
-        label="Slet markerede jobs"
-        onClick={() => {
-          console.log("Click");
-        }}
-      ></Button>
+        variant="contained"
+        color="primary"
+        onClick={() => console.log("Click")}
+        startIcon={<DeleteIcon />}
+      >
+        Slet markeret job
+      </Button>
     </div>
   );
 };
