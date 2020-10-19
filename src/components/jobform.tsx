@@ -19,6 +19,8 @@ interface JobFormProp {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
+  usrAlert: AlertProp;
+  setUsrAlert: (usralert: AlertProp) => void;
 }
 
 const useStyles = makeStyles({
@@ -41,18 +43,15 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   workers,
   selectedWorkers,
   setSelectedWorkers,
+  usrAlert,
+  setUsrAlert,
 }) => {
   const [isStartValid, setIsStartValid] = useState(true);
   const [isEndValid, setIsEndValid] = useState(true);
-  const [usrAlert, setUsrAlert] = useState<AlertProp>({
-    type: "info",
-    title: "Information",
-    text:
-      "Udfyld felterne nedenunder og brug knappen i bunden til at tilføje et job til kalenderen.",
-  });
 
   const classes = useStyles();
   let alert;
+
   alert = (
     <div className="alertDiv">
       <UserAlertHandler
@@ -63,7 +62,12 @@ export const AddJobForm: React.FC<JobFormProp> = ({
     </div>
   );
 
-  const ResetInputFields = () => {};
+  const ResetInputFields = () => {
+    setDescription("");
+    setStartDate("");
+    setEndDate("");
+    setSelectedWorkers([]);
+  };
 
   return (
     <>

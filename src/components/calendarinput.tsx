@@ -22,7 +22,7 @@ export const DateInput: React.FC<CalendarProps> = ({
           id="time"
           label="Dato/Tid"
           type="datetime-local"
-          defaultValue=""
+          value={date}
           variant="filled"
           fullWidth
           error={isDateValid ? false : true}

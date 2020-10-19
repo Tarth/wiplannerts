@@ -5,19 +5,20 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
+import { AlertProp, UserAlertHandler } from "./useralert";
 
 interface JobListProps {
   jobs: Job[];
   selectedTasks: Job[];
   setSelectedTasks: (job: Job[]) => void;
+  usrAlert: AlertProp;
+  setUsrAlert: (usrAlert: AlertProp) => void;
 }
 
 interface jobsstr {
   description: string;
   start: string;
-  // start: Date;
   end: string;
-  // end: Date;
   name: string;
   id: string;
 }
@@ -26,9 +27,23 @@ export const JobListBox: React.FC<JobListProps> = ({
   jobs,
   selectedTasks,
   setSelectedTasks,
+  usrAlert,
+  setUsrAlert,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
+  let alert;
 
+  alert = (
+    <div className="alertDiv">
+      <UserAlertHandler
+        type={usrAlert.type}
+        title={usrAlert.title}
+        text={usrAlert.text}
+      ></UserAlertHandler>
+    </div>
+  );
+
+  
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: JobWithWorkers[] = [];
   jobs.forEach((jobItem) => {
@@ -58,9 +73,7 @@ export const JobListBox: React.FC<JobListProps> = ({
   jobsstr = concatJobs.map((x) => ({
     description: x.description,
     start: format(x.start, "dd/MM/yy - HH:mm"),
-    // start: x.start,
     end: format(x.end, "dd/MM/yy - HH:mm"),
-    // end: x.end,
     name: x.workers
       .map((y) => {
         return " " + y.name;
@@ -78,6 +91,7 @@ export const JobListBox: React.FC<JobListProps> = ({
 
   return (
     <div>
+      {alert}
       <DataTable
         value={jobsstr}
         dataKey="id"

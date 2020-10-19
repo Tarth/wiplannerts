@@ -21,7 +21,7 @@ export const Description: React.FC<InputProps> = ({
         helperText={isInputValid ? "" : "Ugyldige tegn"}
         fullWidth
         label="Beskrivelse"
-        defaultValue=""
+        value={description}
         autoFocus={true}
         onChange={(e) => {
           //Check if input matches any special chars

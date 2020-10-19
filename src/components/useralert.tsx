@@ -3,7 +3,7 @@ import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
 
 export interface AlertProp {
-  type: "success" | "info" | "warning" | "error";
+  type: "success" | "info" | "warning" | "error" | undefined;
   title: string;
   text: string;
 }
