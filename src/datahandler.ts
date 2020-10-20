@@ -106,3 +106,23 @@ export const GetJobs = async (setState: (jobs: Job[]) => void) => {
       return e;
     });
 };
+
+const DeleteJobFromDB = async (localurl: string, job_id: number) => {
+  try {
+    let res = await axios.post(localurl, {
+      jobid: job_id,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+export const DeleteJob = async (job_id: number) => {
+  DeleteJobFromDB(`${url}/jobs/delete`, job_id)
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};

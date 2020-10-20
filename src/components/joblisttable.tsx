@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Job, JobWithWorkers } from "../models/models";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import { DeleteJob } from "../datahandler";
 import { DataTable } from "primereact/datatable";
+import { FormDialog } from "./editjobform";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
 import { AlertProp, UserAlertHandler } from "./useralert";
@@ -32,6 +35,8 @@ export const JobListBox: React.FC<JobListProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
+  const defaultInfoText =
+    "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
 
   alert = (
     <div className="alertDiv">
@@ -43,7 +48,14 @@ export const JobListBox: React.FC<JobListProps> = ({
     </div>
   );
 
-  
+  // if (usrAlert.text !== defaultInfoText) {
+  //   setUsrAlert({
+  //     type: "info",
+  //     title: "Information",
+  //     text: defaultInfoText,
+  //   });
+  // }
+
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: JobWithWorkers[] = [];
   jobs.forEach((jobItem) => {
@@ -136,13 +148,21 @@ export const JobListBox: React.FC<JobListProps> = ({
         ></Column>
       </DataTable>
       <Button
-        variant="contained"
+        variant="outlined"
         color="primary"
-        onClick={() => console.log("Click")}
+        onClick={() => {
+          if (selectedTasks.length !== 0) {
+            console.log(selectedTasks as unknown);
+          } else {
+            console.log("Else");
+          }
+        }}
         startIcon={<DeleteIcon />}
       >
-        Slet markeret job
+        Slet
       </Button>
+
+      <FormDialog></FormDialog>
     </div>
   );
 };

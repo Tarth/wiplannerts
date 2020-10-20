@@ -78,12 +78,6 @@ export const EntryForm: React.FC = () => {
           startIcon={<AddIcon />}
           onClick={() => {
             setViews("addjob");
-            setUsrAlert({
-              type: "info",
-              title: "Information",
-              text:
-                "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.",
-            });
           }}
         >
           Tilføj Job
@@ -95,12 +89,6 @@ export const EntryForm: React.FC = () => {
           onClick={() => {
             GetJobs(setTasks);
             setViews("");
-            setUsrAlert({
-              type: "info",
-              title: "Information",
-              text:
-                "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen",
-            });
           }}
         >
           Rediger Job
