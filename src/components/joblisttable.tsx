@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Job, JobWithWorkers } from "../models/models";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import { DeleteJob } from "../datahandler";
+// import EditIcon from "@material-ui/icons/Edit";
+import { DeleteJob, GetJobs } from "../datahandler";
 import { DataTable } from "primereact/datatable";
 import { FormDialog } from "./editjobform";
 import { Column } from "primereact/column";
@@ -12,8 +12,9 @@ import { AlertProp, UserAlertHandler } from "./useralert";
 
 interface JobListProps {
   jobs: Job[];
-  selectedTasks: Job[];
-  setSelectedTasks: (job: Job[]) => void;
+  setTasks: (job: Job[]) => void;
+  selectedTasks: Job;
+  setSelectedTasks: (job: Job) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usrAlert: AlertProp) => void;
 }
@@ -30,13 +31,12 @@ export const JobListBox: React.FC<JobListProps> = ({
   jobs,
   selectedTasks,
   setSelectedTasks,
+  setTasks,
   usrAlert,
   setUsrAlert,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
-  const defaultInfoText =
-    "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
 
   alert = (
     <div className="alertDiv">
@@ -47,14 +47,6 @@ export const JobListBox: React.FC<JobListProps> = ({
       ></UserAlertHandler>
     </div>
   );
-
-  // if (usrAlert.text !== defaultInfoText) {
-  //   setUsrAlert({
-  //     type: "info",
-  //     title: "Information",
-  //     text: defaultInfoText,
-  //   });
-  // }
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: JobWithWorkers[] = [];
@@ -151,10 +143,41 @@ export const JobListBox: React.FC<JobListProps> = ({
         variant="outlined"
         color="primary"
         onClick={() => {
-          if (selectedTasks.length !== 0) {
-            console.log(selectedTasks as unknown);
+          if (selectedTasks.id === -1) {
+            setUsrAlert({
+              type: "error",
+              title: "Fejl!",
+              text:
+                "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+            });
           } else {
-            console.log("Else");
+            const returnmsg = DeleteJob(selectedTasks.id);
+            returnmsg
+              .then(
+                () => {
+                  setUsrAlert({
+                    type: "success",
+                    title: "Succes",
+                    text: "Job blev slettet fra kalenderen.",
+                  });
+                  GetJobs(setTasks);
+                },
+                () => {
+                  setUsrAlert({
+                    type: "error",
+                    title: "Fejl",
+                    text:
+                      "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
+                  });
+                }
+              )
+              .catch((error) => {
+                setUsrAlert({
+                  type: "error",
+                  title: "Fejl",
+                  text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
+                });
+              });
           }
         }}
         startIcon={<DeleteIcon />}

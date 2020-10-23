@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,16 +51,19 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 
   const classes = useStyles();
   let alert;
-  const defaultInfoText =
-    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
 
-  // if (usrAlert.text !== defaultInfoText) {
-  //   setUsrAlert({
-  //     type: "info",
-  //     title: "Information",
-  //     text: defaultInfoText,
-  //   });
-  // }
+  useEffect(() => {
+    const defaultInfoText =
+      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+
+    if (usrAlert.text === "") {
+      setUsrAlert({
+        type: "info",
+        title: "Information",
+        text: defaultInfoText,
+      });
+    }
+  }, [setUsrAlert, usrAlert]);
 
   alert = (
     <div className="alertDiv">

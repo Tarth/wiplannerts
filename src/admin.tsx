@@ -17,7 +17,13 @@ export const EntryForm: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
-  const [selectedTasks, setSelectedTasks] = useState<Job[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<Job>({
+    worker: { id: 0, name: "" },
+    description: "",
+    start: new Date(),
+    end: new Date(),
+    id: -1,
+  });
   const [startDate, setStartDate] = useState<string>();
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
@@ -62,6 +68,7 @@ export const EntryForm: React.FC = () => {
           jobs={tasks}
           selectedTasks={selectedTasks}
           setSelectedTasks={setSelectedTasks}
+          setTasks={setTasks}
           usrAlert={usrAlert}
           setUsrAlert={setUsrAlert}
         />
@@ -78,6 +85,15 @@ export const EntryForm: React.FC = () => {
           startIcon={<AddIcon />}
           onClick={() => {
             setViews("addjob");
+            const defaultInfoText =
+              "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+            if (usrAlert.text !== defaultInfoText) {
+              setUsrAlert({
+                type: "info",
+                title: "Information",
+                text: defaultInfoText,
+              });
+            }
           }}
         >
           Tilføj Job
@@ -89,6 +105,15 @@ export const EntryForm: React.FC = () => {
           onClick={() => {
             GetJobs(setTasks);
             setViews("");
+            const defaultInfoText =
+              "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
+            if (usrAlert.text !== defaultInfoText) {
+              setUsrAlert({
+                type: "info",
+                title: "Information",
+                text: defaultInfoText,
+              });
+            }
           }}
         >
           Rediger Job
