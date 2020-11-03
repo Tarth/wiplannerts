@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 // import "./css/index.css";
 import { GetJobs } from "../utility/datahandler";
-import { Job } from "../models/models";
+import { Job, DateProp, CalendarDataProps } from "../models/models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
 import { Button } from "primereact/button";
 import { NameBackgroundColor } from "../utility/colorcodes";
-
-interface Props {
-  tasks: Job[];
-  index?: number;
-  currentDate?: Date;
-}
-
-interface DateProp {
-  currentDate: Date;
-}
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
@@ -85,7 +75,7 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   );
 };
 
-const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
+const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
   // Find unique workers
@@ -111,7 +101,11 @@ const AllWorkers: React.FC<Props> = ({ tasks, currentDate }) => {
 };
 
 //Display all tasks of 1 worker during a week
-const WeeklyTasks: React.FC<Props> = ({ tasks, index, currentDate }) => {
+const WeeklyTasks: React.FC<CalendarDataProps> = ({
+  tasks,
+  index,
+  currentDate,
+}) => {
   const numberOfDays: Number = 5;
   const oneWorkerWeekData = [];
 
@@ -143,7 +137,7 @@ const WeeklyTasks: React.FC<Props> = ({ tasks, index, currentDate }) => {
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   const color = NameBackgroundColor(index);
   return (
     <>
@@ -161,7 +155,7 @@ const DailyTasks: React.FC<Props> = ({ tasks, index }) => {
   );
 };
 
-const DisplayWorkerName: React.FC<Props> = ({ tasks }) => {
+const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   const nameToDisplay = [];
   if (tasks.length !== 0) {
     nameToDisplay.push(tasks[0].worker.name);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Job, JobWithWorkers } from "../../models/models";
+import { JobWithWorkers, JobListProps, jobsstr } from "../../models/models";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 // import EditIcon from "@material-ui/icons/Edit";
@@ -8,27 +8,7 @@ import { DataTable } from "primereact/datatable";
 import { FormDialog } from "./editJobDialogComponent";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
-import {
-  AlertProp,
-  UserAlertHandler,
-} from "../utilityComponents/userAlertComponent";
-
-interface JobListProps {
-  jobs: Job[];
-  setTasks: (job: Job[]) => void;
-  selectedTasks: Job;
-  setSelectedTasks: (job: Job) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usrAlert: AlertProp) => void;
-}
-
-interface jobsstr {
-  description: string;
-  start: string;
-  end: string;
-  name: string;
-  id: string;
-}
+import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
 
 export const JobListBox: React.FC<JobListProps> = ({
   jobs,
@@ -188,7 +168,19 @@ export const JobListBox: React.FC<JobListProps> = ({
         Slet
       </Button>
 
-      <FormDialog></FormDialog>
+      {/* <FormDialog
+        description={description}
+        setDescription={setDescription}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        workers={workers}
+        selectedWorkers={selectedWorkers}
+        setSelectedWorkers={setSelectedWorkers}
+        usrAlert={usrAlert}
+        setUsrAlert={setUsrAlert}
+      ></FormDialog> */}
     </div>
   );
 };

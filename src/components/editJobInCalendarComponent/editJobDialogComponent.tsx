@@ -9,8 +9,21 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Description } from "../utilityComponents/descriptionInputComponent";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
+import { JobFormProp } from "../../models/models";
 
-export function FormDialog() {
+export const FormDialog: React.FC<JobFormProp> = ({
+  description,
+  setDescription,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  workers,
+  selectedWorkers,
+  setSelectedWorkers,
+  usrAlert,
+  setUsrAlert,
+}) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -42,10 +55,13 @@ export function FormDialog() {
             To subscribe to this website, please enter your email address here.
             We will send updates occasionally.
           </DialogContentText>
-          <Description></Description>
+          {/* <Description
+            description={description}
+            setDescription={setDescription}
+          ></Description>
           <DateInput></DateInput>
           <DateInput></DateInput>
-          <CheckboxList></CheckboxList>
+          <CheckboxList></CheckboxList> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -58,4 +74,4 @@ export function FormDialog() {
       </Dialog>
     </div>
   );
-}
+};

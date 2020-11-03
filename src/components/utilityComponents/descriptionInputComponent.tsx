@@ -1,10 +1,6 @@
 import React, { useState } from "react";
+import { InputProps } from "../../models/models";
 import TextField from "@material-ui/core/TextField";
-
-interface InputProps {
-  description: string;
-  setDescription: (description: string) => void;
-}
 
 export const Description: React.FC<InputProps> = ({
   description,

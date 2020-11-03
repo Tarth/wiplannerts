@@ -1,12 +1,7 @@
 import React from "react";
 import Alert from "@material-ui/lab/Alert";
 import AlertTitle from "@material-ui/lab/AlertTitle";
-
-export interface AlertProp {
-  type: "success" | "info" | "warning" | "error" | undefined;
-  title: string;
-  text: string;
-}
+import { AlertProp } from "../../models/models";
 
 export const UserAlertHandler: React.FC<AlertProp> = ({
   type,

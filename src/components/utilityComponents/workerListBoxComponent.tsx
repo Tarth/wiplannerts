@@ -1,5 +1,5 @@
 import React from "react";
-import { Worker } from "../../models/models";
+import { Worker, Props } from "../../models/models";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -7,12 +7,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Checkbox from "@material-ui/core/Checkbox";
-
-interface Props {
-  workers: Worker[];
-  selectedWorkers: Worker[];
-  setSelectedWorkers: (worker: Worker[]) => void;
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

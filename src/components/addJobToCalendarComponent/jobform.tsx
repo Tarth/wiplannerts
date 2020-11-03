@@ -2,29 +2,12 @@ import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
-import { Worker } from "../../models/models";
+import { JobFormProp } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { Description } from "../utilityComponents/descriptionInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
-import {
-  UserAlertHandler,
-  AlertProp,
-} from "../utilityComponents/userAlertComponent";
-
-interface JobFormProp {
-  description: string;
-  setDescription: (description: string) => void;
-  startDate: string | undefined;
-  setStartDate: (date: string | undefined) => void;
-  endDate: string | undefined;
-  setEndDate: (date: string | undefined) => void;
-  workers: Worker[];
-  selectedWorkers: Worker[];
-  setSelectedWorkers: (worker: Worker[]) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usralert: AlertProp) => void;
-}
+import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
 
 const useStyles = makeStyles({
   button: {

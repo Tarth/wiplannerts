@@ -1,13 +1,7 @@
 import React from "react";
+import { CalendarProps } from "../../models/models";
 import { isValid } from "date-fns";
 import TextField from "@material-ui/core/TextField";
-
-interface CalendarProps {
-  date: string | undefined;
-  setDate: (date: string | undefined) => void;
-  isDateValid: boolean;
-  setIsDateValid: (isDateValid: boolean) => void;
-}
 
 export const DateInput: React.FC<CalendarProps> = ({
   date,
