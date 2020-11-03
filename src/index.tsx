@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import * as serviceWorker from "./serviceWorker";
 import "./css/index.css";
 import { TabMenu } from "primereact/tabmenu";
-import { Calendar } from "./pages/calendarComponent";
+import { Calendar } from "./pages/calendar";
 import { EntryForm } from "./pages/admin";
 import { MenuItem } from "./models/models";
 const Tabmenu: React.FC = () => {
