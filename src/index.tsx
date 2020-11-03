@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import * as serviceWorker from "./serviceWorker";
 import "./css/index.css";
 import { TabMenu } from "primereact/tabmenu";
-import { Calendar } from "./calendar";
-import { EntryForm } from "./admin";
+import { Calendar } from "./pages/calendarComponent";
+import { EntryForm } from "./pages/admin";
 import { MenuItem } from "./models/models";
 const Tabmenu: React.FC = () => {
   const initialItems: MenuItem[] = [

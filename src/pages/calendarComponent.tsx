@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 // import "./css/index.css";
-import { GetJobs } from "./datahandler";
-import { Job } from "./models/models";
+import { GetJobs } from "../utility/datahandler";
+import { Job } from "../models/models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
 import { Button } from "primereact/button";
-import { NameBackgroundColor } from "./colorcodes";
+import { NameBackgroundColor } from "../utility/colorcodes";
 
 interface Props {
   tasks: Job[];

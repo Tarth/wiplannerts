@@ -1,4 +1,4 @@
-import { Job, DbJob, Worker } from "./models/models";
+import { Job, DbJob, Worker } from "../models/models";
 
 const url = "http://localhost:3003";
 const axios = require("axios").default;

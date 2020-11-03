@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Job, JobWithWorkers } from "../models/models";
+import { Job, JobWithWorkers } from "../../models/models";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 // import EditIcon from "@material-ui/icons/Edit";
-import { DeleteJob, GetJobs } from "../datahandler";
+import { DeleteJob, GetJobs } from "../../utility/datahandler";
 import { DataTable } from "primereact/datatable";
-import { FormDialog } from "./editjobform";
+import { FormDialog } from "./editJobDialogComponent";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
-import { AlertProp, UserAlertHandler } from "./useralert";
+import {
+  AlertProp,
+  UserAlertHandler,
+} from "../utilityComponents/userAlertComponent";
 
 interface JobListProps {
   jobs: Job[];
