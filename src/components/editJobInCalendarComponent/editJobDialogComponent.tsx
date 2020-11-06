@@ -10,8 +10,9 @@ import { Description } from "../utilityComponents/descriptionInputComponent";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
 import { JobFormProp } from "../../models/models";
+import TextField from "@material-ui/core/TextField";
 
-export const FormDialog: React.FC<JobFormProp> = ({
+export const EditJobDialog: React.FC<JobFormProp> = ({
   description,
   setDescription,
   startDate,
@@ -23,6 +24,10 @@ export const FormDialog: React.FC<JobFormProp> = ({
   setSelectedWorkers,
   usrAlert,
   setUsrAlert,
+  isStartValid,
+  setIsStartValid,
+  isEndValid,
+  setIsEndValid,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -55,13 +60,29 @@ export const FormDialog: React.FC<JobFormProp> = ({
             To subscribe to this website, please enter your email address here.
             We will send updates occasionally.
           </DialogContentText>
-          {/* <Description
+
+          <Description
             description={description}
             setDescription={setDescription}
           ></Description>
-          <DateInput></DateInput>
-          <DateInput></DateInput>
-          <CheckboxList></CheckboxList> */}
+
+          <DateInput
+            date={startDate}
+            setDate={setStartDate}
+            isDateValid={isStartValid}
+            setIsDateValid={setIsStartValid}
+          ></DateInput>
+          <DateInput
+            date={endDate}
+            setDate={setEndDate}
+            isDateValid={isEndValid}
+            setIsDateValid={setIsEndValid}
+          ></DateInput>
+          <CheckboxList
+            workers={workers}
+            selectedWorkers={selectedWorkers}
+            setSelectedWorkers={setSelectedWorkers}
+          ></CheckboxList>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

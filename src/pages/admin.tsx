@@ -23,7 +23,7 @@ export const EntryForm: React.FC = () => {
     end: new Date(),
     id: -1,
   });
-  const [startDate, setStartDate] = useState<string>();
+  const [startDate, setStartDate] = useState<string>(); // example value: "2020-12-23T23:59"
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
   const [views, setViews] = useState<string>(""); // This state controls which view is drawn on the admin page
@@ -32,6 +32,8 @@ export const EntryForm: React.FC = () => {
     title: "",
     text: "",
   });
+  const [isStartValid, setIsStartValid] = useState(true);
+  const [isEndValid, setIsEndValid] = useState(true);
   let view;
 
   if (workers.length === 0) {
@@ -57,6 +59,10 @@ export const EntryForm: React.FC = () => {
           setSelectedWorkers={setSelectedWorkers}
           usrAlert={usrAlert}
           setUsrAlert={setUsrAlert}
+          isStartValid={isStartValid}
+          setIsStartValid={setIsStartValid}
+          isEndValid={isEndValid}
+          setIsEndValid={setIsEndValid}
         ></AddJobForm>
       </div>
     );
@@ -64,12 +70,25 @@ export const EntryForm: React.FC = () => {
     view = (
       <div className="deleteworker">
         <JobListBox
+          description={description}
+          setDescription={setDescription}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          workers={workers}
+          selectedWorkers={selectedWorkers}
+          setSelectedWorkers={setSelectedWorkers}
           jobs={tasks}
           selectedTasks={selectedTasks}
           setSelectedTasks={setSelectedTasks}
           setTasks={setTasks}
           usrAlert={usrAlert}
           setUsrAlert={setUsrAlert}
+          isStartValid={isStartValid}
+          setIsStartValid={setIsStartValid}
+          isEndValid={isEndValid}
+          setIsEndValid={setIsEndValid}
         />
       </div>
     );

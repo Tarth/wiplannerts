@@ -41,8 +41,16 @@ export interface JobsStateProps {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
+  jobs: Job[];
+  setTasks: (job: Job[]) => void;
+  selectedTasks: Job;
+  setSelectedTasks: (job: Job) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usralert: AlertProp) => void;
+  isStartValid: boolean;
+  setIsStartValid: (isStartValid: boolean) => void;
+  isEndValid: boolean;
+  setIsEndValid: (isEndValid: boolean) => void;
 }
 
 export interface JobFormProp {
@@ -57,6 +65,10 @@ export interface JobFormProp {
   setSelectedWorkers: (worker: Worker[]) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usralert: AlertProp) => void;
+  isStartValid: boolean;
+  setIsStartValid: (isStartValid: boolean) => void;
+  isEndValid: boolean;
+  setIsEndValid: (isEndValid: boolean) => void;
 }
 
 export interface AlertProp {

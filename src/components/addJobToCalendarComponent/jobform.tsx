@@ -31,10 +31,11 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   setSelectedWorkers,
   usrAlert,
   setUsrAlert,
+  isStartValid,
+  setIsStartValid,
+  isEndValid,
+  setIsEndValid,
 }) => {
-  const [isStartValid, setIsStartValid] = useState(true);
-  const [isEndValid, setIsEndValid] = useState(true);
-
   const classes = useStyles();
   let alert;
 

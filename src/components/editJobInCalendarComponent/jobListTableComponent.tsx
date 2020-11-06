@@ -1,22 +1,40 @@
 import React, { useState } from "react";
-import { JobWithWorkers, JobListProps, jobsstr } from "../../models/models";
+import {
+  JobWithWorkers,
+  JobListProps,
+  jobsstr,
+  JobsStateProps,
+} from "../../models/models";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 // import EditIcon from "@material-ui/icons/Edit";
 import { DeleteJob, GetJobs } from "../../utility/datahandler";
 import { DataTable } from "primereact/datatable";
-import { FormDialog } from "./editJobDialogComponent";
+import { EditJobDialog } from "./editJobDialogComponent";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
 import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
 
-export const JobListBox: React.FC<JobListProps> = ({
+export const JobListBox: React.FC<JobsStateProps> = ({
+  description,
+  setDescription,
+  startDate, // "30/07/20 - 00:00"
+  setStartDate,
+  endDate,
+  setEndDate,
+  workers,
+  selectedWorkers,
+  setSelectedWorkers,
   jobs,
   selectedTasks,
   setSelectedTasks,
   setTasks,
   usrAlert,
   setUsrAlert,
+  isStartValid,
+  setIsStartValid,
+  isEndValid,
+  setIsEndValid,
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
@@ -84,7 +102,18 @@ export const JobListBox: React.FC<JobListProps> = ({
         dataKey="id"
         paginator
         selection={selectedTasks}
-        onSelectionChange={(e) => setSelectedTasks(e.value)}
+        onSelectionChange={(e) => {
+          setSelectedTasks(e.value);
+          setDescription(e.value.description);
+          setStartDate(e.value.start);
+          setEndDate(e.value.end);
+          let job = concatJobs.find(
+            (element) => element.id === parseInt(e.value.id)
+          );
+          if (job !== undefined) {
+            setSelectedWorkers(job.workers);
+          }
+        }}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
@@ -167,8 +196,14 @@ export const JobListBox: React.FC<JobListProps> = ({
       >
         Slet
       </Button>
-
-      {/* <FormDialog
+      <Button
+        variant="outlined"
+        color="primary"
+        onClick={() => console.log(startDate)}
+      >
+        Test
+      </Button>
+      <EditJobDialog
         description={description}
         setDescription={setDescription}
         startDate={startDate}
@@ -180,7 +215,11 @@ export const JobListBox: React.FC<JobListProps> = ({
         setSelectedWorkers={setSelectedWorkers}
         usrAlert={usrAlert}
         setUsrAlert={setUsrAlert}
-      ></FormDialog> */}
+        isStartValid={isStartValid}
+        setIsStartValid={setIsStartValid}
+        isEndValid={isEndValid}
+        setIsEndValid={setIsEndValid}
+      ></EditJobDialog>
     </div>
   );
 };
