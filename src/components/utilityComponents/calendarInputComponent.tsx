@@ -15,7 +15,6 @@ export const DateInput: React.FC<CalendarProps> = ({
     if (date.indexOf("/", 2) !== -1) {
       let temp = parse(date, "dd/MM/yy - HH:mm", new Date());
       scrubbedDateString = format(temp, "yyyy-MM-dd'T'HH:mm");
-      console.log(scrubbedDateString);
     } else {
       scrubbedDateString = date;
     }

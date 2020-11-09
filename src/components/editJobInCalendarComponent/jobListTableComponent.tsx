@@ -199,7 +199,16 @@ export const JobListBox: React.FC<JobsStateProps> = ({
       <Button
         variant="outlined"
         color="primary"
-        onClick={() => console.log(startDate)}
+        onClick={() => {
+          console.log(selectedWorkers);
+          // const testArr = [
+          //   { id: 0, name: "Mikkel" },
+          //   { id: 1, name: "Jonas" },
+          //   { id: 2, name: "Torben" },
+          // ];
+          // console.log(testArr.indexOf({ id: 0, name: "Mikkel" }));
+          // console.log(testArr.some((worker) => worker.name === "Mikkel"));
+        }}
       >
         Test
       </Button>

@@ -27,15 +27,18 @@ export const CheckboxList: React.FC<Props> = ({
   const classes = useStyles();
 
   const handleToggle = (worker: Worker) => () => {
-    const currentIndex = selectedWorkers.indexOf(worker);
     const newChecked = [...selectedWorkers];
+    const currentIndex = selectedWorkers.indexOf(worker);
 
-    if (currentIndex === -1) {
-      newChecked.push(worker);
-    } else {
-      newChecked.splice(currentIndex, 1);
+    if (selectedWorkers.some((painter) => painter.id === worker.id)) {
     }
-    setSelectedWorkers(newChecked);
+
+    // if (currentIndex === -1) {
+    //   newChecked.push(worker);
+    // } else {
+    //   newChecked.splice(currentIndex, 1);
+    // }
+    // setSelectedWorkers(newChecked);
   };
   return (
     <List
@@ -61,7 +64,8 @@ export const CheckboxList: React.FC<Props> = ({
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={selectedWorkers.indexOf(e) !== -1}
+                // checked={selectedWorkers.indexOf(e) !== -1}
+                checked={selectedWorkers.some((worker) => worker.id === e.id)}
                 tabIndex={-1}
                 disableRipple
                 color="default"
