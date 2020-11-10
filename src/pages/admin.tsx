@@ -4,6 +4,7 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "../utility/datahandler";
+import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job, AlertProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTableComponent";
@@ -94,13 +95,6 @@ export const EntryForm: React.FC = () => {
     );
   }
 
-  const ResetInputFields = () => {
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-    setSelectedWorkers([]);
-  };
-
   return (
     <div className="body">
       <div className="buttongroup">
@@ -125,7 +119,12 @@ export const EntryForm: React.FC = () => {
               (endDate !== "" && endDate !== undefined) ||
               selectedWorkers !== []
             ) {
-              ResetInputFields();
+              ResetInputFields(
+                setDescription,
+                setStartDate,
+                setEndDate,
+                setSelectedWorkers
+              );
               console.log("Input fields reset");
             }
           }}
