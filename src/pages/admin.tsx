@@ -94,6 +94,13 @@ export const EntryForm: React.FC = () => {
     );
   }
 
+  const ResetInputFields = () => {
+    setDescription("");
+    setStartDate("");
+    setEndDate("");
+    setSelectedWorkers([]);
+  };
+
   return (
     <div className="body">
       <div className="buttongroup">
@@ -111,6 +118,15 @@ export const EntryForm: React.FC = () => {
                 title: "Information",
                 text: defaultInfoText,
               });
+            }
+            if (
+              description !== "" ||
+              (startDate !== "" && startDate !== undefined) ||
+              (endDate !== "" && endDate !== undefined) ||
+              selectedWorkers !== []
+            ) {
+              ResetInputFields();
+              console.log("Input fields reset");
             }
           }}
         >

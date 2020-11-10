@@ -27,18 +27,17 @@ export const CheckboxList: React.FC<Props> = ({
   const classes = useStyles();
 
   const handleToggle = (worker: Worker) => () => {
+    const currentIndex = selectedWorkers.findIndex(
+      (painter) => painter.id === worker.id
+    );
     const newChecked = [...selectedWorkers];
-    const currentIndex = selectedWorkers.indexOf(worker);
 
-    if (selectedWorkers.some((painter) => painter.id === worker.id)) {
+    if (currentIndex === -1) {
+      newChecked.push(worker);
+    } else {
+      newChecked.splice(currentIndex, 1);
     }
-
-    // if (currentIndex === -1) {
-    //   newChecked.push(worker);
-    // } else {
-    //   newChecked.splice(currentIndex, 1);
-    // }
-    // setSelectedWorkers(newChecked);
+    setSelectedWorkers(newChecked);
   };
   return (
     <List
