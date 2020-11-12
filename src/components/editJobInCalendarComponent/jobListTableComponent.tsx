@@ -25,10 +25,10 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   workers,
   selectedWorkers,
   setSelectedWorkers,
-  jobs,
+  tasks,
+  setTasks,
   selectedTasks,
   setSelectedTasks,
-  setTasks,
   usrAlert,
   setUsrAlert,
   isStartValid,
@@ -51,7 +51,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: JobWithWorkers[] = [];
-  jobs.forEach((jobItem) => {
+  tasks.forEach((jobItem) => {
     let job = concatJobs.find(
       (concatJobItem) => concatJobItem.id === jobItem.id
     );
@@ -201,11 +201,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         color="primary"
         onClick={() => {
           console.log(selectedWorkers);
-          // const testArr = [
-          //   { id: 3, name: "Mikkel" },
-          //   { id: 4, name: "Jonas" },
-          //   { id: 5, name: "Torben" },
-          // ];
         }}
       >
         Test
@@ -220,12 +215,15 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         workers={workers}
         selectedWorkers={selectedWorkers}
         setSelectedWorkers={setSelectedWorkers}
+        tasks={tasks}
+        setTasks={setTasks}
         usrAlert={usrAlert}
         setUsrAlert={setUsrAlert}
         isStartValid={isStartValid}
         setIsStartValid={setIsStartValid}
         isEndValid={isEndValid}
         setIsEndValid={setIsEndValid}
+        selectedTasks={selectedTasks}
       ></EditJobDialog>
     </div>
   );

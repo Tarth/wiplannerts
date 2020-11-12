@@ -69,7 +69,7 @@ export const EntryForm: React.FC = () => {
     );
   } else {
     view = (
-      <div className="deleteworker">
+      <div className="editjob">
         <JobListBox
           description={description}
           setDescription={setDescription}
@@ -80,7 +80,7 @@ export const EntryForm: React.FC = () => {
           workers={workers}
           selectedWorkers={selectedWorkers}
           setSelectedWorkers={setSelectedWorkers}
-          jobs={tasks}
+          tasks={tasks}
           selectedTasks={selectedTasks}
           setSelectedTasks={setSelectedTasks}
           setTasks={setTasks}

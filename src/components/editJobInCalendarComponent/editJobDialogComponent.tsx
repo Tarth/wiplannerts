@@ -10,7 +10,8 @@ import { Description } from "../utilityComponents/descriptionInputComponent";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
 import { JobFormProp } from "../../models/models";
-import { UpdateJob } from "../../utility/datahandler";
+import { UpdateJob, GetJobs } from "../../utility/datahandler";
+import { ResetInputFields } from "../../utility/resetinputfields";
 import TextField from "@material-ui/core/TextField";
 
 export const EditJobDialog: React.FC<JobFormProp> = ({
@@ -23,7 +24,10 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   workers,
   selectedWorkers,
   setSelectedWorkers,
+  selectedTasks,
   usrAlert,
+  tasks,
+  setTasks,
   setUsrAlert,
   isStartValid,
   setIsStartValid,
@@ -86,13 +90,76 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           ></CheckboxList>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={() => {
+              handleClose();
+              ResetInputFields(
+                setDescription,
+                setStartDate,
+                setEndDate,
+                setSelectedWorkers
+              );
+            }}
+            color="primary"
+          >
             Fortryd
           </Button>
           <Button
             onClick={() => {
-              // UpdateJob(startDate, endDate, description, selectedWorkers, )
-              handleClose();
+              if (
+                description === "" ||
+                isStartValid === false ||
+                isEndValid === false ||
+                workers === []
+              ) {
+                setUsrAlert({
+                  type: "error",
+                  title: "Fejl",
+                  text:
+                    "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+                });
+              } else {
+                if (selectedTasks !== undefined) {
+                  const returnmsg = UpdateJob(
+                    startDate as string,
+                    endDate as string,
+                    description,
+                    selectedWorkers.map((x) => x.id),
+                    selectedTasks.id
+                  );
+                  returnmsg
+                    .then(
+                      () => {
+                        setUsrAlert({
+                          type: "success",
+                          title: "Succes",
+                          text: "Job redigeret",
+                        });
+                        ResetInputFields(
+                          setDescription,
+                          setStartDate,
+                          setEndDate,
+                          setSelectedWorkers
+                        );
+                        if (setTasks !== undefined) {
+                          GetJobs(setTasks);
+                        }
+                        handleClose();
+                      },
+                      () => {
+                        setUsrAlert({
+                          type: "error",
+                          title: "Fejl",
+                          text:
+                            "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
+                        });
+                      }
+                    )
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              }
             }}
             color="primary"
           >

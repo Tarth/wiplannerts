@@ -138,7 +138,7 @@ const UpdateJobInDB = async (
   job_id: number
 ) => {
   try {
-    let res = await axios.post(localurl, {
+    let res = await axios.put(localurl, {
       startdate: start_date,
       enddate: end_date,
       description: description,
