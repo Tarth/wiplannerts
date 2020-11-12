@@ -128,3 +128,48 @@ export const DeleteJob = async (job_id: number) => {
       return error;
     });
 };
+
+const UpdateJobInDB = async (
+  localurl: string,
+  start_date: string,
+  end_date: string,
+  description: string,
+  workersOnJob: number[],
+  job_id: number
+) => {
+  try {
+    let res = await axios.post(localurl, {
+      startdate: start_date,
+      enddate: end_date,
+      description: description,
+      workerId: workersOnJob,
+      jobid: job_id,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const UpdateJob = async (
+  start_date: string,
+  end_date: string,
+  description: string,
+  workersOnJob: number[],
+  job_id: number
+) => {
+  UpdateJobInDB(
+    `${url}/jobs/update`,
+    start_date,
+    end_date,
+    description,
+    workersOnJob,
+    job_id
+  )
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};

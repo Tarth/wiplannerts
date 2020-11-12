@@ -10,6 +10,7 @@ import { Description } from "../utilityComponents/descriptionInputComponent";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
 import { JobFormProp } from "../../models/models";
+import { UpdateJob } from "../../utility/datahandler";
 import TextField from "@material-ui/core/TextField";
 
 export const EditJobDialog: React.FC<JobFormProp> = ({
@@ -88,7 +89,13 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           <Button onClick={handleClose} color="primary">
             Fortryd
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={() => {
+              // UpdateJob(startDate, endDate, description, selectedWorkers, )
+              handleClose();
+            }}
+            color="primary"
+          >
             Gem
           </Button>
         </DialogActions>

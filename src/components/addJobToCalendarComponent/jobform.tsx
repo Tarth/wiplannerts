@@ -4,6 +4,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
 import { JobFormProp } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
+import { ResetInputFields } from "../../utility/resetinputfields";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { Description } from "../utilityComponents/descriptionInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
@@ -61,13 +62,6 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       ></UserAlertHandler>
     </div>
   );
-
-  const ResetInputFields = () => {
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-    setSelectedWorkers([]);
-  };
 
   return (
     <>
@@ -133,7 +127,12 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                         title: "Succes",
                         text: "Job tilføjet til kalenderen.",
                       });
-                      ResetInputFields();
+                      ResetInputFields(
+                        setDescription,
+                        setStartDate,
+                        setEndDate,
+                        setSelectedWorkers
+                      );
                     },
                     () => {
                       setUsrAlert({
