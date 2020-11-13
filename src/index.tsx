@@ -1,11 +1,15 @@
 import ReactDOM from "react-dom";
 import React, { useState } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import * as serviceWorker from "./serviceWorker";
 import "./css/index.css";
 import { TabMenu } from "primereact/tabmenu";
 import { Calendar } from "./pages/calendar";
 import { EntryForm } from "./pages/admin";
 import { MenuItem } from "./models/models";
+import { ReactKeycloakProvider, useKeycloak } from "@react-keycloak/web";
+import keycloak from "./utility/keycloak";
+
 const Tabmenu: React.FC = () => {
   const initialItems: MenuItem[] = [
     {
@@ -33,15 +37,23 @@ const Tabmenu: React.FC = () => {
 
   return (
     <>
-      <TabMenu model={items} activeItem={initialItem} />
-      {displaycontent}
+      <BrowserRouter>
+        <Switch>
+          <Route>
+            <TabMenu model={items} activeItem={initialItem} />
+            {displaycontent}
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </>
   );
 };
 
 ReactDOM.render(
   <React.StrictMode>
-    <Tabmenu />
+    <ReactKeycloakProvider authClient={keycloak}>
+      <Tabmenu />
+    </ReactKeycloakProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
