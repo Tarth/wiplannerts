@@ -27,6 +27,7 @@ const Tabmenu: React.FC = () => {
 
   const [items] = useState<MenuItem[]>(initialItems);
   const [activeItem, setActiveItem] = useState<MenuItem>(initialItem);
+  const { keycloak, initialized } = useKeycloak();
   let displaycontent;
 
   if (activeItem === items[1]) {
