@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MenuItem } from "../models/models";
 import { useKeycloak } from "@react-keycloak/web";
 import { Calendar } from "../pages/calendar";
-import { EntryForm } from "../pages/admin";
+import { Admin } from "../pages/admin";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { TabMenu } from "primereact/tabmenu";
 
@@ -26,8 +26,11 @@ export const Tabmenu: React.FC = () => {
   const { keycloak, initialized } = useKeycloak();
   let displaycontent;
 
+  if (!initialized) {
+    return <h3 style={{ textAlign: "center" }}>Indlæser ...</h3>;
+  }
   if (activeItem === items[1]) {
-    displaycontent = <EntryForm />;
+    displaycontent = <Admin />;
   } else {
     displaycontent = <Calendar />;
   }
@@ -36,8 +39,31 @@ export const Tabmenu: React.FC = () => {
     <>
       <BrowserRouter>
         <Switch>
-          <Route>
-            <TabMenu model={items} activeItem={initialItem} />
+          <Route exact path="/">
+            {!keycloak.authenticated && initialized ? (
+              <button
+                onClick={() => {
+                  keycloak.login();
+                }}
+              >
+                Login
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  keycloak.logout();
+                }}
+              >
+                Logout
+              </button>
+            )}
+
+            {!keycloak.authenticated && initialized ? (
+              keycloak.login()
+            ) : (
+              <TabMenu model={items} activeItem={initialItem} />
+            )}
+
             {displaycontent}
           </Route>
         </Switch>

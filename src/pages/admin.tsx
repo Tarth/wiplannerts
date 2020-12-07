@@ -13,7 +13,7 @@ import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
 import "fontsource-roboto";
 
-export const EntryForm: React.FC = () => {
+export const Admin: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
