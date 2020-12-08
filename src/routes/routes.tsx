@@ -29,6 +29,7 @@ export const Tabmenu: React.FC = () => {
   if (!initialized) {
     return <h3 style={{ textAlign: "center" }}>Indlæser ...</h3>;
   }
+
   if (activeItem === items[1]) {
     displaycontent = <Admin />;
   } else {
@@ -38,35 +39,20 @@ export const Tabmenu: React.FC = () => {
   return (
     <>
       <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            {!keycloak.authenticated && initialized ? (
-              <button
-                onClick={() => {
-                  keycloak.login();
-                }}
-              >
-                Login
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  keycloak.logout();
-                }}
-              >
-                Logout
-              </button>
-            )}
+        {/* <Switch> */}
+        <Route exact path="/">
+          {!keycloak.authenticated && initialized ? (
+            keycloak.login()
+          ) : (
+            <TabMenu model={items} activeItem={initialItem} />
+          )}
 
-            {!keycloak.authenticated && initialized ? (
-              keycloak.login()
-            ) : (
-              <TabMenu model={items} activeItem={initialItem} />
-            )}
-
-            {displaycontent}
-          </Route>
-        </Switch>
+          {/* {displaycontent} */}
+        </Route>
+        <Route exact path="/" component={Calendar}></Route>
+        {/* Convert the route below to protected route */}
+        <Route path="/admin" component={Admin}></Route>
+        {/* </Switch> */}
       </BrowserRouter>
     </>
   );
