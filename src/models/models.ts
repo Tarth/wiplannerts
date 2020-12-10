@@ -25,11 +25,11 @@ export interface Worker {
   name: string;
 }
 
-export interface MenuItem {
-  label: string;
-  icon: string;
-  command: () => void;
-}
+// export interface MenuItem {
+//   label: string;
+//   icon: string;
+//   command: () => void;
+// }
 
 export interface JobsStateProps {
   description: string;
