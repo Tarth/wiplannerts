@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useKeycloak } from "@react-keycloak/web";
 import { Calendar } from "../pages/calendar";
 import { Admin } from "../pages/admin";
 import { PrivateRoute } from "./privateroute";
 import { Navigation } from "../components/navigation/navigation";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 export const Tabmenu: React.FC = () => {
   const { keycloak, initialized } = useKeycloak();

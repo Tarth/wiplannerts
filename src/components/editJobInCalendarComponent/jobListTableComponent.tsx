@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import {
-  JobWithWorkers,
-  JobListProps,
-  jobsstr,
-  JobsStateProps,
-} from "../../models/models";
+import { JobWithWorkers, jobsstr, JobsStateProps } from "../../models/models";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import DeleteIcon from "@material-ui/icons/Delete";
-// import EditIcon from "@material-ui/icons/Edit";
 import { DeleteJob, GetJobs } from "../../utility/datahandler";
 import { DataTable } from "primereact/datatable";
 import { EditJobDialog } from "./editJobDialogComponent";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
 import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
+import { makeStyles } from "@material-ui/core/styles";
 
 export const JobListBox: React.FC<JobsStateProps> = ({
   description,
@@ -38,6 +34,17 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
+  const useStyles = makeStyles({
+    buttonGrp: {
+      marginTop: "50px",
+    },
+    button: {
+      backgroundColor: "#007ad9",
+      marginRight: "20px",
+    },
+  });
+
+  const classes = useStyles();
 
   alert = (
     <div className="alertDiv">
@@ -87,13 +94,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
     id: x.id.toString(),
   }));
 
-  // const paginatorLeft = (
-  //   <Button type="button" icon="pi pi-refresh" className="p-button-text" />
-  // );
-  // const paginatorRight = (
-  //   <Button type="button" icon="pi pi-cloud" className="p-button-text" />
-  // );
-
   return (
     <div>
       {alert}
@@ -119,8 +119,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
         rows={10}
         rowsPerPageOptions={[10, 20, 50]}
-        // paginatorLeft={paginatorLeft}
-        // paginatorRight={paginatorRight}
       >
         <Column
           field="start"
@@ -151,80 +149,74 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           filterMatchMode="contains"
         ></Column>
       </DataTable>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          if (selectedTasks.id === -1) {
-            setUsrAlert({
-              type: "error",
-              title: "Fejl!",
-              text:
-                "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-            });
-          } else {
-            const returnmsg = DeleteJob(selectedTasks.id);
-            returnmsg
-              .then(
-                () => {
-                  setUsrAlert({
-                    type: "success",
-                    title: "Succes",
-                    text: "Job blev slettet fra kalenderen.",
-                  });
-                  GetJobs(setTasks);
-                },
-                () => {
+      <ButtonGroup className={classes.buttonGrp}>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            if (selectedTasks.id === -1) {
+              setUsrAlert({
+                type: "error",
+                title: "Fejl!",
+                text:
+                  "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+              });
+            } else {
+              const returnmsg = DeleteJob(selectedTasks.id);
+              returnmsg
+                .then(
+                  () => {
+                    setUsrAlert({
+                      type: "success",
+                      title: "Succes",
+                      text: "Job blev slettet fra kalenderen.",
+                    });
+                    GetJobs(setTasks);
+                  },
+                  () => {
+                    setUsrAlert({
+                      type: "error",
+                      title: "Fejl",
+                      text:
+                        "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
+                    });
+                  }
+                )
+                .catch((error) => {
                   setUsrAlert({
                     type: "error",
                     title: "Fejl",
-                    text:
-                      "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
+                    text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
                   });
-                }
-              )
-              .catch((error) => {
-                setUsrAlert({
-                  type: "error",
-                  title: "Fejl",
-                  text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
                 });
-              });
-          }
-        }}
-        startIcon={<DeleteIcon />}
-      >
-        Slet
-      </Button>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={() => {
-          console.log(selectedWorkers);
-        }}
-      >
-        Test
-      </Button>
-      <EditJobDialog
-        description={description}
-        setDescription={setDescription}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        workers={workers}
-        selectedWorkers={selectedWorkers}
-        setSelectedWorkers={setSelectedWorkers}
-        tasks={tasks}
-        setTasks={setTasks}
-        usrAlert={usrAlert}
-        setUsrAlert={setUsrAlert}
-        isStartValid={isStartValid}
-        setIsStartValid={setIsStartValid}
-        isEndValid={isEndValid}
-        setIsEndValid={setIsEndValid}
-        selectedTasks={selectedTasks}
-      ></EditJobDialog>
+            }
+          }}
+          startIcon={<DeleteIcon />}
+        >
+          Slet
+        </Button>
+        <EditJobDialog
+          description={description}
+          setDescription={setDescription}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          workers={workers}
+          selectedWorkers={selectedWorkers}
+          setSelectedWorkers={setSelectedWorkers}
+          tasks={tasks}
+          setTasks={setTasks}
+          usrAlert={usrAlert}
+          setUsrAlert={setUsrAlert}
+          isStartValid={isStartValid}
+          setIsStartValid={setIsStartValid}
+          isEndValid={isEndValid}
+          setIsEndValid={setIsEndValid}
+          selectedTasks={selectedTasks}
+        ></EditJobDialog>
+      </ButtonGroup>
     </div>
   );
 };

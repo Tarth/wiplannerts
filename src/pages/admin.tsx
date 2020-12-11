@@ -11,6 +11,7 @@ import { JobListBox } from "../components/editJobInCalendarComponent/jobListTabl
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
+import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 
 export const Admin: React.FC = () => {
@@ -36,6 +37,17 @@ export const Admin: React.FC = () => {
   const [isStartValid, setIsStartValid] = useState(true);
   const [isEndValid, setIsEndValid] = useState(true);
   let view;
+
+  const useStyles = makeStyles({
+    buttonStyle: {
+      backgroundColor: "#007ad9",
+      "&:hover": {
+        backgroundColor: "#006DCC",
+      },
+    },
+  });
+
+  const classes = useStyles();
 
   if (workers.length === 0) {
     GetWorkers(setWorkers);
@@ -99,6 +111,7 @@ export const Admin: React.FC = () => {
     <div className="body">
       <div className="buttongroup">
         <Button
+          className={classes.buttonStyle}
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
@@ -132,6 +145,7 @@ export const Admin: React.FC = () => {
           Tilføj Job
         </Button>
         <Button
+          className={classes.buttonStyle}
           variant="contained"
           color="primary"
           startIcon={<EditIcon />}

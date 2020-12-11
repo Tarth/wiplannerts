@@ -6,6 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
+import { makeStyles } from "@material-ui/core/styles";
 import { Description } from "../utilityComponents/descriptionInputComponent";
 import { DateInput } from "../utilityComponents/calendarInputComponent";
 import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
@@ -36,6 +37,13 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
 }) => {
   const [open, setOpen] = React.useState(false);
 
+  const useStyles = makeStyles({
+    button: {
+      backgroundColor: "#007ad9",
+    },
+  });
+
+  const classes = useStyles();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,7 +55,8 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   return (
     <div>
       <Button
-        variant="outlined"
+        className={classes.button}
+        variant="contained"
         color="primary"
         onClick={handleClickOpen}
         startIcon={<EditIcon />}
@@ -62,8 +71,8 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            Rediger indholdet af de forskellige felter og tryk gem, når du er
+            færdig
           </DialogContentText>
 
           <Description
