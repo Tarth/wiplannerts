@@ -13,7 +13,6 @@ import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
 import { JobFormProp } from "../../models/models";
 import { UpdateJob, GetJobs } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import TextField from "@material-ui/core/TextField";
 
 export const EditJobDialog: React.FC<JobFormProp> = ({
   description,

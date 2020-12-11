@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 export const Navigation = () => {
-  const { keycloak, initialized } = useKeycloak();
+  const { keycloak } = useKeycloak();
 
   const useStyles = makeStyles({
     buttonStyle: {
