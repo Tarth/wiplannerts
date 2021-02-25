@@ -39,6 +39,9 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   const useStyles = makeStyles({
     button: {
       backgroundColor: "#007ad9",
+      "&:hover": {
+        backgroundColor: "#006DCC",
+      },
     },
   });
 

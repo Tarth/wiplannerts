@@ -17,6 +17,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.6",
     "axios": "^0.19.2",
+    "caniuse-lite": "^1.0.30001192",
     "classnames": "^2.2.6",
     "date-fns": "^2.14.0",
     "fontsource-roboto": "^3.0.3",

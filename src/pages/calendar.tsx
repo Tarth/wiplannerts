@@ -4,8 +4,9 @@ import { GetJobs } from "../utility/datahandler";
 import { Job, DateProp, CalendarDataProps } from "../models/models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
-import { Button } from "primereact/button";
+import { IconButton } from "@material-ui/core";
 import { NameBackgroundColor } from "../utility/colorcodes";
+import { ArrowForward, ArrowBack } from "@material-ui/icons";
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
@@ -18,14 +19,18 @@ export const Calendar: React.FC = () => {
     <>
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
-        <Button
-          icon="pi pi-arrow-left"
+        <IconButton
           onClick={() => setCurrentDate(subDays(currentDate, 7))}
-        ></Button>
-        <Button
-          icon="pi pi-arrow-right"
+          color="primary"
+        >
+          <ArrowBack></ArrowBack>
+        </IconButton>
+        <IconButton
           onClick={() => setCurrentDate(addDays(currentDate, 7))}
-        ></Button>
+          color="primary"
+        >
+          <ArrowForward></ArrowForward>
+        </IconButton>
       </div>
 
       <div className="workercontainer">

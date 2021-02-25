@@ -41,6 +41,9 @@ export const JobListBox: React.FC<JobsStateProps> = ({
     button: {
       backgroundColor: "#007ad9",
       marginRight: "20px",
+      "&:hover": {
+        backgroundColor: "#006DCC",
+      },
     },
   });
 
