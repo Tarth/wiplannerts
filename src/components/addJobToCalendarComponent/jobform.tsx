@@ -42,7 +42,6 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   useEffect(() => {
     const defaultInfoText =
       "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-
     if (usrAlert.text === "") {
       setUsrAlert({
         type: "info",

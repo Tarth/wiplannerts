@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import "./css/index.css";
 import { GetJobs } from "../utility/datahandler";
 import { Job, DateProp, CalendarDataProps } from "../models/models";
 import { addDays, subDays, startOfWeek, format } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
-import { NameBackgroundColor } from "../utility/colorcodes";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
+import { NameBackgroundColor } from "../utility/colorcodes";
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2020, 6, 27));
+
   //Use this as a list of names
-  if (tasks.length === 0) {
+  // if (tasks.length === 0) {
+  //   GetJobs(setTasks);
+  //   console.log("Data fetched from db");
+  // }
+
+  useEffect(() => {
     GetJobs(setTasks);
-  }
+    console.log("Data fetched from db");
+  }, []);
+
   return (
     <>
       <DisplayHeaders currentDate={currentDate} />
@@ -43,6 +51,7 @@ export const Calendar: React.FC = () => {
 
 const DisplayHeaders: React.FC<DateProp> = ({ currentDate }) => {
   const initialDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+  // console.log("DisplayHeaders");
   return (
     <>
       <div className="headermonthandyear">
@@ -68,7 +77,7 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   for (let i = 0; i < numberOfDays; i++) {
     daysOfTheWeek.push(addDays(firstDayOfWeek, i));
   }
-
+  // console.log("DisplayWeekDays");
   return (
     <div className="headersdate">
       {daysOfTheWeek.map((x) => (
@@ -94,6 +103,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
     sortedByWorker.push(tasks.filter((x) => x.worker.name === uniqWorkers[i]));
   }
 
+  // console.log("AllWorkers");
   return (
     <>
       {sortedByWorker.map((x, i) => (
@@ -128,6 +138,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
       )
     );
   }
+  // console.log("Weekly Tasks");
 
   return (
     <>
@@ -165,5 +176,6 @@ const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   if (tasks.length !== 0) {
     nameToDisplay.push(tasks[0].worker.name);
   }
+  // console.log("DisplayWorkerName");
   return <div className="workername">{nameToDisplay}</div>;
 };

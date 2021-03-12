@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
@@ -49,13 +49,14 @@ export const Admin: React.FC = () => {
 
   const classes = useStyles();
 
-  if (workers.length === 0) {
+  useEffect(() => {
     GetWorkers(setWorkers);
-  }
+  }, []);
 
-  if (tasks.length === 0) {
+  useEffect(() => {
     GetJobs(setTasks);
-  }
+    console.log("Data fetched from db");
+  }, []);
 
   if (views === "addjob") {
     view = (
@@ -138,7 +139,6 @@ export const Admin: React.FC = () => {
                 setEndDate,
                 setSelectedWorkers
               );
-              console.log("Input fields reset");
             }
           }}
         >
