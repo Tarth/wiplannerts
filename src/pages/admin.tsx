@@ -55,7 +55,6 @@ export const Admin: React.FC = () => {
 
   useEffect(() => {
     GetJobs(setTasks);
-    console.log("Data fetched from db");
   }, []);
 
   if (views === "addjob") {
