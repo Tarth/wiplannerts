@@ -11,6 +11,9 @@
 # production
 /build
 
+# https localhost cert
+/.cert
+
 # misc
 .DS_Store
 .env.local
@@ -22,3 +25,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
+install-key.pem
+install.pem
