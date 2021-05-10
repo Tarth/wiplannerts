@@ -20,7 +20,7 @@ export const Calendar: React.FC = () => {
 
   useEffect(() => {
     GetJobs(setTasks);
-    console.log("Data fetched from db");
+    console.log("Data fetched from the db");
   }, []);
 
   return (
