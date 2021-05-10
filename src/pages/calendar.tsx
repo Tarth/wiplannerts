@@ -12,7 +12,7 @@ export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2020, 6, 27));
 
-  //Use this as a list of names
+  // // Use this as a list of names
   // if (tasks.length === 0) {
   //   GetJobs(setTasks);
   //   console.log("Data fetched from db");
