@@ -12,12 +12,12 @@ export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-  // fetch the data from the db every 5 seconds
+  // fetch the data from the db every minute
   useEffect(() => {
     GetJobs(setTasks);
     const interval = setInterval(() => {
       GetJobs(setTasks);
-    }, 5000);
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -97,6 +97,12 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
     sortedByWorker.push(tasks.filter((x) => x.worker.name === uniqWorkers[i]));
+    // sort worker list alphabetically
+    sortedByWorker.sort(function (a, b) {
+      if (a[0].worker.name > b[0].worker.name) return 1;
+      if (a[0].worker.name < b[0].worker.name) return -1;
+      return 0;
+    });
   }
 
   return (
