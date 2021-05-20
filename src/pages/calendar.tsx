@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 // import "./css/index.css";
 import { GetJobs } from "../utility/datahandler";
 import { Job, DateProp, CalendarDataProps } from "../models/models";
-import { addDays, subDays, startOfWeek, format } from "date-fns";
+import {
+  addDays,
+  subDays,
+  startOfWeek,
+  format,
+  differenceInCalendarDays,
+} from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
@@ -10,15 +16,15 @@ import { NameBackgroundColor } from "../utility/colorcodes";
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
 
   // fetch the data from the db every minute
   useEffect(() => {
     GetJobs(setTasks);
-    const interval = setInterval(() => {
-      GetJobs(setTasks);
-    }, 60000);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => {
+    //   GetJobs(setTasks);
+    // }, 60000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
@@ -138,6 +144,19 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
           x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
       )
     );
+  }
+
+  for (let weekDayArray of oneWorkerWeekData) {
+    if (weekDayArray.length !== 0) {
+      let differenceInDays = differenceInCalendarDays(
+        weekDayArray[weekDayArray.length - 1].end,
+        weekDayArray[weekDayArray.length - 1].start
+      );
+      if (differenceInDays !== 0) {
+        let lastDayInArray = weekDayArray[weekDayArray.length - 1];
+        oneWorkerWeekData[2].unshift(lastDayInArray);
+      }
+    }
   }
 
   return (
