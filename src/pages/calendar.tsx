@@ -135,6 +135,26 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
     weekStartsOn: 1,
   });
 
+  tasks.forEach((task, index) => {
+    if (
+      task.end !== task.start &&
+      differenceInCalendarDays(task.end, task.start) > 0
+    ) {
+      // tasks.splice(index, 0, task);
+      console.log(
+        `${task.start.getDate()}/${task.start.getMonth()}`,
+        `${task.end.getDate()}/${task.end.getMonth()}`,
+        true
+      );
+    } else {
+      console.log(
+        `${task.start.getDate()}/${task.start.getMonth()}`,
+        `${task.end.getDate()}/${task.end.getMonth()}`,
+        false
+      );
+    }
+  });
+
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
@@ -144,19 +164,6 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
           x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
       )
     );
-  }
-
-  for (let weekDayArray of oneWorkerWeekData) {
-    if (weekDayArray.length !== 0) {
-      let differenceInDays = differenceInCalendarDays(
-        weekDayArray[weekDayArray.length - 1].end,
-        weekDayArray[weekDayArray.length - 1].start
-      );
-      if (differenceInDays !== 0) {
-        let lastDayInArray = weekDayArray[weekDayArray.length - 1];
-        oneWorkerWeekData[2].unshift(lastDayInArray);
-      }
-    }
   }
 
   return (
