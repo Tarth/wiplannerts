@@ -29,7 +29,7 @@ export interface Worker {
   name: string;
 }
 
-export interface JobsStateProps {
+interface JobProp{
   description: string;
   setDescription: (description: string) => void;
   startDate: string | undefined;
@@ -39,10 +39,6 @@ export interface JobsStateProps {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
-  tasks: Job_Worker[];
-  setTasks: (job: Job_Worker[]) => void;
-  selectedTasks: Job_Worker;
-  setSelectedTasks: (job: Job_Worker) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usralert: AlertProp) => void;
   isStartValid: boolean;
@@ -51,25 +47,17 @@ export interface JobsStateProps {
   setIsEndValid: (isEndValid: boolean) => void;
 }
 
-export interface JobFormProp {
-  description: string;
-  setDescription: (description: string) => void;
-  startDate: string | undefined;
-  setStartDate: (date: string | undefined) => void;
-  endDate: string | undefined;
-  setEndDate: (date: string | undefined) => void;
-  workers: Worker[];
-  selectedWorkers: Worker[];
-  setSelectedWorkers: (worker: Worker[]) => void;
-  selectedTasks?: Job_Worker;
+export interface JobsStateProps extends JobProp {
+  tasks: Job_Worker[];
+  setTasks: (job: Job_Worker[]) => void;
+  selectedTasks: Job_Worker;
+  setSelectedTasks: (job: Job_Worker) => void;
+}
+
+export interface JobFormProp extends JobProp {
   tasks?: Job_Worker[];
+  selectedTasks?: Job_Worker;
   setTasks?: (job: Job_Worker[]) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usralert: AlertProp) => void;
-  isStartValid: boolean;
-  setIsStartValid: (isStartValid: boolean) => void;
-  isEndValid: boolean;
-  setIsEndValid: (isEndValid: boolean) => void;
 }
 
 export interface AlertProp {
