@@ -183,7 +183,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   return (
     <>
-      <div className="workerjobs" style={{ minHeight: "44px" }}>
+      <div className="workerjobs">
         {tasks.map((x) => (
           <div
             className="workerjob"
