@@ -51,10 +51,10 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 
   const classes = useStyles();
 
+  // Functions to open and close confirmation dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -173,7 +173,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         </Button>
 
         <div></div>
-        <ConfirmationDialog open={open} setOpen={setOpen}></ConfirmationDialog>
+        <ConfirmationDialog open={open} setOpen={setOpen} handleClose={handleClose}></ConfirmationDialog>
         <Button
           className={classes.button}
           variant="contained"
@@ -182,7 +182,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
             if (selectedTasks.id === -1) {
               setUsrAlert({
                 type: "error",
-                title: "Fejl!",
+                title: "Fejl",
                 text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
               });
             } else {

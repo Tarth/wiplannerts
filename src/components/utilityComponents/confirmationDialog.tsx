@@ -10,11 +10,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   open,
   setOpen,
+  handleClose
 }) => {
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
     <div>
       <Dialog
