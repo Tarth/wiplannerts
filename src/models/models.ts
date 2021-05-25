@@ -1,3 +1,8 @@
+export interface ConfirmationDialogProp {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
 export interface Job {
   worker: Worker;
   description: string;

@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteJob, GetJobs } from "../../utility/datahandler";
+import { ConfirmationDialog } from "../utilityComponents/confirmationDialog";
 import { DataTable } from "primereact/datatable";
 import { EditJobDialog } from "./editJobDialogComponent";
 import { Column } from "primereact/column";
@@ -34,6 +35,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
+  const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles({
     buttonGrp: {
       marginTop: "50px",
@@ -48,6 +50,14 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   });
 
   const classes = useStyles();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   alert = (
     <div className="alertDiv">
@@ -154,6 +164,17 @@ export const JobListBox: React.FC<JobsStateProps> = ({
       </DataTable>
       <ButtonGroup className={classes.buttonGrp}>
         <Button
+          variant="contained"
+          color="primary"
+          onClick={handleClickOpen}
+          startIcon={<DeleteIcon />}
+        >
+          SLET
+        </Button>
+
+        <div></div>
+        <ConfirmationDialog open={open} setOpen={setOpen}></ConfirmationDialog>
+        <Button
           className={classes.button}
           variant="contained"
           color="primary"
@@ -162,8 +183,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
               setUsrAlert({
                 type: "error",
                 title: "Fejl!",
-                text:
-                  "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+                text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
               });
             } else {
               const returnmsg = DeleteJob(selectedTasks.id);
@@ -181,8 +201,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
                     setUsrAlert({
                       type: "error",
                       title: "Fejl",
-                      text:
-                        "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
+                      text: "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
                     });
                   }
                 )

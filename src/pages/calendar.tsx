@@ -21,10 +21,10 @@ export const Calendar: React.FC = () => {
   // fetch the data from the db every minute
   useEffect(() => {
     GetJobs(setTasks);
-    // const interval = setInterval(() => {
-    //   GetJobs(setTasks);
-    // }, 60000);
-    // return () => clearInterval(interval);
+    const interval = setInterval(() => {
+      GetJobs(setTasks);
+    }, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -97,7 +97,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let tempMultiDay: Job[] = [];
 
   // this make sure that tasks that last multiple days, are displayed correctly in the frontend
-  tasks.forEach((task, index) => {
+  tasks.forEach((task) => {
     const deltaDays = differenceInCalendarDays(task.end, task.start);
     if (deltaDays !== 0) {
       for (let i = 0; i <= deltaDays; i++) {

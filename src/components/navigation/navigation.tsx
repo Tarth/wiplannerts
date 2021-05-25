@@ -36,15 +36,6 @@ export const Navigation = () => {
       <div className={classes.buttonDiv}>
         {keycloak.hasRealmRole("SiteAdmin") ? (
           <>
-            <Link to="/">
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.buttonStyle}
-              >
-                Kalender
-              </Button>
-            </Link>
             <Link to="/admin">
               <Button
                 variant="contained"
@@ -52,6 +43,15 @@ export const Navigation = () => {
                 className={classes.buttonStyle}
               >
                 Admin
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.buttonStyle}
+              >
+                Kalender
               </Button>
             </Link>
           </>
