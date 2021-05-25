@@ -3,19 +3,18 @@ export interface ConfirmationDialogProp {
   setOpen: (open: boolean) => void;
 }
 
-export interface Job {
-  worker: Worker;
+interface Job {
   description: string;
   start: Date;
   end: Date;
   id: number;
 }
-export interface JobWithWorkers {
+export interface Job_Worker extends Job {
+  worker: Worker;
+  
+}
+export interface Job_WorkerArray extends Job {
   workers: Worker[];
-  description: string;
-  start: Date;
-  end: Date;
-  id: number;
 }
 export interface DbJob {
   worker_id: number;
@@ -30,12 +29,6 @@ export interface Worker {
   name: string;
 }
 
-// export interface MenuItem {
-//   label: string;
-//   icon: string;
-//   command: () => void;
-// }
-
 export interface JobsStateProps {
   description: string;
   setDescription: (description: string) => void;
@@ -46,10 +39,10 @@ export interface JobsStateProps {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
-  tasks: Job[];
-  setTasks: (job: Job[]) => void;
-  selectedTasks: Job;
-  setSelectedTasks: (job: Job) => void;
+  tasks: Job_Worker[];
+  setTasks: (job: Job_Worker[]) => void;
+  selectedTasks: Job_Worker;
+  setSelectedTasks: (job: Job_Worker) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usralert: AlertProp) => void;
   isStartValid: boolean;
@@ -68,9 +61,9 @@ export interface JobFormProp {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
-  selectedTasks?: Job;
-  tasks?: Job[];
-  setTasks?: (job: Job[]) => void;
+  selectedTasks?: Job_Worker;
+  tasks?: Job_Worker[];
+  setTasks?: (job: Job_Worker[]) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usralert: AlertProp) => void;
   isStartValid: boolean;
@@ -86,10 +79,10 @@ export interface AlertProp {
 }
 
 export interface JobListProps {
-  jobs: Job[];
-  setTasks: (job: Job[]) => void;
-  selectedTasks: Job;
-  setSelectedTasks: (job: Job) => void;
+  jobs: Job_Worker[];
+  setTasks: (job: Job_Worker[]) => void;
+  selectedTasks: Job_Worker;
+  setSelectedTasks: (job: Job_Worker) => void;
   usrAlert: AlertProp;
   setUsrAlert: (usrAlert: AlertProp) => void;
 }
@@ -125,7 +118,7 @@ export interface DateProp {
 }
 
 export interface CalendarDataProps {
-  tasks: Job[];
+  tasks: Job_Worker[];
   index?: number;
   currentDate?: Date;
 }

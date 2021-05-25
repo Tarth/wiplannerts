@@ -1,4 +1,4 @@
-import { Job, DbJob, Worker } from "../models/models";
+import { Job_Worker, DbJob, Worker } from "../models/models";
 
 const url = "http://localhost:3010";
 const axios = require("axios").default;
@@ -86,7 +86,7 @@ export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
     });
 };
 
-export const GetJobs = async (setState: (jobs: Job[]) => void) => {
+export const GetJobs = async (setState: (jobs: Job_Worker[]) => void) => {
   GetDataFromDB(url)
     .then((res) => {
       const dbdata = res.data as DbJob[];
@@ -98,7 +98,7 @@ export const GetJobs = async (setState: (jobs: Job[]) => void) => {
             worker: { id: x.worker_id, name: x.name },
             start: new Date(x.start_date),
             end: new Date(x.end_date),
-          } as Job)
+          } as Job_Worker)
       );
       setState(data);
     })

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { JobWithWorkers, jobsstr, JobsStateProps } from "../../models/models";
+import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -70,7 +70,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   );
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
-  let concatJobs: JobWithWorkers[] = [];
+  let concatJobs: Job_WorkerArray[] = [];
   tasks.forEach((jobItem) => {
     let job = concatJobs.find(
       (concatJobItem) => concatJobItem.id === jobItem.id
@@ -83,7 +83,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         job.workers.push(jobItem.worker);
       }
     } else {
-      const newjob: JobWithWorkers = {
+      const newjob: Job_WorkerArray = {
         description: jobItem.description,
         end: jobItem.end,
         id: jobItem.id,

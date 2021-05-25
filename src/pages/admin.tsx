@@ -5,7 +5,7 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
-import { Worker, Job, AlertProp } from "../models/models";
+import { Worker, Job_Worker, AlertProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTableComponent";
 import Button from "@material-ui/core/Button";
@@ -17,8 +17,8 @@ import "fontsource-roboto";
 export const Admin: React.FC = () => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
-  const [tasks, setTasks] = useState<Job[]>([]); //This state has all jobs fetched from DB
-  const [selectedTasks, setSelectedTasks] = useState<Job>({
+  const [tasks, setTasks] = useState<Job_Worker[]>([]); //This state has all jobs fetched from DB
+  const [selectedTasks, setSelectedTasks] = useState<Job_Worker>({
     worker: { id: 0, name: "" },
     description: "",
     start: new Date(),

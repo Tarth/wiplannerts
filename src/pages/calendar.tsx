@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import "./css/index.css";
 import { GetJobs } from "../utility/datahandler";
-import { Job, DateProp, CalendarDataProps } from "../models/models";
+import { Job_Worker, DateProp, CalendarDataProps } from "../models/models";
 import {
   addDays,
   subDays,
@@ -15,7 +15,7 @@ import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { NameBackgroundColor } from "../utility/colorcodes";
 
 export const Calendar: React.FC = () => {
-  const [tasks, setTasks] = useState<Job[]>([]);
+  const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
 
   // fetch the data from the db every minute
@@ -94,7 +94,7 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
 const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
-  let tempMultiDay: Job[] = [];
+  let tempMultiDay: Job_Worker[] = [];
 
   // this make sure that tasks that last multiple days, are displayed correctly in the frontend
   tasks.forEach((task) => {
