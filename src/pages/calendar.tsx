@@ -94,15 +94,37 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
 const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker = [];
+  let tempMultiDay: Job[] = [];
+
+  // this make sure that tasks that last multiple days, are displayed correctly in the frontend
+  tasks.forEach((task, index) => {
+    const deltaDays = differenceInCalendarDays(task.end, task.start);
+    if (deltaDays !== 0) {
+      for (let i = 0; i <= deltaDays; i++) {
+        tempMultiDay.push({
+          description: task.description,
+          worker: task.worker,
+          start: addDays(task.start, i),
+          end: task.end,
+          id: task.id,
+        });
+      }
+    } else {
+      tempMultiDay.push(task);
+    }
+  });
+
   // Find unique workers
-  allNamesFromDB = tasks.map((x) => x.worker.name);
+  allNamesFromDB = tempMultiDay.map((x) => x.worker.name);
   let uniqWorkers = allNamesFromDB.filter((name, index) => {
     return allNamesFromDB.indexOf(name) === index;
   });
 
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
-    sortedByWorker.push(tasks.filter((x) => x.worker.name === uniqWorkers[i]));
+    sortedByWorker.push(
+      tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i])
+    );
     // sort worker list alphabetically
     sortedByWorker.sort(function (a, b) {
       if (a[0].worker.name > b[0].worker.name) return 1;
@@ -130,29 +152,8 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
 }) => {
   const numberOfDays: Number = 5;
   const oneWorkerWeekData = [];
-
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
-  });
-
-  tasks.forEach((task, index) => {
-    if (
-      task.end !== task.start &&
-      differenceInCalendarDays(task.end, task.start) > 0
-    ) {
-      // tasks.splice(index, 0, task);
-      console.log(
-        `${task.start.getDate()}/${task.start.getMonth()}`,
-        `${task.end.getDate()}/${task.end.getMonth()}`,
-        true
-      );
-    } else {
-      console.log(
-        `${task.start.getDate()}/${task.start.getMonth()}`,
-        `${task.end.getDate()}/${task.end.getMonth()}`,
-        false
-      );
-    }
   });
 
   for (let i = 0; i < numberOfDays; i++) {
@@ -180,12 +181,14 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({
 
 // Display all tasks during a day
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
-  const color = NameBackgroundColor(index);
   return (
     <>
       <div className="workerjobs" style={{ minHeight: "44px" }}>
         {tasks.map((x) => (
-          <div className="workerjob" style={{ backgroundColor: color }}>
+          <div
+            className="workerjob"
+            style={{ backgroundColor: NameBackgroundColor(index) }}
+          >
             <div>{x.description}</div>
             <div>
               {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
