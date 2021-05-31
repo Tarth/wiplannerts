@@ -7,7 +7,7 @@ import { GetWorkers, GetJobs } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
-import { JobListBox } from "../components/editJobInCalendarComponent/jobListTableComponent";
+import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";

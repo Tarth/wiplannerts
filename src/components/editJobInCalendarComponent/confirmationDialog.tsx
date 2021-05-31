@@ -10,7 +10,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   open,
   setOpen,
-  handleClose
+  handleClose,
 }) => {
   return (
     <div>
@@ -24,7 +24,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Er du sikker på at du vil slette den valgte opgave fra listen?
-            Bemærk at dette ikke kan fortrydes, når du har klikket på ja!
+            Bemærk at dit valg ikke kan fortrydes!
           </DialogContentText>
         </DialogContent>
         <DialogActions>

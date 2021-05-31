@@ -4,12 +4,12 @@ import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { DeleteJob, GetJobs } from "../../utility/datahandler";
-import { ConfirmationDialog } from "../utilityComponents/confirmationDialog";
+import { ConfirmationDialog } from "./confirmationDialog";
 import { DataTable } from "primereact/datatable";
-import { EditJobDialog } from "./editJobDialogComponent";
+import { EditJobDialog } from "./editJobDialog";
 import { Column } from "primereact/column";
 import { format } from "date-fns";
-import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
+import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { makeStyles } from "@material-ui/core/styles";
 
 export const JobListBox: React.FC<JobsStateProps> = ({
@@ -53,9 +53,45 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 
   // Functions to open and close confirmation dialog
   const handleClickOpen = () => {
-    setOpen(true);
+    if (selectedTasks.id === -1) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+      });
+    } else {
+      setOpen(true);
+    }
   };
+
   const handleClose = () => {
+    const returnmsg = DeleteJob(selectedTasks.id);
+    returnmsg
+      .then(
+        () => {
+          setUsrAlert({
+            type: "success",
+            title: "Succes",
+            text: "Job blev slettet fra kalenderen.",
+          });
+          GetJobs(setTasks);
+        },
+        () => {
+          setUsrAlert({
+            type: "error",
+            title: "Fejl",
+            text: "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
+          });
+        }
+      )
+      .catch((error) => {
+        setUsrAlert({
+          type: "error",
+          title: "Fejl",
+          text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
+        });
+      });
+
     setOpen(false);
   };
 
@@ -173,8 +209,12 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         </Button>
 
         <div></div>
-        <ConfirmationDialog open={open} setOpen={setOpen} handleClose={handleClose}></ConfirmationDialog>
-        <Button
+        <ConfirmationDialog
+          open={open}
+          setOpen={setOpen}
+          handleClose={handleClose}
+        ></ConfirmationDialog>
+        {/* <Button
           className={classes.button}
           variant="contained"
           color="primary"
@@ -217,7 +257,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           startIcon={<DeleteIcon />}
         >
           Slet
-        </Button>
+        </Button> */}
         <EditJobDialog
           description={description}
           setDescription={setDescription}

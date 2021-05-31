@@ -7,9 +7,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
-import { Description } from "../utilityComponents/descriptionInputComponent";
-import { DateInput } from "../utilityComponents/calendarInputComponent";
-import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
+import { Description } from "../utilityComponents/descriptionInput";
+import { DateInput } from "../utilityComponents/calendarInput";
+import { CheckboxList } from "../utilityComponents/workerListBox";
 import { JobFormProp } from "../../models/models";
 import { UpdateJob, GetJobs } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
@@ -126,8 +126,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                 setUsrAlert({
                   type: "error",
                   title: "Fejl",
-                  text:
-                    "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+                  text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
                 });
               } else {
                 if (selectedTasks !== undefined) {
@@ -161,8 +160,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                         setUsrAlert({
                           type: "error",
                           title: "Fejl",
-                          text:
-                            "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
+                          text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
                         });
                       }
                     )

@@ -5,10 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { JobFormProp } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import { DateInput } from "../utilityComponents/calendarInputComponent";
-import { Description } from "../utilityComponents/descriptionInputComponent";
-import { CheckboxList } from "../utilityComponents/workerListBoxComponent";
-import { UserAlertHandler } from "../utilityComponents/userAlertComponent";
+import { DateInput } from "../utilityComponents/calendarInput";
+import { Description } from "../utilityComponents/descriptionInput";
+import { CheckboxList } from "../utilityComponents/workerListBox";
+import { UserAlertHandler } from "../utilityComponents/userAlert";
 
 const useStyles = makeStyles({
   button: {
@@ -107,8 +107,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                 setUsrAlert({
                   type: "error",
                   title: "Fejl",
-                  text:
-                    "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+                  text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
                 });
               } else {
                 const returnmsg = PostJob(
@@ -136,8 +135,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                       setUsrAlert({
                         type: "error",
                         title: "Fejl",
-                        text:
-                          "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
+                        text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
                       });
                     }
                   )
