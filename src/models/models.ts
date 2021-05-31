@@ -1,7 +1,15 @@
 export interface ConfirmationDialogProp {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  handleClose: () => void;
+  //   open: boolean;
+  //   setOpen: (open: boolean) => void;
+  //   handleClose: () => void;
+  setDescription: (description: string) => void;
+  setStartDate: (date: string | undefined) => void;
+  setEndDate: (date: string | undefined) => void;
+  setSelectedWorkers: (worker: Worker[]) => void;
+  selectedTasks: Job_Worker;
+  setUsrAlert: (usralert: AlertProp) => void;
+  setTasks: (job: Job_Worker[]) => void;
+  startDate: string | undefined;
 }
 
 interface Job {
@@ -12,7 +20,6 @@ interface Job {
 }
 export interface Job_Worker extends Job {
   worker: Worker;
-  
 }
 export interface Job_WorkerArray extends Job {
   workers: Worker[];
@@ -30,7 +37,7 @@ export interface Worker {
   name: string;
 }
 
-interface JobProp{
+interface JobProp {
   description: string;
   setDescription: (description: string) => void;
   startDate: string | undefined;

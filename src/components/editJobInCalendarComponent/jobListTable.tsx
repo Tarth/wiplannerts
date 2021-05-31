@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
-import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { DeleteJob, GetJobs } from "../../utility/datahandler";
 import { ConfirmationDialog } from "./confirmationDialog";
 import { DataTable } from "primereact/datatable";
 import { EditJobDialog } from "./editJobDialog";
@@ -15,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export const JobListBox: React.FC<JobsStateProps> = ({
   description,
   setDescription,
-  startDate, // "30/07/20 - 00:00"
+  startDate,
   setStartDate,
   endDate,
   setEndDate,
@@ -35,7 +32,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   let alert;
-  const [open, setOpen] = React.useState(false);
   const useStyles = makeStyles({
     buttonGrp: {
       marginTop: "50px",
@@ -52,49 +48,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   const classes = useStyles();
 
   // Functions to open and close confirmation dialog
-  const handleClickOpen = () => {
-    if (selectedTasks.id === -1) {
-      setUsrAlert({
-        type: "error",
-        title: "Fejl",
-        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-      });
-    } else {
-      setOpen(true);
-    }
-  };
-
-  const handleClose = () => {
-    const returnmsg = DeleteJob(selectedTasks.id);
-    returnmsg
-      .then(
-        () => {
-          setUsrAlert({
-            type: "success",
-            title: "Succes",
-            text: "Job blev slettet fra kalenderen.",
-          });
-          GetJobs(setTasks);
-        },
-        () => {
-          setUsrAlert({
-            type: "error",
-            title: "Fejl",
-            text: "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
-          });
-        }
-      )
-      .catch((error) => {
-        setUsrAlert({
-          type: "error",
-          title: "Fejl",
-          text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
-        });
-      });
-
-    setOpen(false);
-  };
-
   alert = (
     <div className="alertDiv">
       <UserAlertHandler
@@ -199,65 +152,16 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         ></Column>
       </DataTable>
       <ButtonGroup className={classes.buttonGrp}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleClickOpen}
-          startIcon={<DeleteIcon />}
-        >
-          SLET
-        </Button>
-
-        <div></div>
         <ConfirmationDialog
-          open={open}
-          setOpen={setOpen}
-          handleClose={handleClose}
+          setStartDate={setStartDate}
+          startDate={startDate}
+          setEndDate={setEndDate}
+          setDescription={setDescription}
+          setSelectedWorkers={setSelectedWorkers}
+          selectedTasks={selectedTasks}
+          setUsrAlert={setUsrAlert}
+          setTasks={setTasks}
         ></ConfirmationDialog>
-        {/* <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            if (selectedTasks.id === -1) {
-              setUsrAlert({
-                type: "error",
-                title: "Fejl",
-                text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-              });
-            } else {
-              const returnmsg = DeleteJob(selectedTasks.id);
-              returnmsg
-                .then(
-                  () => {
-                    setUsrAlert({
-                      type: "success",
-                      title: "Succes",
-                      text: "Job blev slettet fra kalenderen.",
-                    });
-                    GetJobs(setTasks);
-                  },
-                  () => {
-                    setUsrAlert({
-                      type: "error",
-                      title: "Fejl",
-                      text: "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
-                    });
-                  }
-                )
-                .catch((error) => {
-                  setUsrAlert({
-                    type: "error",
-                    title: "Fejl",
-                    text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
-                  });
-                });
-            }
-          }}
-          startIcon={<DeleteIcon />}
-        >
-          Slet
-        </Button> */}
         <EditJobDialog
           description={description}
           setDescription={setDescription}

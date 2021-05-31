@@ -100,6 +100,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
             onClick={() => {
               if (
                 description === "" ||
+                startDate === "" ||
+                endDate === "" ||
                 isStartValid === false ||
                 isEndValid === false ||
                 workers === []

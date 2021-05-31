@@ -60,7 +60,17 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
         className={classes.button}
         variant="contained"
         color="primary"
-        onClick={handleClickOpen}
+        onClick={() => {
+          if (startDate === "" || startDate === undefined) {
+            setUsrAlert({
+              type: "error",
+              title: "Fejl",
+              text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+            });
+          } else {
+            handleClickOpen();
+          }
+        }}
         startIcon={<EditIcon />}
       >
         Rediger
