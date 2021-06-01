@@ -16,6 +16,7 @@ import { NameBackgroundColor } from "../utility/colorcodes";
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
+  // const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
 
   // fetch the data from the db every minute
