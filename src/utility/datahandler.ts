@@ -1,6 +1,6 @@
 import { Job_Worker, DbJob, Worker } from "../models/models";
 
-const url = "http://localhost:3010";
+const url = "http://10.1.0.236:3010";
 const axios = require("axios").default;
 
 const GetDataFromDB = async (localurl: string) => {
