@@ -1,6 +1,6 @@
 import { Job_Worker, DbJob, Worker } from "../models/models";
 
-const url = `${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
+const url = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 const axios = require("axios").default;
 
 const GetDataFromDB = async (localurl: string) => {
