@@ -41,7 +41,7 @@ export const Navigation = () => {
               Admin
             </Button>
           </Link>
-          <Link to="/">
+          <Link to="/calendar">
             <Button
               variant="contained"
               color="primary"

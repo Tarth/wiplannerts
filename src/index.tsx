@@ -2,11 +2,11 @@ import ReactDOM from "react-dom";
 import React from "react";
 import * as serviceWorker from "./serviceWorker";
 import "./css/index.css";
-import { Tabmenu } from "./routes/routes";
+import { Index } from "./routes/routes";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Tabmenu />
+    <Index />
   </React.StrictMode>,
   document.getElementById("root")
 );

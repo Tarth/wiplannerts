@@ -13,6 +13,7 @@ import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { NameBackgroundColor } from "../utility/colorcodes";
+import { Navigation } from "../components/navigation/navigation";
 
 export const Calendar: React.FC = () => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
@@ -30,6 +31,7 @@ export const Calendar: React.FC = () => {
 
   return (
     <>
+      <Navigation></Navigation>
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
         <IconButton

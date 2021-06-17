@@ -8,6 +8,7 @@ import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
+import { Navigation } from "../components/navigation/navigation";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
@@ -108,64 +109,67 @@ export const Admin: React.FC = () => {
   }
 
   return (
-    <div className="body">
-      <div className="buttongroup">
-        <Button
-          className={classes.buttonStyle}
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => {
-            setViews("addjob");
-            const defaultInfoText =
-              "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-            if (usrAlert.text !== defaultInfoText) {
-              setUsrAlert({
-                type: "info",
-                title: "Information",
-                text: defaultInfoText,
-              });
-            }
-            if (
-              description !== "" ||
-              (startDate !== "" && startDate !== undefined) ||
-              (endDate !== "" && endDate !== undefined) ||
-              selectedWorkers !== []
-            ) {
-              ResetInputFields(
-                setDescription,
-                setStartDate,
-                setEndDate,
-                setSelectedWorkers
-              );
-            }
-          }}
-        >
-          Tilføj Job
-        </Button>
-        <Button
-          className={classes.buttonStyle}
-          variant="contained"
-          color="primary"
-          startIcon={<EditIcon />}
-          onClick={() => {
-            GetJobs(setTasks);
-            setViews("");
-            const defaultInfoText =
-              "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
-            if (usrAlert.text !== defaultInfoText) {
-              setUsrAlert({
-                type: "info",
-                title: "Information",
-                text: defaultInfoText,
-              });
-            }
-          }}
-        >
-          Rediger Job
-        </Button>
+    <>
+      <Navigation></Navigation>
+      <div className="body">
+        <div className="buttongroup">
+          <Button
+            className={classes.buttonStyle}
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setViews("addjob");
+              const defaultInfoText =
+                "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+              if (usrAlert.text !== defaultInfoText) {
+                setUsrAlert({
+                  type: "info",
+                  title: "Information",
+                  text: defaultInfoText,
+                });
+              }
+              if (
+                description !== "" ||
+                (startDate !== "" && startDate !== undefined) ||
+                (endDate !== "" && endDate !== undefined) ||
+                selectedWorkers !== []
+              ) {
+                ResetInputFields(
+                  setDescription,
+                  setStartDate,
+                  setEndDate,
+                  setSelectedWorkers
+                );
+              }
+            }}
+          >
+            Tilføj Job
+          </Button>
+          <Button
+            className={classes.buttonStyle}
+            variant="contained"
+            color="primary"
+            startIcon={<EditIcon />}
+            onClick={() => {
+              GetJobs(setTasks);
+              setViews("");
+              const defaultInfoText =
+                "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
+              if (usrAlert.text !== defaultInfoText) {
+                setUsrAlert({
+                  type: "info",
+                  title: "Information",
+                  text: defaultInfoText,
+                });
+              }
+            }}
+          >
+            Rediger Job
+          </Button>
+        </div>
+        {view}
       </div>
-      {view}
-    </div>
+    </>
   );
 };
