@@ -5,12 +5,17 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "../css/login";
-import { LoginProps } from "../models/models";
+import { LoginProps, LoginResponse } from "../models/models";
 
 export const Login: React.FC<LoginProps> = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
+  async function ReturnMsg() {
+    const returnmsg: LoginResponse = await PostLogin(username, password);
+    console.log(returnmsg);
+  }
   return (
     <>
       <div className={classes.container}>
@@ -44,9 +49,9 @@ export const Login: React.FC<LoginProps> = () => {
             className={classes.button}
             variant="contained"
             color="primary"
-            onClick={() => {
-              PostLogin(username, password);
-            }}
+            onClick={async () => await ReturnMsg()}               
+              
+            
           >
             Log ind
           </Button>

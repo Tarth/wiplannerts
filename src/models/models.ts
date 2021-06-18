@@ -122,3 +122,8 @@ export interface LoginProps {
   password: string;
   setPassword: (password: string) => void;
 }
+
+export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+}

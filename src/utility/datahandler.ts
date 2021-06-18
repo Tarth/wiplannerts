@@ -1,4 +1,4 @@
-import { Job_Worker, DbJob, Worker } from "../models/models";
+import { Job_Worker, DbJob, Worker, LoginResponse } from "../models/models";
 
 const url = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 const axios = require("axios").default;
@@ -192,11 +192,5 @@ const PostLoginToDB = async (
 
 // Post a new worker into the DB
 export const PostLogin = async (username: string, password: string) => {
-  PostLoginToDB(`${url}/login`, username, password)
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return error;
-    });
-};
+  return await PostLoginToDB(`${url}/login`, username, password);
+ };
