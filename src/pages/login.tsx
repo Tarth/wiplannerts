@@ -1,33 +1,57 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
+import { PostLogin } from "../utility/datahandler";
+import { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TextField from "@material-ui/core/TextField";
+import { useStyles } from "../css/login";
+import { LoginProps } from "../models/models";
 
-export const Login: React.FC = () => {
+export const Login: React.FC<LoginProps> = () => {
+  const classes = useStyles();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <>
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        width="30%"
-        style={{
-          backgroundColor: "#7dc4fb",
-          margin: "20px",
-          borderRadius: "6px",
-        }}
-      >
-        <TextField variant="filled" label="Brugernavn"></TextField>
-        <TextField
-          variant="filled"
-          type="password"
-          label="password"
-        ></TextField>
-        <Button>Log ind</Button>
-      </Box>
+      <div className={classes.container}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="25%"
+          className={classes.item}
+        >
+          <h1 className={classes.header}>Wiplanner</h1>
+          <TextField
+            className={classes.textField}
+            label="Brugernavn"
+            variant="outlined"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          ></TextField>
+          <TextField
+            className={classes.textField}
+            type="password"
+            label="Password"
+            variant="outlined"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+          ></TextField>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              PostLogin(username, password);
+            }}
+          >
+            Log ind
+          </Button>
+        </Box>
+      </div>
     </>
   );
 };

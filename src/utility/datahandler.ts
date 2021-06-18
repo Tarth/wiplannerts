@@ -173,3 +173,30 @@ export const UpdateJob = async (
       return error;
     });
 };
+
+const PostLoginToDB = async (
+  localurl: string,
+  _username: string,
+  _password: string
+) => {
+  try {
+    let res = await axios.post("http://localhost:3010/login", {
+      username: _username,
+      password: _password,
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+// Post a new worker into the DB
+export const PostLogin = async (username: string, password: string) => {
+  PostLoginToDB(`${url}/login`, username, password)
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};

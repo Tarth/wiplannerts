@@ -1,7 +1,4 @@
 export interface ConfirmationDialogProp {
-  //   open: boolean;
-  //   setOpen: (open: boolean) => void;
-  //   handleClose: () => void;
   setDescription: (description: string) => void;
   setStartDate: (date: string | undefined) => void;
   setEndDate: (date: string | undefined) => void;
@@ -117,4 +114,11 @@ export interface CalendarDataProps {
   tasks: Job_Worker[];
   index?: number;
   currentDate?: Date;
+}
+
+export interface LoginProps {
+  username: string;
+  setUsername: (username: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
 }
