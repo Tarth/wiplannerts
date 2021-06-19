@@ -13,7 +13,7 @@ export const Login: React.FC<LoginProps> = () => {
   const [password, setPassword] = useState("");
   
   async function ReturnMsg() {
-    const returnmsg: LoginResponse = await PostLogin(username, password);
+    const returnmsg = await PostLogin(username, password);
     console.log(returnmsg);
   }
   return (

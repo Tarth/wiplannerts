@@ -7,11 +7,13 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#f3f3f3",
   },
   item: {
-    backgroundColor: "#dbdbd9",
+    backgroundColor: "#fff",
     padding: "20px 50px 50px 50px",
     borderRadius: "7px",
+    boxShadow: "0px 0px 25px 0px rgba(0,0,0,0.05)"
   },
   header: { textAlign: "center" },
   textField: {
