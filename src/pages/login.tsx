@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "../css/login";
 import { LoginProps, LoginResponse } from "../models/models";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import WaveTop from '../css/imgs/wave-top.png';
 import WaveMid from '../css/imgs/wave-mid.png';
 import WaveBot from '../css/imgs/wave-bot.png';
@@ -13,12 +14,21 @@ export const Login: React.FC<LoginProps> = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [loginResponse, setLoginResponse] = useState<LoginResponse>({accessToken: "", refreshToken: "", status: 0, statusText: ""});
 
   async function LoginResponse () {
     const returnmsg = await PostLogin(username, password);
-      setLoginResponse({accessToken: returnmsg.data.accessToken, refreshToken: returnmsg.data.refreshToken, status: returnmsg.status, statusText: returnmsg.statusText})
+      if (returnmsg.response.data === "User not found"){
+        console.log("User not found")
+      } else {
+        setLoginResponse({accessToken: returnmsg.data.accessToken, refreshToken: returnmsg.data.refreshToken, status: returnmsg.status, statusText: returnmsg.statusText})
+      }
     }
+  
+  useEffect(() => {
+    console.log(loginResponse);
+  }, [loginResponse]);
 
   return (
     <>
@@ -53,8 +63,13 @@ export const Login: React.FC<LoginProps> = () => {
             className={classes.button}
             variant="contained"
             color="primary"
-            onClick={async () => await LoginResponse()}               
-          >
+            onClick={async () => {
+              await LoginResponse();
+              setIsLoading(true);
+            }}               
+            disabled={isLoading ? true : false}
+            // startIcon={<CircularProgress color="secondary"/>}
+            >
             Log ind
           </Button>
         </Box>
