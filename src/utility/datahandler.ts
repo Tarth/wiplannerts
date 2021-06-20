@@ -1,4 +1,4 @@
-import { Job_Worker, DbJob, Worker, LoginResponse } from "../models/models";
+import { Job_Worker, DbJob, Worker} from "../models/models";
 
 const url = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 const axios = require("axios").default;
