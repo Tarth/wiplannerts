@@ -129,3 +129,12 @@ export interface LoginResponse {
   status: number;
   statusText: string;
 }
+
+export interface IsUserLoggedInProp {
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+}
+
+export interface TestProp {
+  accesstoken: string;
+}

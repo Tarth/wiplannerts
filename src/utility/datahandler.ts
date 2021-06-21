@@ -1,11 +1,11 @@
-import { Job_Worker, DbJob, Worker} from "../models/models";
+import { Job_Worker, DbJob, Worker } from "../models/models";
 
 const url = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 const axios = require("axios").default;
 
-const GetDataFromDB = async (localurl: string) => {
+const GetDataFromDB = async (localurl: string, accesstoken: string) => {
   try {
-    let res = await axios.get(localurl);
+    let res = await axios.get(localurl, accesstoken);
     return res;
   } catch (error) {
     return error;
@@ -74,8 +74,11 @@ export const PostJob = async (
     });
 };
 
-export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
-  GetDataFromDB(`${url}/workers`)
+export const GetWorkers = async (
+  setState: (workers: Worker[]) => void,
+  accesstoken: string
+) => {
+  GetDataFromDB(`${url}/workers`, accesstoken as string)
     .then((res) => {
       const dbdata = res.data as Worker[];
       const data = dbdata.map((x) => ({ id: x.id, name: x.name }));
@@ -86,8 +89,11 @@ export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
     });
 };
 
-export const GetJobs = async (setState: (jobs: Job_Worker[]) => void) => {
-  GetDataFromDB(url)
+export const GetJobs = async (
+  setState: (jobs: Job_Worker[]) => void,
+  accesstoken: string
+) => {
+  GetDataFromDB(url, accesstoken as string)
     .then((res) => {
       const dbdata = res.data as DbJob[];
       const data = dbdata.map(
@@ -193,4 +199,4 @@ const PostLoginToDB = async (
 // Post a new worker into the DB
 export const PostLogin = async (username: string, password: string) => {
   return await PostLoginToDB(`${url}/login`, username, password);
- };
+};

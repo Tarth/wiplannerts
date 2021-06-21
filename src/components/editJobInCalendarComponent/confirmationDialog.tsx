@@ -111,7 +111,10 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                         title: "Succes",
                         text: "Job blev slettet fra kalenderen.",
                       });
-                      GetJobs(setTasks);
+                      GetJobs(
+                        setTasks,
+                        localStorage.getItem("accesstoken") as string
+                      );
                     },
                     () => {
                       setUsrAlert({

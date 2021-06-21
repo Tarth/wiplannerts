@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 // import "./css/index.css";
 import { GetJobs } from "../utility/datahandler";
-import { Job_Worker, DateProp, CalendarDataProps } from "../models/models";
+import {
+  Job_Worker,
+  DateProp,
+  CalendarDataProps,
+  TestProp,
+} from "../models/models";
 import {
   addDays,
   subDays,
@@ -16,15 +22,16 @@ import { NameBackgroundColor } from "../utility/colorcodes";
 import { Navigation } from "../components/navigation/navigation";
 
 export const Calendar: React.FC = () => {
+  const { state } = useLocation<TestProp>(); //state: {accesstoken: string}
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   // const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
 
   // fetch the data from the db every minute
   useEffect(() => {
-    GetJobs(setTasks);
+    GetJobs(setTasks, state.accesstoken);
     const interval = setInterval(() => {
-      GetJobs(setTasks);
+      GetJobs(setTasks, state.accesstoken);
     }, 60000);
     return () => clearInterval(interval);
   }, []);
