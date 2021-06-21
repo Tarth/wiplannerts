@@ -5,7 +5,6 @@ import { Login } from "../pages/login";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 export const Index: React.FC = () => {
-  const [isLoggedIn, SetIsLoggedIn] = useState(false);
   return (
     <>
       <BrowserRouter>
