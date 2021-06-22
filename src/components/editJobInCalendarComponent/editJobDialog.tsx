@@ -162,10 +162,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                           setSelectedWorkers
                         );
                         if (setTasks !== undefined) {
-                          GetJobs(
-                            setTasks,
-                            localStorage.getItem("accesstoken") as string
-                          );
+                          GetJobs(setTasks);
                         }
                         handleClose();
                       },

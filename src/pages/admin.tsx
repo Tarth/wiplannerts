@@ -51,11 +51,11 @@ export const Admin: React.FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    GetWorkers(setWorkers, localStorage.accesstoken);
+    GetWorkers(setWorkers);
   }, []);
 
   useEffect(() => {
-    GetJobs(setTasks, localStorage.accesstoken);
+    GetJobs(setTasks);
   }, []);
 
   if (views === "addjob") {
@@ -152,7 +152,7 @@ export const Admin: React.FC = () => {
             color="primary"
             startIcon={<EditIcon />}
             onClick={() => {
-              GetJobs(setTasks, localStorage.getItem("accesstoken") as string);
+              GetJobs(setTasks);
               setViews("");
               const defaultInfoText =
                 "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";

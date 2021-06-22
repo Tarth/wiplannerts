@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router-dom";
-import { PostLogin } from "../utility/datahandler";
+import { PostLogin, AuthenticateUser } from "../utility/datahandler";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -35,13 +35,24 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
     if (returnmsg.hasOwnProperty("response")) {
       if (returnmsg.response.data === "User not found") {
         console.log(returnmsg.response.data);
+        setIsLoading(false);
       } else {
         console.log(returnmsg.response.data);
+        setIsLoading(false);
       }
     } else {
-      localStorage.setItem("accesstoken", returnmsg.data.accessToken);
-      localStorage.setItem("refreshtoken", returnmsg.data.refreshToken);
-      setIsLoggedIn(true);
+      const accessToken = returnmsg.data.accessToken;
+      const refreshToken = returnmsg.data.refreshToken;
+      localStorage.setItem("accesstoken", accessToken);
+      localStorage.setItem("refreshtoken", refreshToken);
+
+      if (accessToken !== null) {
+        await AuthenticateUser(accessToken);
+        setIsLoggedIn(true);
+      }
+      setIsLoading(false);
+
+      // setIsLoggedIn(true);
 
       // setLoginResponse({
       //   accessToken: returnmsg.data.accessToken,
@@ -98,16 +109,6 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
             startIcon={isLoading ? <CircularProgress size={20} /> : <></>}
           >
             Log ind
-          </Button>
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={async () => {
-              setIsLoggedIn(true);
-            }}
-          >
-            Set State
           </Button>
         </Box>
         <div className="waveWrapper waveAnimation">

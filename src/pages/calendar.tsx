@@ -29,9 +29,9 @@ export const Calendar: React.FC = () => {
 
   // fetch the data from the db every minute
   useEffect(() => {
-    GetJobs(setTasks, state.accesstoken);
+    GetJobs(setTasks);
     const interval = setInterval(() => {
-      GetJobs(setTasks, state.accesstoken);
+      GetJobs(setTasks);
     }, 60000);
     return () => clearInterval(interval);
   }, []);
