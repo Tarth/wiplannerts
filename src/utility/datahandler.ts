@@ -3,15 +3,6 @@ import { Job_Worker, DbJob, Worker } from "../models/models";
 const url = `http://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
 const axios = require("axios").default;
 
-const GetDataFromDB = async (localurl: string) => {
-  try {
-    let res = await axios.get(localurl);
-    return res;
-  } catch (error) {
-    return error;
-  }
-};
-
 const PostWorkerToDB = async (localurl: string, workername: string) => {
   try {
     let res = await axios.post(localurl, { name: workername });
@@ -74,8 +65,22 @@ export const PostJob = async (
     });
 };
 
-export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
-  GetDataFromDB(`${url}/workers`)
+const GetDataFromDB = async (localurl: string, state: string) => {
+  try {
+    let res = await axios.get(localurl, {
+      headers: { Authorization: `Bearer ${state}` },
+    });
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const GetWorkers = async (
+  setState: (workers: Worker[]) => void,
+  state: string
+) => {
+  GetDataFromDB(`${url}/workers`, state)
     .then((res) => {
       const dbdata = res.data as Worker[];
       const data = dbdata.map((x) => ({ id: x.id, name: x.name }));
@@ -86,8 +91,11 @@ export const GetWorkers = async (setState: (workers: Worker[]) => void) => {
     });
 };
 
-export const GetJobs = async (setState: (jobs: Job_Worker[]) => void) => {
-  GetDataFromDB(url)
+export const GetJobs = async (
+  setState: (jobs: Job_Worker[]) => void,
+  state: string | null
+) => {
+  GetDataFromDB(`${url}/calendar`, state as string)
     .then((res) => {
       const dbdata = res.data as DbJob[];
       const data = dbdata.map(
@@ -208,6 +216,6 @@ export const PostAccessToken = async (
   }
 };
 export const AuthenticateUser = async (accessToken: string) => {
-  const res = await PostAccessToken(`${url}`, accessToken);
+  const res = await PostAccessToken(`${url}/calendar`, accessToken);
   return res;
 };

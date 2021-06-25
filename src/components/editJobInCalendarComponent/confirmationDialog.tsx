@@ -1,6 +1,7 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { ConfirmationDialogProp } from "../../models/models";
+import { ConfirmationDialogProp, TestProp } from "../../models/models";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -22,7 +23,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   startDate,
 }) => {
   const [open, setOpen] = React.useState(false);
-
+  const { state } = useLocation<TestProp>();
   const useStyles = makeStyles({
     button: {
       marginRight: "10px",
@@ -111,7 +112,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                         title: "Succes",
                         text: "Job blev slettet fra kalenderen.",
                       });
-                      GetJobs(setTasks);
+                      GetJobs(setTasks, state.accesstoken);
                     },
                     () => {
                       setUsrAlert({

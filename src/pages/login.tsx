@@ -23,12 +23,6 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loginResponse, setLoginResponse] = useState<LoginResponse>({
-    accessToken: "",
-    refreshToken: "",
-    status: 0,
-    statusText: "",
-  });
 
   async function LoginResponse() {
     const returnmsg = await PostLogin(username, password);
@@ -51,22 +45,8 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
         setIsLoggedIn(true);
       }
       setIsLoading(false);
-
-      // setIsLoggedIn(true);
-
-      // setLoginResponse({
-      //   accessToken: returnmsg.data.accessToken,
-      //   refreshToken: returnmsg.data.refreshToken,
-      //   status: returnmsg.status,
-      //   statusText: returnmsg.statusText,
-      // });
     }
   }
-
-  // useEffect(() => {
-  //   console.log(loginResponse);
-  //   setIsLoading(false);
-  // }, [loginResponse]);
 
   return (
     <>

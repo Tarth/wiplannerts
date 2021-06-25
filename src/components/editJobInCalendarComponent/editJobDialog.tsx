@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Description } from "../utilityComponents/descriptionInput";
 import { DateInput } from "../utilityComponents/calendarInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
-import { JobFormProp } from "../../models/models";
+import { JobFormProp, TestProp } from "../../models/models";
 import { UpdateJob, GetJobs } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
 
@@ -35,6 +36,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   setIsEndValid,
 }) => {
   const [open, setOpen] = React.useState(false);
+  const { state } = useLocation<TestProp>();
 
   const useStyles = makeStyles({
     button: {
@@ -162,7 +164,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                           setSelectedWorkers
                         );
                         if (setTasks !== undefined) {
-                          GetJobs(setTasks);
+                          GetJobs(setTasks, state.accesstoken);
                         }
                         handleClose();
                       },
