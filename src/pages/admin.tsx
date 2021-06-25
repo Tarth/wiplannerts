@@ -55,7 +55,7 @@ export const Admin: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // GetJobs(setTasks);
+    GetJobs(setTasks, localStorage.getItem("accesstoken"));
   }, []);
 
   if (views === "addjob") {

@@ -1,5 +1,4 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { ConfirmationDialogProp, TestProp } from "../../models/models";
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,7 +22,6 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   startDate,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const { state } = useLocation<TestProp>();
   const useStyles = makeStyles({
     button: {
       marginRight: "10px",
@@ -112,7 +110,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                         title: "Succes",
                         text: "Job blev slettet fra kalenderen.",
                       });
-                      GetJobs(setTasks, state.accesstoken);
+                      GetJobs(setTasks, localStorage.getItem("accesstoken"));
                     },
                     () => {
                       setUsrAlert({
