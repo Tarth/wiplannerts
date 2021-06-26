@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetJobs } from "../utility/datahandler";
+import { GetJobs, GetAccessTokenFromRefresh } from "../utility/datahandler";
 import {
   Job_Worker,
   DateProp,
@@ -24,12 +24,24 @@ export const Calendar: React.FC = () => {
   // const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
 
+  async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
+    const res = await GetJobs(setTasks, localStorage.getItem("accesstoken"));
+    if (res.message === "invalid token") {
+      if (localStorage.getItem("refreshtoken") !== null) {
+        let newAccessToken: string = await GetAccessTokenFromRefresh(
+          localStorage.getItem("refreshtoken") as string
+        );
+        localStorage.setItem("accesstoken", newAccessToken);
+        await GetJobs(setTasks, newAccessToken);
+      }
+    }
+  }
   // fetch the data from the db every minute
   useEffect(() => {
-    GetJobs(setTasks, localStorage.getItem("accesstoken"));
-    const interval = setInterval(() => {
-      GetJobs(setTasks, localStorage.getItem("accesstoken"));
-    }, 60000);
+    GetJobData(setTasks);
+    const interval = setInterval(async () => {
+      GetJobData(setTasks);
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 

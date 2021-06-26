@@ -95,8 +95,11 @@ export const GetJobs = async (
   setState: (jobs: Job_Worker[]) => void,
   state: string | null
 ) => {
-  GetDataFromDB(`${url}/calendar`, state as string)
-    .then((res) => {
+  try {
+    const res = await GetDataFromDB(`${url}/calendar`, state as string);
+    if (res.hasOwnProperty("response")) {
+      throw new Error(res.response.data);
+    } else {
       const dbdata = res.data as DbJob[];
       const data = dbdata.map(
         (x) =>
@@ -109,10 +112,11 @@ export const GetJobs = async (
           } as Job_Worker)
       );
       setState(data);
-    })
-    .catch((e) => {
-      return e;
-    });
+      return data;
+    }
+  } catch (error) {
+    return error;
+  }
 };
 
 const DeleteJobFromDB = async (localurl: string, job_id: number) => {
@@ -203,19 +207,25 @@ export const PostLogin = async (username: string, password: string) => {
   return await PostLoginToDB(`${url}/login`, username, password);
 };
 
-export const PostAccessToken = async (
-  localurl: string,
-  accessToken: string
-) => {
+export const AuthenticateUser = async (accessToken: string) => {
   try {
-    return await axios.get(localurl, {
+    return await axios.get(`${url}/calendar`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
   } catch (error) {
     return error;
   }
 };
-export const AuthenticateUser = async (accessToken: string) => {
-  const res = await PostAccessToken(`${url}/calendar`, accessToken);
-  return res;
+
+export const GetAccessTokenFromRefresh = async (refreshToken: string) => {
+  try {
+    const res = await axios.post(`${url}/token`, { token: refreshToken });
+    return res.data.accessToken;
+  } catch (error) {
+    return error;
+  }
 };
+// export const AuthenticateUser = async (accessToken: string) => {
+//   const res = await PostAccessToken(`${url}/calendar`, accessToken);
+//   return res;
+// };
