@@ -4,7 +4,7 @@ import {
   Job_Worker,
   DateProp,
   CalendarDataProps,
-  TestProp,
+  IsUserLoggedInProp,
 } from "../models/models";
 import {
   addDays,
@@ -19,7 +19,10 @@ import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Navigation } from "../components/navigation/navigation";
 
-export const Calendar: React.FC = () => {
+export const Calendar: React.FC<IsUserLoggedInProp> = ({
+  isLoggedIn,
+  setIsLoggedIn,
+}) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   // const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
@@ -36,6 +39,7 @@ export const Calendar: React.FC = () => {
       }
     }
   }
+
   // fetch the data from the db every minute
   useEffect(() => {
     GetJobData(setTasks);
@@ -47,7 +51,10 @@ export const Calendar: React.FC = () => {
 
   return (
     <>
-      <Navigation></Navigation>
+      <Navigation
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+      ></Navigation>
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
         <IconButton

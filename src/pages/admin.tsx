@@ -5,7 +5,12 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
-import { Worker, Job_Worker, AlertProp } from "../models/models";
+import {
+  Worker,
+  Job_Worker,
+  AlertProp,
+  IsUserLoggedInProp,
+} from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
@@ -15,7 +20,10 @@ import EditIcon from "@material-ui/icons/Create";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 
-export const Admin: React.FC = () => {
+export const Admin: React.FC<IsUserLoggedInProp> = ({
+  isLoggedIn,
+  setIsLoggedIn,
+}) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job_Worker[]>([]); //This state has all jobs fetched from DB
@@ -110,7 +118,10 @@ export const Admin: React.FC = () => {
 
   return (
     <>
-      <Navigation></Navigation>
+      <Navigation
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+      ></Navigation>
       <div className="body">
         <div className="buttongroup">
           <Button

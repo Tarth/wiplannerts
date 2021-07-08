@@ -1,35 +1,19 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { IsUserLoggedInProp } from "../../models/models";
+import { useStyles } from "./style";
 
-export const Navigation = () => {
-  const useStyles = makeStyles({
-    buttonStyle: {
-      border: 0,
-      borderRadius: 3,
-      color: "white",
-      height: 48,
-      padding: "0 30px",
-      marginRight: "20px",
-    },
-    buttonDiv: {
-      display: "flex",
-      width: "95%",
-      margin: "auto",
-      marginTop: "20px",
-      paddingBottom: "50px",
-    },
-    logoutButton: {
-      marginLeft: "auto",
-    },
-  });
+export const Navigation: React.FC<IsUserLoggedInProp> = ({
+  isLoggedIn,
+  setIsLoggedIn,
+}) => {
   const classes = useStyles();
 
   return (
     <>
-      <div className={classes.buttonDiv}>
-        <>
+      <div className={classes.buttonParent}>
+        <div>
           <Link to="/admin">
             <Button
               variant="contained"
@@ -48,17 +32,22 @@ export const Navigation = () => {
               Kalender
             </Button>
           </Link>
-        </>
-        <Button
-          className={classes.logoutButton}
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            console.log("Logout");
-          }}
-        >
-          Log ud
-        </Button>
+        </div>
+        <div className={classes.logoutButton}>
+          <Link to="/">
+            <Button
+              className={classes.buttonStyle}
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setIsLoggedIn(false);
+                localStorage.clear();
+              }}
+            >
+              Log ud
+            </Button>
+          </Link>
+        </div>
       </div>
     </>
   );

@@ -27,12 +27,24 @@ export const Index: React.FC = () => {
               ></Login>
             )}
           </Route>
-          <Route path="/calendar">
-            <Calendar></Calendar>
-          </Route>
-          <Route path="/admin">
-            <Admin></Admin>
-          </Route>
+          {isLoggedIn ? (
+            <>
+              <Route path="/calendar">
+                <Calendar
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                ></Calendar>
+              </Route>
+              <Route path="/admin">
+                <Admin
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                ></Admin>
+              </Route>
+            </>
+          ) : (
+            <Redirect exact to="/"></Redirect>
+          )}
         </Switch>
       </BrowserRouter>
     </>

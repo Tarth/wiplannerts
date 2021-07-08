@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { ConfirmationDialogProp, TestProp } from "../../models/models";
+import { ConfirmationDialogProp } from "../../models/models";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DeleteIcon from "@material-ui/icons/Delete";

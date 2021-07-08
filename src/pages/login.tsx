@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Redirect, Route } from "react-router-dom";
+import React, { useState } from "react";
 import { PostLogin, AuthenticateUser } from "../utility/datahandler";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "../css/login";
 import {
-  LoginProps,
-  LoginResponse,
+  // LoginProps,
+  // LoginResponse,
   IsUserLoggedInProp,
 } from "../models/models";
 import CircularProgress from "@material-ui/core/CircularProgress";
