@@ -59,11 +59,11 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    // GetWorkers(setWorkers);
-  }, []);
-
-  useEffect(() => {
-    GetJobs(setTasks, localStorage.getItem("accesstoken"));
+    const token: string | null = localStorage.getItem("accesstoken");
+    if (token !== null) {
+      GetWorkers(setWorkers, token);
+      GetJobs(setTasks, token);
+    }
   }, []);
 
   if (views === "addjob") {
