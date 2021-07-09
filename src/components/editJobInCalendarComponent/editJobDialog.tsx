@@ -145,7 +145,8 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                     endDate as string,
                     description,
                     selectedWorkers.map((x) => x.id),
-                    selectedTasks.id
+                    selectedTasks.id,
+                    localStorage.getItem("accesstoken")
                   );
                   returnmsg
                     .then(

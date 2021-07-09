@@ -116,7 +116,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                   startDate as string,
                   endDate as string,
                   description,
-                  selectedWorkers.map((x) => x.id)
+                  selectedWorkers.map((x) => x.id),
+                  localStorage.getItem("accesstoken")
                 );
                 returnmsg
                   .then(

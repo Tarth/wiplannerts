@@ -101,7 +101,10 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                   text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
                 });
               } else {
-                const returnmsg = DeleteJob(selectedTasks.id);
+                const returnmsg = DeleteJob(
+                  selectedTasks.id,
+                  localStorage.getItem("accesstoken")
+                );
                 returnmsg
                   .then(
                     () => {

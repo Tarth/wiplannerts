@@ -163,7 +163,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
             color="primary"
             startIcon={<EditIcon />}
             onClick={() => {
-              // GetJobs(setTasks);
+              GetJobs(setTasks, localStorage.getItem("accesstoken"));
               setViews("");
               const defaultInfoText =
                 "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";

@@ -29,15 +29,20 @@ const PostJobToDB = async (
   start_date: string,
   end_date: string,
   description: string,
-  workersOnJob: number[]
+  workersOnJob: number[],
+  state: string | null
 ) => {
   try {
-    let res = await axios.post(localurl, {
-      startdate: start_date,
-      enddate: end_date,
-      description: description,
-      workerId: workersOnJob,
-    });
+    let res = await axios.post(
+      localurl,
+      {
+        startdate: start_date,
+        enddate: end_date,
+        description: description,
+        workerId: workersOnJob,
+      },
+      { headers: { Authorization: `Bearer ${state as string}` } }
+    );
     return res;
   } catch (error) {
     return error;
@@ -48,14 +53,16 @@ export const PostJob = async (
   start_date: string,
   end_date: string,
   description: string,
-  workersOnJob: number[]
+  workersOnJob: number[],
+  state: string | null
 ) => {
   PostJobToDB(
     `${url}/jobs/add`,
     start_date,
     end_date,
     description,
-    workersOnJob
+    workersOnJob,
+    state
   )
     .then(function (response) {
       return response;
@@ -119,20 +126,25 @@ export const GetJobs = async (
   }
 };
 
-const DeleteJobFromDB = async (localurl: string, job_id: number) => {
+const DeleteJobFromDB = async (
+  localurl: string,
+  job_id: number,
+  state: string
+) => {
   try {
     let res = await axios.delete(localurl, {
       data: {
         jobid: job_id,
       },
+      headers: { Authorization: `Bearer ${state}` },
     });
     return res;
   } catch (error) {
     return error;
   }
 };
-export const DeleteJob = async (job_id: number) => {
-  DeleteJobFromDB(`${url}/jobs/delete`, job_id)
+export const DeleteJob = async (job_id: number, state: string | null) => {
+  DeleteJobFromDB(`${url}/jobs/delete`, job_id, state as string)
     .then(function (response) {
       return response;
     })
@@ -147,16 +159,23 @@ const UpdateJobInDB = async (
   end_date: string,
   description: string,
   workersOnJob: number[],
-  job_id: number
+  job_id: number,
+  state: string
 ) => {
   try {
-    let res = await axios.put(localurl, {
-      startdate: start_date,
-      enddate: end_date,
-      description: description,
-      workerId: workersOnJob,
-      jobid: job_id,
-    });
+    let res = await axios.put(
+      localurl,
+      {
+        startdate: start_date,
+        enddate: end_date,
+        description: description,
+        workerId: workersOnJob,
+        jobid: job_id,
+      },
+      {
+        headers: { Authorization: `Bearer ${state}` },
+      }
+    );
     return res;
   } catch (error) {
     return error;
@@ -168,7 +187,8 @@ export const UpdateJob = async (
   end_date: string,
   description: string,
   workersOnJob: number[],
-  job_id: number
+  job_id: number,
+  state: string | null
 ) => {
   UpdateJobInDB(
     `${url}/jobs/update`,
@@ -176,7 +196,8 @@ export const UpdateJob = async (
     end_date,
     description,
     workersOnJob,
-    job_id
+    job_id,
+    state as string
   )
     .then(function (response) {
       return response;
