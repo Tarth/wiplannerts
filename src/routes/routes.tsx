@@ -2,32 +2,19 @@ import React, { useState } from "react";
 import { Calendar } from "../pages/calendar";
 import { Admin } from "../pages/admin";
 import { Login } from "../pages/login";
+import { getUserGroupNumber } from "../utility/usergroups";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 export const Index: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userGroup, setUserGroup] = useState("");
-  const [test, setTest] = useState(true);
-
-  enum userGroups {
-    winotoadmin = 1,
-    planner = 2,
-    worker = 3,
-  }
-
-  function getUserGroupNumber(usergroup: number) {
-    const _userGroupEnum = userGroups;
-    if (_userGroupEnum.hasOwnProperty(usergroup)) {
-      return _userGroupEnum[usergroup];
-    }
-  }
 
   return (
     <>
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
-            {isLoggedIn && userGroup <= userGroups.worker ? (
+            {isLoggedIn ? (
               <Redirect
                 to={{
                   pathname: "/calendar",
@@ -44,7 +31,7 @@ export const Index: React.FC = () => {
               ></Login>
             )}
           </Route>
-          {isLoggedIn && test ? (
+          {isLoggedIn ? (
             <>
               <Route path="/calendar">
                 <Calendar
