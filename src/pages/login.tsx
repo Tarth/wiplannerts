@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { PostLogin, AuthenticateUser } from "../utility/datahandler";
+import { ParseJWT } from "../utility/parsetoken";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "../css/login";
-import {
-  // LoginProps,
-  // LoginResponse,
-  IsUserLoggedInProp,
-} from "../models/models";
+import { IsUserLoggedInProp } from "../models/models";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import WaveTop from "../css/imgs/wave-top.png";
 import WaveMid from "../css/imgs/wave-mid.png";
@@ -17,6 +14,7 @@ import WaveBot from "../css/imgs/wave-bot.png";
 export const Login: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
+  setUserGroup,
 }) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
@@ -36,9 +34,13 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
     } else {
       const accessToken = returnmsg.data.accessToken;
       const refreshToken = returnmsg.data.refreshToken;
+      const userdata = ParseJWT(accessToken);
       localStorage.setItem("accesstoken", accessToken);
       localStorage.setItem("refreshtoken", refreshToken);
 
+      if (setUserGroup !== undefined) {
+        setUserGroup(userdata.usergroup);
+      }
       if (accessToken !== null) {
         await AuthenticateUser(accessToken);
         setIsLoggedIn(true);

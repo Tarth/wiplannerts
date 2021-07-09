@@ -133,8 +133,10 @@ export interface LoginResponse {
 export interface IsUserLoggedInProp {
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
+  userGroup?: string;
+  setUserGroup?: (userGroup: string) => void;
 }
 
-export interface TestProp {
-  accesstoken: string;
-}
+// export interface TestProp {
+//   accesstoken: string;
+// }
