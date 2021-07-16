@@ -136,7 +136,3 @@ export interface IsUserLoggedInProp {
   userGroup?: string;
   setUserGroup?: (userGroup: string) => void;
 }
-
-// export interface TestProp {
-//   accesstoken: string;
-// }

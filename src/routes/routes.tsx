@@ -31,24 +31,32 @@ export const Index: React.FC = () => {
               ></Login>
             )}
           </Route>
-          {isLoggedIn ? (
-            <>
-              <Route path="/calendar">
+          <Route path="/calendar">
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 3 ? (
+              <>
                 <Calendar
                   isLoggedIn={isLoggedIn}
                   setIsLoggedIn={setIsLoggedIn}
+                  userGroup={userGroup}
                 ></Calendar>
-              </Route>
-              <Route path="/admin">
+              </>
+            ) : (
+              <Redirect exact to="/"></Redirect>
+            )}
+          </Route>
+          <Route path="/admin">
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 2 ? (
+              <>
                 <Admin
                   isLoggedIn={isLoggedIn}
                   setIsLoggedIn={setIsLoggedIn}
+                  userGroup={userGroup}
                 ></Admin>
-              </Route>
-            </>
-          ) : (
-            <Redirect exact to="/"></Redirect>
-          )}
+              </>
+            ) : (
+              <Redirect exact to="/"></Redirect>
+            )}
+          </Route>
         </Switch>
       </BrowserRouter>
     </>

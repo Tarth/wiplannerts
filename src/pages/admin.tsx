@@ -23,6 +23,7 @@ import "fontsource-roboto";
 export const Admin: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
+  userGroup,
 }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
@@ -121,6 +122,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
       <Navigation
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
+        userGroup={userGroup}
       ></Navigation>
       <div className="body">
         <div className="buttongroup">

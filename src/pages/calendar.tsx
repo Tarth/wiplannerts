@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GetJobs, GetAccessTokenFromRefresh } from "../utility/datahandler";
+import { NameBackgroundColor } from "../utility/colorcodes";
 import {
   Job_Worker,
   DateProp,
@@ -16,12 +17,12 @@ import {
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
-import { NameBackgroundColor } from "../utility/colorcodes";
 import { Navigation } from "../components/navigation/navigation";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
+  userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   // const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -54,7 +55,9 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
       <Navigation
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
+        userGroup={userGroup}
       ></Navigation>
+
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
         <IconButton
