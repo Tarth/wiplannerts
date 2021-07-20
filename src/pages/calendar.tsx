@@ -25,8 +25,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
-  // const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 4, 20));
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
   async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
     const res = await GetJobs(setTasks, localStorage.getItem("accesstoken"));
@@ -46,7 +45,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     GetJobData(setTasks);
     const interval = setInterval(async () => {
       GetJobData(setTasks);
-    }, 30000);
+    }, 60000);
     return () => clearInterval(interval);
   }, []);
 
