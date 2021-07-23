@@ -131,7 +131,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
                 description === "" ||
                 isStartValid === false ||
                 isEndValid === false ||
-                workers === []
+                selectedWorkers.length === 0
               ) {
                 setUsrAlert({
                   type: "error",

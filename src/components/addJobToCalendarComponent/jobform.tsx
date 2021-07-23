@@ -38,7 +38,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 }) => {
   const classes = useStyles();
   let alert;
-
+  const testArray: string[] = [];
   useEffect(() => {
     const defaultInfoText =
       "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
@@ -104,7 +104,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
                 endDate === "" ||
                 isStartValid === false ||
                 isEndValid === false ||
-                workers === []
+                selectedWorkers.length === 0
               ) {
                 setUsrAlert({
                   type: "error",
