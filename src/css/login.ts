@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-import "./loginGradient.css";
+import "./loginGradient.module.css";
 import "./loginWave.css";
 
 const useStyles = makeStyles({
@@ -23,7 +23,6 @@ const useStyles = makeStyles({
   button: {
     margin: "25px auto 0 auto",
   },
-  
 });
 
 export { useStyles };
