@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-// import "./loginGradient.css";
 import "./loginWave.css";
 
 const useStyles = makeStyles({
