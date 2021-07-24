@@ -1,6 +1,17 @@
 import { Job_Worker, DbJob, Worker } from "../models/models";
 
-const url = `https://${process.env.REACT_APP_API_URL}:${process.env.REACT_APP_API_PORT}`;
+const apiUrl = process.env.REACT_APP_API_URL;
+const apiPort = process.env.REACT_APP_API_PORT;
+const nodeEnv = process.env.NODE_ENV;
+let protocol = "";
+
+if (nodeEnv === "development") {
+  protocol = "http";
+} else {
+  protocol = "https";
+}
+
+const url = `${protocol}://${apiUrl}:${apiPort}`;
 const axios = require("axios").default;
 
 const PostWorkerToDB = async (localurl: string, workername: string) => {
