@@ -136,3 +136,8 @@ export interface IsUserLoggedInProp {
   userGroup?: string;
   setUserGroup?: (userGroup: string) => void;
 }
+
+export interface UserAlertProp {
+  usrAlert: AlertProp;
+  setUsrAlert: (usrAlert: AlertProp) => void;
+}

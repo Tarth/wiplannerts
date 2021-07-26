@@ -63,7 +63,6 @@ export const CheckboxList: React.FC<Props> = ({
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                // checked={selectedWorkers.indexOf(e) !== -1}
                 checked={selectedWorkers.some((worker) => worker.id === e.id)}
                 tabIndex={-1}
                 disableRipple

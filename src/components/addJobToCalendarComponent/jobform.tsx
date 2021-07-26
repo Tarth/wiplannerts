@@ -38,7 +38,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
 }) => {
   const classes = useStyles();
   let alert;
-  const testArray: string[] = [];
+
   useEffect(() => {
     const defaultInfoText =
       "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
@@ -94,9 +94,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
         <div className="buttonContainer">
           <Button
             className={classes.button}
-            variant="contained"
+            variant="outlined"
             color="primary"
-            startIcon={<SaveIcon />}
             onClick={() => {
               if (
                 description === "" ||
@@ -148,7 +147,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
               }
             }}
           >
-            Tilføj til kalender
+            Tilføj
           </Button>
         </div>
       </div>

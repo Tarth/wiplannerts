@@ -14,9 +14,11 @@ import {
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
+import { AddUser } from "../components/addUser/addUser";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
+import PersonAdd from "@material-ui/icons/PersonAdd";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 
@@ -38,7 +40,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
   const [startDate, setStartDate] = useState<string>(); // example value: "2020-12-23T23:59"
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
-  const [views, setViews] = useState<string>(""); // This state controls which view is drawn on the admin page
+  const [views, setViews] = useState<string>("editjob"); // This state controls which view is drawn on the admin page
   const [usrAlert, setUsrAlert] = useState<AlertProp>({
     type: undefined,
     title: "",
@@ -89,7 +91,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
         ></AddJobForm>
       </div>
     );
-  } else {
+  } else if (views === "editjob") {
     view = (
       <div className="editjob">
         <JobListBox
@@ -115,6 +117,8 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
         />
       </div>
     );
+  } else {
+    view = <AddUser usrAlert={usrAlert} setUsrAlert={setUsrAlert} />;
   }
 
   return (
@@ -166,7 +170,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
             startIcon={<EditIcon />}
             onClick={() => {
               GetJobs(setTasks, localStorage.getItem("accesstoken"));
-              setViews("");
+              setViews("editjob");
               const defaultInfoText =
                 "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
               if (usrAlert.text !== defaultInfoText) {
@@ -179,6 +183,26 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
             }}
           >
             Rediger Job
+          </Button>
+          <Button
+            className={classes.buttonStyle}
+            variant="contained"
+            color="primary"
+            startIcon={<PersonAdd />}
+            onClick={() => {
+              setViews("adduser");
+              const defaultInfoText =
+                "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+              if (usrAlert.text !== defaultInfoText) {
+                setUsrAlert({
+                  type: "info",
+                  title: "Information",
+                  text: defaultInfoText,
+                });
+              }
+            }}
+          >
+            Tilføj Bruger
           </Button>
         </div>
         {view}
