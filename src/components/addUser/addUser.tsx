@@ -74,7 +74,9 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
         <FormControl className={classes.formElement}>
           <TextField variant="filled" label="Kalendernavn"></TextField>
         </FormControl>
-        <Button color="primary">Tilføj</Button>
+        <Button color="primary" variant="outlined">
+          Tilføj
+        </Button>
       </form>
     </div>
   );

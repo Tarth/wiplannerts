@@ -6,7 +6,7 @@ const useStyles = makeStyles({
     width: "300px",
   },
   formElement: {
-    marginTop: "20px",
+    marginBottom: "20px",
   },
   inputLabel: {
     marginLeft: "10px",
