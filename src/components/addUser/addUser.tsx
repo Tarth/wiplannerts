@@ -11,13 +11,19 @@ import {
 import { UserAlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyles } from "./style";
+import { PostWorker } from "../../utility/datahandler";
 
 export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
-  const [userLevel, setUserLevel] = useState("");
-  const [userClasses, setUserClasses] = useState<String[]>([]);
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [userGroup, setUserGroup] = useState("worker");
+  const [workerName, setWorkerName] = useState("");
   const classes = useStyles();
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setUserLevel(event.target.value as string);
+    setUserGroup(event.target.value as string);
+    if (event.target.value !== "worker") {
+      setWorkerName("");
+    }
   };
 
   let alert = (
@@ -47,13 +53,23 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
       {alert}
       <form className={classes.form}>
         <FormControl className={classes.formElement}>
-          <TextField variant="filled" label="Brugernavn"></TextField>
+          <TextField
+            variant="filled"
+            label="Brugernavn"
+            value={userName}
+            onChange={(e) => {
+              setUserName(e.target.value);
+            }}
+          ></TextField>
         </FormControl>
         <FormControl className={classes.formElement}>
           <TextField
             variant="filled"
             type="password"
             label="Kodeord"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           ></TextField>
         </FormControl>
         <FormControl className={classes.formElement}>
@@ -63,18 +79,35 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
           <Select
             variant="filled"
             labelId="inputUserClassSelect"
-            value={userLevel}
+            value={userGroup}
             onChange={handleChange}
           >
-            <MenuItem value={10}>Admin</MenuItem>
-            <MenuItem value={20}>Planner</MenuItem>
-            <MenuItem value={30}>Medarbejder</MenuItem>
+            <MenuItem value={"worker"}>Medarbejder</MenuItem>
+            <MenuItem value={"planner"}>Planner</MenuItem>
+            <MenuItem value={"winotoadmin"}>Admin</MenuItem>
           </Select>
         </FormControl>
         <FormControl className={classes.formElement}>
-          <TextField variant="filled" label="Kalendernavn"></TextField>
+          <TextField
+            variant="filled"
+            label="Kalendernavn"
+            disabled={userGroup !== "worker" ? true : false}
+            onChange={(e) => {
+              setWorkerName(e.target.value);
+            }}
+          ></TextField>
         </FormControl>
-        <Button color="primary" variant="outlined">
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => {
+            if (workerName === "") {
+              PostWorker(userName, userGroup, password);
+            } else {
+              PostWorker(userName, userGroup, password, workerName);
+            }
+          }}
+        >
           Tilføj
         </Button>
       </form>

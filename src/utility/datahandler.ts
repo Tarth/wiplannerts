@@ -14,9 +14,20 @@ if (nodeEnv === "development") {
 const url = `${protocol}://${apiUrl}:${apiPort}`;
 const axios = require("axios").default;
 
-const PostWorkerToDB = async (localurl: string, workername: string) => {
+const PostWorkerToDB = async (
+  localurl: string,
+  _username: string,
+  _usergroup: string,
+  _password: string,
+  _workername?: string
+) => {
   try {
-    let res = await axios.post(localurl, { name: workername });
+    let res = await axios.post(localurl, {
+      username: _username,
+      usergroup: _usergroup,
+      password: _password,
+      workername: _workername,
+    });
     return res;
   } catch (error) {
     return error;
@@ -24,8 +35,13 @@ const PostWorkerToDB = async (localurl: string, workername: string) => {
 };
 
 // Post a new worker into the DB
-export const PostWorker = async (workername: string) => {
-  PostWorkerToDB(`${url}/workers/add`, workername)
+export const PostWorker = async (
+  username: string,
+  usergroup: string,
+  password: string,
+  workername?: string
+) => {
+  PostWorkerToDB(`${url}/users`, username, usergroup, password, workername)
     .then(function (response) {
       return response;
     })
@@ -50,7 +66,7 @@ const PostJobToDB = async (
         startdate: start_date,
         enddate: end_date,
         description: description,
-        workerId: workersOnJob,
+        workerid: workersOnJob,
       },
       { headers: { Authorization: `Bearer ${state as string}` } }
     );
@@ -67,14 +83,7 @@ export const PostJob = async (
   workersOnJob: number[],
   state: string | null
 ) => {
-  PostJobToDB(
-    `${url}/jobs/add`,
-    start_date,
-    end_date,
-    description,
-    workersOnJob,
-    state
-  )
+  PostJobToDB(`${url}/jobs`, start_date, end_date, description, workersOnJob, state)
     .then(function (response) {
       return response;
     })
@@ -94,11 +103,8 @@ const GetDataFromDB = async (localurl: string, state: string) => {
   }
 };
 
-export const GetWorkers = async (
-  setState: (workers: Worker[]) => void,
-  state: string
-) => {
-  GetDataFromDB(`${url}/workers`, state as string)
+export const GetWorkers = async (setState: (workers: Worker[]) => void, state: string) => {
+  GetDataFromDB(`${url}/users`, state as string)
     .then((res) => {
       const dbdata = res.data as Worker[];
       const data = dbdata.map((x) => ({ id: x.id, name: x.name }));
@@ -109,10 +115,7 @@ export const GetWorkers = async (
     });
 };
 
-export const GetJobs = async (
-  setState: (jobs: Job_Worker[]) => void,
-  state: string | null
-) => {
+export const GetJobs = async (setState: (jobs: Job_Worker[]) => void, state: string | null) => {
   try {
     const res = await GetDataFromDB(`${url}/calendar`, state as string);
     if (res.hasOwnProperty("response")) {
@@ -137,11 +140,7 @@ export const GetJobs = async (
   }
 };
 
-const DeleteJobFromDB = async (
-  localurl: string,
-  job_id: number,
-  state: string
-) => {
+const DeleteJobFromDB = async (localurl: string, job_id: number, state: string) => {
   try {
     let res = await axios.delete(localurl, {
       data: {
@@ -155,7 +154,7 @@ const DeleteJobFromDB = async (
   }
 };
 export const DeleteJob = async (job_id: number, state: string | null) => {
-  DeleteJobFromDB(`${url}/jobs/delete`, job_id, state as string)
+  DeleteJobFromDB(`${url}/jobs`, job_id, state as string)
     .then(function (response) {
       return response;
     })
@@ -180,7 +179,7 @@ const UpdateJobInDB = async (
         startdate: start_date,
         enddate: end_date,
         description: description,
-        workerId: workersOnJob,
+        workerid: workersOnJob,
         jobid: job_id,
       },
       {
@@ -202,7 +201,7 @@ export const UpdateJob = async (
   state: string | null
 ) => {
   UpdateJobInDB(
-    `${url}/jobs/update`,
+    `${url}/jobs`,
     start_date,
     end_date,
     description,
@@ -218,11 +217,7 @@ export const UpdateJob = async (
     });
 };
 
-const PostLoginToDB = async (
-  localurl: string,
-  _username: string,
-  _password: string
-) => {
+const PostLoginToDB = async (localurl: string, _username: string, _password: string) => {
   try {
     let res = await axios.post(localurl, {
       username: _username,
