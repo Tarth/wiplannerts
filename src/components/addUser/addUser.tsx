@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  FormHelperText,
-  Button,
-} from "@material-ui/core";
+import { TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@material-ui/core";
 import { UserAlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyles } from "./style";
@@ -100,11 +92,47 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
         <Button
           color="primary"
           variant="outlined"
-          onClick={() => {
-            if (workerName === "") {
-              PostWorker(userName, userGroup, password);
-            } else {
-              PostWorker(userName, userGroup, password, workerName);
+          onClick={async () => {
+            if (
+              userName === "" ||
+              password === "" ||
+              (userGroup === "worker" && workerName === "")
+            ) {
+              setUsrAlert({
+                type: "error",
+                title: "Fejl",
+                text: "Forkert indtastning. Ingen af felterne må være tomme",
+              });
+              return;
+            }
+            try {
+              if (userGroup === "worker") {
+                await PostWorker(
+                  userName,
+                  userGroup,
+                  password,
+                  localStorage.getItem("accesstoken") as string,
+                  workerName
+                );
+              } else {
+                await PostWorker(
+                  userName,
+                  userGroup,
+                  password,
+                  localStorage.getItem("accesstoken") as string
+                );
+              }
+              setUsrAlert({
+                type: "success",
+                title: "Success",
+                text: "Bruger tilføjet til databasen",
+              });
+            } catch (err) {
+              setUsrAlert({
+                type: "error",
+                title: "Fejl",
+                text: `Fejltext: ${err}`,
+              });
             }
           }}
         >

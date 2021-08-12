@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
 import { JobFormProp } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
@@ -66,10 +65,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       {alert}
       <div className="parentDiv">
         <div className="leftContainer">
-          <Description
-            description={description}
-            setDescription={setDescription}
-          />
+          <Description description={description} setDescription={setDescription} />
           <DateInput
             date={startDate}
             setDate={setStartDate}

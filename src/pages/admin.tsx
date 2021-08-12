@@ -5,12 +5,7 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetWorkers, GetJobs } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
-import {
-  Worker,
-  Job_Worker,
-  AlertProp,
-  IsUserLoggedInProp,
-} from "../models/models";
+import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
@@ -21,12 +16,9 @@ import EditIcon from "@material-ui/icons/Create";
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
+import { getUserGroupNumber } from "../utility/usergroups";
 
-export const Admin: React.FC<IsUserLoggedInProp> = ({
-  isLoggedIn,
-  setIsLoggedIn,
-  userGroup,
-}) => {
+export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job_Worker[]>([]); //This state has all jobs fetched from DB
@@ -152,12 +144,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
                 (endDate !== "" && endDate !== undefined) ||
                 selectedWorkers !== []
               ) {
-                ResetInputFields(
-                  setDescription,
-                  setStartDate,
-                  setEndDate,
-                  setSelectedWorkers
-                );
+                ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
               }
             }}
           >
@@ -184,26 +171,30 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({
           >
             Rediger Job
           </Button>
-          <Button
-            className={classes.buttonStyle}
-            variant="contained"
-            color="primary"
-            startIcon={<PersonAdd />}
-            onClick={() => {
-              setViews("adduser");
-              const defaultInfoText =
-                "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-              if (usrAlert.text !== defaultInfoText) {
-                setUsrAlert({
-                  type: "info",
-                  title: "Information",
-                  text: defaultInfoText,
-                });
-              }
-            }}
-          >
-            Tilføj Bruger
-          </Button>
+          {getUserGroupNumber(userGroup as string) < 2 ? (
+            <Button
+              className={classes.buttonStyle}
+              variant="contained"
+              color="primary"
+              startIcon={<PersonAdd />}
+              onClick={() => {
+                setViews("adduser");
+                const defaultInfoText =
+                  "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+                if (usrAlert.text !== defaultInfoText) {
+                  setUsrAlert({
+                    type: "info",
+                    title: "Information",
+                    text: defaultInfoText,
+                  });
+                }
+              }}
+            >
+              Tilføj Bruger
+            </Button>
+          ) : (
+            <></>
+          )}
         </div>
         {view}
       </div>

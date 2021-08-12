@@ -19,18 +19,23 @@ const PostWorkerToDB = async (
   _username: string,
   _usergroup: string,
   _password: string,
+  _state: string,
   _workername?: string
 ) => {
   try {
-    let res = await axios.post(localurl, {
-      username: _username,
-      usergroup: _usergroup,
-      password: _password,
-      workername: _workername,
-    });
+    let res = await axios.post(
+      localurl,
+      {
+        username: _username,
+        usergroup: _usergroup,
+        password: _password,
+        workername: _workername,
+      },
+      { headers: { Authorization: `Bearer ${_state as string}` } }
+    );
     return res;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -39,15 +44,22 @@ export const PostWorker = async (
   username: string,
   usergroup: string,
   password: string,
+  state: string,
   workername?: string
 ) => {
-  PostWorkerToDB(`${url}/users`, username, usergroup, password, workername)
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return error;
-    });
+  try {
+    const response = await PostWorkerToDB(
+      `${url}/users`,
+      username,
+      usergroup,
+      password,
+      state,
+      workername
+    );
+    return response;
+  } catch (err) {
+    throw err;
+  }
 };
 
 // Post a new job into the DB
