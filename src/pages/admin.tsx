@@ -56,7 +56,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   useEffect(() => {
     const token: string | null = localStorage.getItem("accesstoken");
     if (token !== null) {
-      GetWorkers(setWorkers, token);
+      GetWorkers(setWorkers, token, { querySelector: "workers" });
       GetJobs(setTasks, token);
     }
   }, []);

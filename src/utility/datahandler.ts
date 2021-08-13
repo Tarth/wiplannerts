@@ -104,19 +104,31 @@ export const PostJob = async (
     });
 };
 
-const GetDataFromDB = async (localurl: string, state: string) => {
+//General purpose Get data from db function. The parameters are optional and is used to call different queries from the frontend.
+const GetDataFromDB = async (
+  localurl: string,
+  state: string,
+  parameters?: { querySelector: string }
+) => {
   try {
-    let res = await axios.get(localurl, {
-      headers: { Authorization: `Bearer ${state}` },
-    });
+    let requestConfig = { headers: { Authorization: `Bearer ${state}` } };
+    if (parameters !== undefined) {
+      let queryConfig = { params: parameters };
+      Object.assign(requestConfig, queryConfig);
+    }
+    let res = await axios.get(localurl, requestConfig);
     return res;
   } catch (error) {
     return error;
   }
 };
 
-export const GetWorkers = async (setState: (workers: Worker[]) => void, state: string) => {
-  GetDataFromDB(`${url}/users`, state as string)
+export const GetWorkers = async (
+  setState: (workers: Worker[]) => void,
+  state: string,
+  params?: { querySelector: string }
+) => {
+  GetDataFromDB(`${url}/users`, state as string, params)
     .then((res) => {
       const dbdata = res.data as Worker[];
       const data = dbdata.map((x) => ({ id: x.id, name: x.name }));
