@@ -10,6 +10,7 @@ import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
 import { AddUser } from "../components/addUser/addUser";
+import { EditUser } from "../components/editUser/editUser";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Create";
@@ -109,8 +110,10 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
         />
       </div>
     );
-  } else {
+  } else if (views === "adduser") {
     view = <AddUser usrAlert={usrAlert} setUsrAlert={setUsrAlert} />;
+  } else {
+    view = <EditUser></EditUser>;
   }
 
   return (
@@ -172,26 +175,48 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             Rediger Job
           </Button>
           {getUserGroupNumber(userGroup as string) < 2 ? (
-            <Button
-              className={classes.buttonStyle}
-              variant="contained"
-              color="primary"
-              startIcon={<PersonAdd />}
-              onClick={() => {
-                setViews("adduser");
-                const defaultInfoText =
-                  "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-                if (usrAlert.text !== defaultInfoText) {
-                  setUsrAlert({
-                    type: "info",
-                    title: "Information",
-                    text: defaultInfoText,
-                  });
-                }
-              }}
-            >
-              Tilføj Bruger
-            </Button>
+            <>
+              <Button
+                className={classes.buttonStyle}
+                variant="contained"
+                color="primary"
+                startIcon={<PersonAdd />}
+                onClick={() => {
+                  setViews("adduser");
+                  const defaultInfoText =
+                    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+                  if (usrAlert.text !== defaultInfoText) {
+                    setUsrAlert({
+                      type: "info",
+                      title: "Information",
+                      text: defaultInfoText,
+                    });
+                  }
+                }}
+              >
+                Tilføj Bruger
+              </Button>
+              <Button
+                className={classes.buttonStyle}
+                variant="contained"
+                color="primary"
+                startIcon={<EditIcon />}
+                onClick={() => {
+                  setViews("edituser");
+                  const defaultInfoText =
+                    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+                  if (usrAlert.text !== defaultInfoText) {
+                    setUsrAlert({
+                      type: "info",
+                      title: "Information",
+                      text: defaultInfoText,
+                    });
+                  }
+                }}
+              >
+                Rediger Bruger
+              </Button>
+            </>
           ) : (
             <></>
           )}

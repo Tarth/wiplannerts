@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Users } from "../../models/models";
+import { Users, Worker } from "../../models/models";
+import { GetWorkers } from "../../utility/datahandler";
 
 export const EditUser = () => {
   const users = [
@@ -111,6 +112,10 @@ export const EditUser = () => {
       password: "$2b$10$tdW2pfLTQmyXgObBOQKHfeNy2zGFS4c9/Z/JUGP0kEhJAmKmuIQES",
     },
   ];
+
+  // useEffect(() => {
+  //   GetWorkers();
+  // });
   const [selectedUsers, setSelectedUsers] = useState<Users>({
     id: 0,
     name: "",
@@ -126,6 +131,9 @@ export const EditUser = () => {
         dataKey="id"
         paginator
         selection={selectedUsers}
+        onRowClick={(e) => {
+          console.log(e.data);
+        }}
         // onSelectionChange={(e) => {}}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
