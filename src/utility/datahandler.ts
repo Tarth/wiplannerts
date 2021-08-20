@@ -131,7 +131,13 @@ export const GetWorkers = async (
   GetDataFromDB(`${url}/users`, state as string, params)
     .then((res) => {
       const dbdata = res.data as Worker[];
-      const data = dbdata.map((x) => ({ id: x.id, name: x.name }));
+      const data = dbdata.map((x) => ({
+        id: x.id,
+        name: x.name,
+        username: x.username,
+        usergroup_id: x.usergroup_id,
+        password: x.password,
+      }));
       setState(data);
     })
     .catch((e) => {

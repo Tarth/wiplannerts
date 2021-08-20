@@ -24,7 +24,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job_Worker[]>([]); //This state has all jobs fetched from DB
   const [selectedTasks, setSelectedTasks] = useState<Job_Worker>({
-    worker: { id: 0, name: "" },
+    worker: { id: 0, name: "", username: "", usergroup_id: 0, password: "" },
     description: "",
     start: new Date(),
     end: new Date(),

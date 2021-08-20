@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Users, Worker } from "../../models/models";
+import { User, Worker } from "../../models/models";
 import { GetWorkers } from "../../utility/datahandler";
 
 export const EditUser = () => {
@@ -116,7 +116,7 @@ export const EditUser = () => {
   // useEffect(() => {
   //   GetWorkers();
   // });
-  const [selectedUsers, setSelectedUsers] = useState<Users>({
+  const [selectedUsers, setSelectedUsers] = useState<Worker>({
     id: 0,
     name: "",
     username: "",

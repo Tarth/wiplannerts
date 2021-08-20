@@ -29,15 +29,16 @@ export interface DbJob {
   end_date: string;
   job_id: number;
 }
-export interface Worker {
-  id: number;
-  name: string;
-}
 
-export interface Users extends Worker {
+export interface User {
+  id: number;
   username: string;
   usergroup_id: number;
   password: string;
+}
+
+export interface Worker extends User {
+  name: string;
 }
 
 interface JobProp {
