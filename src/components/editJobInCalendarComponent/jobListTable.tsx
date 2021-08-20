@@ -3,8 +3,8 @@ import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { ConfirmationDialog } from "./confirmationDialog";
 import { DataTable } from "primereact/datatable";
-import { EditJobDialog } from "./editJobDialog";
 import { Column } from "primereact/column";
+import { EditJobDialog } from "./editJobDialog";
 import { format } from "date-fns";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,13 +61,9 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: Job_WorkerArray[] = [];
   tasks.forEach((jobItem) => {
-    let job = concatJobs.find(
-      (concatJobItem) => concatJobItem.id === jobItem.id
-    );
+    let job = concatJobs.find((concatJobItem) => concatJobItem.id === jobItem.id);
     if (job !== undefined) {
-      let jobwithworker = job.workers.find(
-        (worker) => worker.id === jobItem.worker.id
-      );
+      let jobwithworker = job.workers.find((worker) => worker.id === jobItem.worker.id);
       if (jobwithworker === undefined) {
         job.workers.push(jobItem.worker);
       }
@@ -109,9 +105,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           setDescription(e.value.description);
           setStartDate(e.value.start);
           setEndDate(e.value.end);
-          let job = concatJobs.find(
-            (element) => element.id === parseInt(e.value.id)
-          );
+          let job = concatJobs.find((element) => element.id === parseInt(e.value.id));
           if (job !== undefined) {
             setSelectedWorkers(job.workers);
           }

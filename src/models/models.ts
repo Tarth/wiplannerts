@@ -34,6 +34,12 @@ export interface Worker {
   name: string;
 }
 
+export interface Users extends Worker {
+  username: string;
+  usergroup_id: number;
+  password: string;
+}
+
 interface JobProp {
   description: string;
   setDescription: (description: string) => void;
