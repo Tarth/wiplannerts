@@ -8,19 +8,14 @@ export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
 
   useEffect(() => {
-    const token: string | null = localStorage.getItem("accesstoken");
-    if (token !== null) {
-      GetWorkers(setUsers, token, { querySelector: "" });
+    async function FetchUserData() {
+      const token: string | null = localStorage.getItem("accesstoken");
+      if (token !== null) {
+        await GetWorkers(setUsers, token, { querySelector: "" });
+      }
     }
+    FetchUserData();
   }, []);
-
-  const [selectedUsers, setSelectedUsers] = useState<Worker>({
-    id: 0,
-    name: "",
-    username: "",
-    usergroup_id: 0,
-    password: "",
-  });
 
   return (
     <div>
@@ -28,11 +23,9 @@ export const EditUser = () => {
         value={users}
         dataKey="id"
         paginator
-        selection={selectedUsers}
         onRowClick={(e) => {
           console.log(e.data);
         }}
-        // onSelectionChange={(e) => {}}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
