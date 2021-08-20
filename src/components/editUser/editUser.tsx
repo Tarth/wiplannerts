@@ -5,117 +5,15 @@ import { User, Worker } from "../../models/models";
 import { GetWorkers } from "../../utility/datahandler";
 
 export const EditUser = () => {
-  const users = [
-    {
-      id: 4,
-      name: "Anne",
-      username: "worker3",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 84,
-      name: "Arbejder",
-      username: "3",
-      usergroup_id: 3,
-      password: "$2b$10$UC3HdZeaMGQexjMgTk49GeLIDtT.WrYoNouM8NJHqqgNxc0pW1jfC",
-    },
-    {
-      id: 58,
-      name: "Benny",
-      username: "worker10",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 8,
-      name: "Bjørn",
-      username: "worker7",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 3,
-      name: "Frank",
-      username: "worker2",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 118,
-      name: "Frontend",
-      username: "frontend",
-      usergroup_id: 3,
-      password: "$2b$10$fO8fxl8LpiZIyAsZDfOS4enq82bj./o1kHUqs6Oy4l1.ZCB2kGbuS",
-    },
-    {
-      id: 9,
-      name: "Helle",
-      username: "worker8",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 7,
-      name: "Jonas",
-      username: "worker6",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 10,
-      name: "Kenneth",
-      username: "worker9",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 6,
-      name: "Michael",
-      username: "worker5",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 1,
-      name: "Mikkel",
-      username: "worker11",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 5,
-      name: "Rebecca",
-      username: "worker4",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 2,
-      name: "Torben",
-      username: "worker1",
-      usergroup_id: 3,
-      password: "1",
-    },
-    {
-      id: 76,
-      name: null,
-      username: "1",
-      usergroup_id: 1,
-      password: "$2b$10$uh251xM4zrtcuJkvv2sCMeXsEXPBRKB2YErTE4pEqii6GdoDuYVAy",
-    },
-    {
-      id: 77,
-      name: null,
-      username: "2",
-      usergroup_id: 2,
-      password: "$2b$10$tdW2pfLTQmyXgObBOQKHfeNy2zGFS4c9/Z/JUGP0kEhJAmKmuIQES",
-    },
-  ];
+  const [users, setUsers] = useState<Worker[]>([]);
 
-  // useEffect(() => {
-  //   GetWorkers();
-  // });
+  useEffect(() => {
+    const token: string | null = localStorage.getItem("accesstoken");
+    if (token !== null) {
+      GetWorkers(setUsers, token, { querySelector: "" });
+    }
+  }, []);
+
   const [selectedUsers, setSelectedUsers] = useState<Worker>({
     id: 0,
     name: "",
