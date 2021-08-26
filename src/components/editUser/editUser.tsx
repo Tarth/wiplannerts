@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
 import { User, Worker } from "../../models/models";
 import { GetWorkers } from "../../utility/datahandler";
+import { EditUserDialog } from "./editWorkerDialog";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
     async function FetchUserData() {
@@ -24,7 +27,7 @@ export const EditUser = () => {
         dataKey="id"
         paginator
         onRowClick={(e) => {
-          console.log(e.data);
+          setOpenModal(true);
         }}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
@@ -57,6 +60,7 @@ export const EditUser = () => {
           filterPlaceholder="Søg navn"
         ></Column>
       </DataTable>
+      <EditUserDialog openModal={openModal} setOpenModal={setOpenModal}></EditUserDialog>
     </div>
   );
 };

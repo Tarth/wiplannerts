@@ -148,3 +148,8 @@ export interface UserAlertProp {
   usrAlert: AlertProp;
   setUsrAlert: (usrAlert: AlertProp) => void;
 }
+
+export interface EditUserDialogProp {
+  openModal: boolean;
+  setOpenModal: (setOpen: boolean) => void;
+}
