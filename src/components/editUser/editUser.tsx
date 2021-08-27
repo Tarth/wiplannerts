@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { InputText } from "primereact/inputtext";
-import { User, Worker } from "../../models/models";
+import { Worker } from "../../models/models";
 import { GetWorkers } from "../../utility/datahandler";
-import { EditUserDialog } from "./editWorkerDialog";
+import { EditUserDialog } from "./editUserDialog";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
+  const [selectedUser, setSelectedUser] = useState<Worker>({
+    id: 0,
+    name: "",
+    password: "",
+    usergroup_id: 0,
+    username: "",
+  });
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -27,6 +33,13 @@ export const EditUser = () => {
         dataKey="id"
         paginator
         onRowClick={(e) => {
+          setSelectedUser({
+            id: e.data.id,
+            name: e.data.name,
+            password: e.data.password,
+            usergroup_id: e.data.usergroup_id,
+            username: e.data.username,
+          });
           setOpenModal(true);
         }}
         selectionMode="single"
@@ -60,7 +73,11 @@ export const EditUser = () => {
           filterPlaceholder="Søg navn"
         ></Column>
       </DataTable>
-      <EditUserDialog openModal={openModal} setOpenModal={setOpenModal}></EditUserDialog>
+      <EditUserDialog
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        selectedUser={selectedUser}
+      ></EditUserDialog>
     </div>
   );
 };

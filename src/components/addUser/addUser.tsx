@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, InputLabel, MenuItem, FormControl, Select, Button } from "@material-ui/core";
 import { UserAlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { useStyles } from "./style";
 import { PostWorker } from "../../utility/datahandler";
 
@@ -68,16 +69,11 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
           <InputLabel id="inputUserClassSelect" className={classes.inputLabel}>
             Brugerklasse
           </InputLabel>
-          <Select
-            variant="filled"
-            labelId="inputUserClassSelect"
-            value={userGroup}
-            onChange={handleChange}
-          >
-            <MenuItem value={"worker"}>Medarbejder</MenuItem>
-            <MenuItem value={"planner"}>Planner</MenuItem>
-            <MenuItem value={"winotoadmin"}>Admin</MenuItem>
-          </Select>
+          <UserSelectBox
+            setUserGroup={setUserGroup}
+            setWorkerName={setWorkerName}
+            userGroup={userGroup}
+          ></UserSelectBox>
         </FormControl>
         <FormControl className={classes.formElement}>
           <TextField

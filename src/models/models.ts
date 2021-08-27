@@ -150,6 +150,13 @@ export interface UserAlertProp {
 }
 
 export interface EditUserDialogProp {
+  selectedUser: Worker;
   openModal: boolean;
   setOpenModal: (setOpen: boolean) => void;
+}
+
+export interface UserSelectBoxProp {
+  userGroup: string;
+  setUserGroup: (userGroup: string) => void;
+  setWorkerName: (workerName: string) => void;
 }
