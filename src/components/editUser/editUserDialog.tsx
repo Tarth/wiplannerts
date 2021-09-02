@@ -15,19 +15,15 @@ import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   openModal,
   setOpenModal,
-  selectedUser,
+  username,
+  setUsername,
+  password,
+  setPassword,
+  usergroup,
+  setUsergroup,
+  name,
+  setName,
 }) => {
-  const [userName, setUserName] = useState(selectedUser.username);
-  const [password, setPassword] = useState(selectedUser.password);
-  // const [userGroup, setUserGroup] = useState(selectedUser.usergroup_id);
-  const [userGroup, setUserGroup] = useState("worker");
-  // const [workerName, setWorkerName] = useState(selectedUser.name);
-  const [workerName, setWorkerName] = useState("");
-
-  useEffect(() => {
-    setWorkerName(selectedUser.name);
-  }, []);
-
   const useStyles = makeStyles({
     button: {
       marginRight: "10px",
@@ -37,7 +33,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
       },
     },
   });
-  console.log(selectedUser.name);
 
   const classes = useStyles();
 
@@ -52,14 +47,14 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         <DialogContentText>
           Rediger indholdet af de forskellige felter og tryk på Gem når du er færdig
         </DialogContentText>
-        <TextField variant="filled" autoFocus label="Brugernavn" value={userName}></TextField>
+        <TextField variant="filled" autoFocus label="Brugernavn" value={username}></TextField>
         <TextField variant="filled" label="Password" value={password}></TextField>
         <UserSelectBox
-          setUserGroup={setUserGroup}
-          setWorkerName={setWorkerName}
-          userGroup={userGroup}
+          setUserGroup={setUsergroup}
+          setWorkerName={setName}
+          userGroup={usergroup}
         ></UserSelectBox>
-        <TextField variant="filled" label="Kalendernavn" value={workerName}></TextField>
+        <TextField variant="filled" label="Kalendernavn" value={name}></TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Slet</Button>

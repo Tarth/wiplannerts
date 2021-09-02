@@ -1,3 +1,5 @@
+import { ShorthandPropertyAssignment } from "typescript";
+
 export interface ConfirmationDialogProp {
   setDescription: (description: string) => void;
   setStartDate: (date: string | undefined) => void;
@@ -150,7 +152,14 @@ export interface UserAlertProp {
 }
 
 export interface EditUserDialogProp {
-  selectedUser: Worker;
+  username: string;
+  setUsername: (username: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  usergroup: string;
+  setUsergroup: (usergroup: string) => void;
+  name: string;
+  setName: (name: string) => void;
   openModal: boolean;
   setOpenModal: (setOpen: boolean) => void;
 }

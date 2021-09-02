@@ -7,13 +7,11 @@ import { EditUserDialog } from "./editUserDialog";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
-  const [selectedUser, setSelectedUser] = useState<Worker>({
-    id: 0,
-    name: "",
-    password: "",
-    usergroup_id: 0,
-    username: "",
-  });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [usergroup, setUsergroup] = useState("worker");
+  const [usergroupId, setUsergroupId] = useState(0);
+  const [name, setName] = useState("");
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,6 +24,7 @@ export const EditUser = () => {
     FetchUserData();
   }, []);
 
+  console.log(users);
   return (
     <div>
       <DataTable
@@ -33,13 +32,10 @@ export const EditUser = () => {
         dataKey="id"
         paginator
         onRowClick={(e) => {
-          setSelectedUser({
-            id: e.data.id,
-            name: e.data.name,
-            password: e.data.password,
-            usergroup_id: e.data.usergroup_id,
-            username: e.data.username,
-          });
+          setName(e.data.name);
+          setPassword(e.data.password);
+          setUsergroup(e.data.usergroup_id);
+          setUsername(e.data.username);
           setOpenModal(true);
         }}
         selectionMode="single"
@@ -76,7 +72,14 @@ export const EditUser = () => {
       <EditUserDialog
         openModal={openModal}
         setOpenModal={setOpenModal}
-        selectedUser={selectedUser}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        usergroup={usergroup}
+        setUsergroup={setUsergroup}
+        name={name}
+        setName={setUsername}
       ></EditUserDialog>
     </div>
   );

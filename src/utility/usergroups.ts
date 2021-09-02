@@ -7,3 +7,7 @@ enum userGroups {
 export function getUserGroupNumber(usergroup: string): number {
   return userGroups[usergroup as keyof typeof userGroups];
 }
+
+export function getUserGroupString(usergroupNumber: number): string {
+  return userGroups[usergroupNumber];
+}
