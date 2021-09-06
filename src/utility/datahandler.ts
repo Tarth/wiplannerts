@@ -14,7 +14,28 @@ if (nodeEnv === "development") {
 const url = `${protocol}://${apiUrl}:${apiPort}`;
 const axios = require("axios").default;
 
-const PostWorkerToDB = async (
+const DeleteUserFromDB = async (localurl: string, userId: number, accessToken: string) => {
+  try {
+    let res = await axios.delete(
+      localurl,
+      { id: userId },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const DeleteUser = async (userId: number, accessToken: string) => {
+  try {
+    await DeleteUserFromDB(`${url}/users`, userId, accessToken);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const PostUserToDB = async (
   localurl: string,
   _username: string,
   _usergroup: string,
@@ -40,7 +61,7 @@ const PostWorkerToDB = async (
 };
 
 // Post a new worker into the DB
-export const PostWorker = async (
+export const PostUser = async (
   username: string,
   usergroup: string,
   password: string,
@@ -48,7 +69,7 @@ export const PostWorker = async (
   workername?: string
 ) => {
   try {
-    const response = await PostWorkerToDB(
+    const res = await PostUserToDB(
       `${url}/users`,
       username,
       usergroup,
@@ -56,7 +77,7 @@ export const PostWorker = async (
       state,
       workername
     );
-    return response;
+    return res;
   } catch (err) {
     throw err;
   }
@@ -282,7 +303,3 @@ export const GetAccessTokenFromRefresh = async (refreshToken: string) => {
     return error;
   }
 };
-// export const AuthenticateUser = async (accessToken: string) => {
-//   const res = await PostAccessToken(`${url}/calendar`, accessToken);
-//   return res;
-// };

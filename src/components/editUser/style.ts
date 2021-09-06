@@ -5,8 +5,16 @@ const useStylesDialog = makeStyles({
     display: "flex",
     flexDirection: "column",
   },
+  userInputWrapper: {
+    marginBottom: "1em",
+  },
   dialogInput: {
     marginBottom: "1em",
+    width: "100%",
+  },
+  passwordWrapper: {
+    display: "flex",
+    flexDirection: "column",
   },
   button: {
     marginRight: "10px",

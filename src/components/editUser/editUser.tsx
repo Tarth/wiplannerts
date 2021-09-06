@@ -11,8 +11,8 @@ export const EditUser = () => {
   const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState(0);
   const [usergroup, setUsergroup] = useState("worker");
-  const [usergroupId, setUsergroupId] = useState(0);
   const [name, setName] = useState("");
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -86,12 +86,12 @@ export const EditUser = () => {
         setOpenModal={setOpenModal}
         username={username}
         setUsername={setUsername}
-        password={password}
         setPassword={setPassword}
         usergroup={usergroup}
         setUsergroup={setUsergroup}
         name={name}
         setName={setUsername}
+        userId={userId}
       ></EditUserDialog>
     </div>
   );

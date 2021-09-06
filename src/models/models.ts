@@ -159,7 +159,6 @@ export interface UserAlertProp {
 export interface EditUserDialogProp {
   username: string;
   setUsername: (username: string) => void;
-  password: string;
   setPassword: (password: string) => void;
   usergroup: string;
   setUsergroup: (usergroup: string) => void;
@@ -167,6 +166,7 @@ export interface EditUserDialogProp {
   setName: (name: string) => void;
   openModal: boolean;
   setOpenModal: (setOpen: boolean) => void;
+  userId: number;
 }
 
 export interface UserSelectBoxProp {

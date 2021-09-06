@@ -4,7 +4,7 @@ import { UserAlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { useStyles } from "./style";
-import { PostWorker } from "../../utility/datahandler";
+import { PostUser } from "../../utility/datahandler";
 
 export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
   const [userName, setUserName] = useState("");
@@ -12,12 +12,13 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
   const [userGroup, setUserGroup] = useState("worker");
   const [workerName, setWorkerName] = useState("");
   const classes = useStyles();
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setUserGroup(event.target.value as string);
-    if (event.target.value !== "worker") {
-      setWorkerName("");
-    }
-  };
+
+  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  //   setUserGroup(event.target.value as string);
+  //   if (event.target.value !== "worker") {
+  //     setWorkerName("");
+  //   }
+  // };
 
   let alert = (
     <div className="alertDiv">
@@ -103,7 +104,7 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
             }
             try {
               if (userGroup === "worker") {
-                await PostWorker(
+                await PostUser(
                   userName,
                   userGroup,
                   password,
@@ -111,7 +112,7 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
                   workerName
                 );
               } else {
-                await PostWorker(
+                await PostUser(
                   userName,
                   userGroup,
                   password,
