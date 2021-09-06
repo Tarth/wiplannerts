@@ -1,4 +1,4 @@
-enum userGroups {
+export enum userGroups {
   winotoadmin = 1,
   planner = 2,
   worker = 3,

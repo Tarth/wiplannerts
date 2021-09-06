@@ -21,9 +21,9 @@ export const UserSelectBox: React.FC<UserSelectBoxProp> = ({
       value={userGroup}
       onChange={handleChange}
     >
-      <MenuItem value={"worker"}>Medarbejder</MenuItem>
+      <MenuItem value={"worker"}>Worker</MenuItem>
       <MenuItem value={"planner"}>Planner</MenuItem>
-      <MenuItem value={"winotoadmin"}>Admin</MenuItem>
+      <MenuItem value={"winotoadmin"}>Winotoadmin</MenuItem>
     </Select>
   );
 };

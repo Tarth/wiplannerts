@@ -1,5 +1,4 @@
-import { ShorthandPropertyAssignment } from "typescript";
-
+import { userGroups } from "../utility/usergroups";
 export interface ConfirmationDialogProp {
   setDescription: (description: string) => void;
   setStartDate: (date: string | undefined) => void;
@@ -35,7 +34,13 @@ export interface DbJob {
 export interface User {
   id: number;
   username: string;
-  usergroup_id: number;
+  password: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  usergroup_id: number | string;
   password: string;
 }
 

@@ -3,10 +3,12 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Worker } from "../../models/models";
 import { GetWorkers } from "../../utility/datahandler";
+import { getUserGroupString } from "../../utility/usergroups";
 import { EditUserDialog } from "./editUserDialog";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
+  const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [usergroup, setUsergroup] = useState("worker");
@@ -24,11 +26,21 @@ export const EditUser = () => {
     FetchUserData();
   }, []);
 
-  console.log(users);
+  useEffect(() => {
+    let tempArray = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      password: user.password,
+      usergroup_id: getUserGroupString(user.usergroup_id as number),
+      username: user.username,
+    }));
+    setUsergroupStringUsers(tempArray);
+  }, [users]);
+
   return (
     <div>
       <DataTable
-        value={users}
+        value={usergroupStringUsers}
         dataKey="id"
         paginator
         onRowClick={(e) => {

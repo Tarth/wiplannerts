@@ -25,10 +25,8 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
     const returnmsg = await PostLogin(username, password);
     if (returnmsg.hasOwnProperty("response")) {
       if (returnmsg.response.data === "User not found") {
-        console.log(returnmsg.response.data);
         setIsLoading(false);
       } else {
-        console.log(returnmsg.response.data);
         setIsLoading(false);
       }
     } else {
@@ -52,12 +50,7 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   return (
     <>
       <div className={classes.container}>
-        <Box
-          display="flex"
-          flexDirection="column"
-          width="25%"
-          className={classes.item}
-        >
+        <Box display="flex" flexDirection="column" width="25%" className={classes.item}>
           <h1 className={classes.header}>Wiplanner</h1>
           <TextField
             className={classes.textField}
@@ -94,22 +87,13 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
         </Box>
         <div className="waveWrapper waveAnimation">
           <div className="waveWrapperInner bgTop">
-            <div
-              className="wave waveTop"
-              style={{ backgroundImage: `url(${WaveTop})` }}
-            ></div>
+            <div className="wave waveTop" style={{ backgroundImage: `url(${WaveTop})` }}></div>
           </div>
           <div className="waveWrapperInner bgMiddle">
-            <div
-              className="wave waveMiddle"
-              style={{ backgroundImage: `url(${WaveMid})` }}
-            ></div>
+            <div className="wave waveMiddle" style={{ backgroundImage: `url(${WaveMid})` }}></div>
           </div>
           <div className="waveWrapperInner bgBottom">
-            <div
-              className="wave waveBottom"
-              style={{ backgroundImage: `url(${WaveBot})` }}
-            ></div>
+            <div className="wave waveBottom" style={{ backgroundImage: `url(${WaveBot})` }}></div>
           </div>
         </div>
       </div>
