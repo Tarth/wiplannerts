@@ -167,10 +167,16 @@ export interface EditUserDialogProp {
   openModal: boolean;
   setOpenModal: (setOpen: boolean) => void;
   userId: number;
+  setUsers: (users: Worker[]) => void;
 }
 
 export interface UserSelectBoxProp {
   userGroup: string;
   setUserGroup: (userGroup: string) => void;
   setWorkerName: (workerName: string) => void;
+}
+
+export interface DeleteUserConfirmationProp {
+  userId: number;
+  setUsers: (users: Worker[]) => void;
 }

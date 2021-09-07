@@ -54,6 +54,58 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
     setOpen(false);
   };
 
+  //TODO: Refactor
+  const HandleClickSave = () => {
+    if (
+      description === "" ||
+      isStartValid === false ||
+      isEndValid === false ||
+      selectedWorkers.length === 0
+    ) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+      });
+    } else {
+      if (selectedTasks !== undefined) {
+        const returnmsg = UpdateJob(
+          startDate as string,
+          endDate as string,
+          description,
+          selectedWorkers.map((x) => x.id),
+          selectedTasks.id,
+          localStorage.getItem("accesstoken")
+        );
+        returnmsg
+          .then(
+            () => {
+              setUsrAlert({
+                type: "success",
+                title: "Succes",
+                text: "Job redigeret",
+              });
+              ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+              if (setTasks !== undefined) {
+                GetJobs(setTasks, localStorage.getItem("accesstoken"));
+              }
+              handleClose();
+            },
+            () => {
+              setUsrAlert({
+                type: "error",
+                title: "Fejl",
+                text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
+              });
+            }
+          )
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
+  };
+
   return (
     <div>
       <Button
@@ -75,22 +127,14 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
       >
         Rediger
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Rediger indholdet af de forskellige felter og tryk gem, når du er
-            færdig
+            Rediger indholdet af de forskellige felter og tryk gem, når du er færdig
           </DialogContentText>
 
-          <Description
-            description={description}
-            setDescription={setDescription}
-          ></Description>
+          <Description description={description} setDescription={setDescription}></Description>
 
           <DateInput
             date={startDate}
@@ -114,78 +158,13 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           <Button
             onClick={() => {
               handleClose();
-              ResetInputFields(
-                setDescription,
-                setStartDate,
-                setEndDate,
-                setSelectedWorkers
-              );
+              ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
             }}
             color="primary"
           >
             Fortryd
           </Button>
-          <Button
-            onClick={() => {
-              if (
-                description === "" ||
-                isStartValid === false ||
-                isEndValid === false ||
-                selectedWorkers.length === 0
-              ) {
-                setUsrAlert({
-                  type: "error",
-                  title: "Fejl",
-                  text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
-                });
-              } else {
-                if (selectedTasks !== undefined) {
-                  const returnmsg = UpdateJob(
-                    startDate as string,
-                    endDate as string,
-                    description,
-                    selectedWorkers.map((x) => x.id),
-                    selectedTasks.id,
-                    localStorage.getItem("accesstoken")
-                  );
-                  returnmsg
-                    .then(
-                      () => {
-                        setUsrAlert({
-                          type: "success",
-                          title: "Succes",
-                          text: "Job redigeret",
-                        });
-                        ResetInputFields(
-                          setDescription,
-                          setStartDate,
-                          setEndDate,
-                          setSelectedWorkers
-                        );
-                        if (setTasks !== undefined) {
-                          GetJobs(
-                            setTasks,
-                            localStorage.getItem("accesstoken")
-                          );
-                        }
-                        handleClose();
-                      },
-                      () => {
-                        setUsrAlert({
-                          type: "error",
-                          title: "Fejl",
-                          text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
-                        });
-                      }
-                    )
-                    .catch((error) => {
-                      console.log(error);
-                    });
-                }
-              }
-            }}
-            color="primary"
-          >
+          <Button onClick={HandleClickSave} color="primary">
             Gem
           </Button>
         </DialogActions>

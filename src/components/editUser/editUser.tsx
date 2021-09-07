@@ -94,6 +94,7 @@ export const EditUser = () => {
         name={name}
         setName={setUsername}
         userId={userId}
+        setUsers={setUsers}
       ></EditUserDialog>
     </div>
   );

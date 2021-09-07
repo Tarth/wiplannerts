@@ -53,14 +53,78 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   });
 
   const classes = useStyles();
+  const accessToken: string | null = localStorage.getItem("accesstoken");
 
   useEffect(() => {
-    const token: string | null = localStorage.getItem("accesstoken");
-    if (token !== null) {
-      GetWorkers(setWorkers, token, { querySelector: "workers" });
-      GetJobs(setTasks, token);
+    if (accessToken !== null) {
+      GetWorkers(setWorkers, accessToken, { querySelector: "workers" });
+      GetJobs(setTasks, accessToken);
     }
   }, []);
+
+  const HandleClickAddJob = () => {
+    if (accessToken !== null) {
+      GetWorkers(setWorkers, accessToken, { querySelector: "workers" });
+    }
+    setViews("addjob");
+    const defaultInfoText =
+      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+    if (usrAlert.text !== defaultInfoText) {
+      setUsrAlert({
+        type: "info",
+        title: "Information",
+        text: defaultInfoText,
+      });
+    }
+    if (
+      description !== "" ||
+      (startDate !== "" && startDate !== undefined) ||
+      (endDate !== "" && endDate !== undefined) ||
+      selectedWorkers !== []
+    ) {
+      ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+    }
+  };
+
+  const HandleClickEditJob = () => {
+    GetJobs(setTasks, accessToken);
+    setViews("editjob");
+    const defaultInfoText =
+      "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
+    if (usrAlert.text !== defaultInfoText) {
+      setUsrAlert({
+        type: "info",
+        title: "Information",
+        text: defaultInfoText,
+      });
+    }
+  };
+
+  const HandleClickAddUser = () => {
+    setViews("adduser");
+    const defaultInfoText =
+      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+    if (usrAlert.text !== defaultInfoText) {
+      setUsrAlert({
+        type: "info",
+        title: "Information",
+        text: defaultInfoText,
+      });
+    }
+  };
+
+  const HandleClickEditUser = () => {
+    setViews("edituser");
+    const defaultInfoText =
+      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+    if (usrAlert.text !== defaultInfoText) {
+      setUsrAlert({
+        type: "info",
+        title: "Information",
+        text: defaultInfoText,
+      });
+    }
+  };
 
   if (views === "addjob") {
     view = (
@@ -130,26 +194,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => {
-              setViews("addjob");
-              const defaultInfoText =
-                "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-              if (usrAlert.text !== defaultInfoText) {
-                setUsrAlert({
-                  type: "info",
-                  title: "Information",
-                  text: defaultInfoText,
-                });
-              }
-              if (
-                description !== "" ||
-                (startDate !== "" && startDate !== undefined) ||
-                (endDate !== "" && endDate !== undefined) ||
-                selectedWorkers !== []
-              ) {
-                ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
-              }
-            }}
+            onClick={HandleClickAddJob}
           >
             Tilføj Job
           </Button>
@@ -158,19 +203,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             variant="contained"
             color="primary"
             startIcon={<EditIcon />}
-            onClick={() => {
-              GetJobs(setTasks, localStorage.getItem("accesstoken"));
-              setViews("editjob");
-              const defaultInfoText =
-                "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
-              if (usrAlert.text !== defaultInfoText) {
-                setUsrAlert({
-                  type: "info",
-                  title: "Information",
-                  text: defaultInfoText,
-                });
-              }
-            }}
+            onClick={HandleClickEditJob}
           >
             Rediger Job
           </Button>
@@ -181,18 +214,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
                 variant="contained"
                 color="primary"
                 startIcon={<PersonAdd />}
-                onClick={() => {
-                  setViews("adduser");
-                  const defaultInfoText =
-                    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-                  if (usrAlert.text !== defaultInfoText) {
-                    setUsrAlert({
-                      type: "info",
-                      title: "Information",
-                      text: defaultInfoText,
-                    });
-                  }
-                }}
+                onClick={HandleClickAddUser}
               >
                 Tilføj Bruger
               </Button>
@@ -201,18 +223,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
                 variant="contained"
                 color="primary"
                 startIcon={<EditIcon />}
-                onClick={() => {
-                  setViews("edituser");
-                  const defaultInfoText =
-                    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-                  if (usrAlert.text !== defaultInfoText) {
-                    setUsrAlert({
-                      type: "info",
-                      title: "Information",
-                      text: defaultInfoText,
-                    });
-                  }
-                }}
+                onClick={HandleClickEditUser}
               >
                 Rediger Bruger
               </Button>

@@ -1,13 +1,15 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { ConfirmationDialogProp } from "../../models/models";
 import { makeStyles } from "@material-ui/core/styles";
-import Dialog from "@material-ui/core/Dialog";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import { Delete } from "@material-ui/icons";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@material-ui/core";
 import { ResetInputFields } from "../../utility/resetinputfields";
 import { DeleteJob, GetJobs } from "../../utility/datahandler";
 
@@ -33,7 +35,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   });
 
   const classes = useStyles();
-
+  const accessToken = localStorage.getItem("accesstoken");
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,7 +61,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
             handleClickOpen();
           }
         }}
-        startIcon={<DeleteIcon />}
+        startIcon={<Delete />}
       >
         SLET
       </Button>
@@ -73,19 +75,14 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         <DialogTitle id="alert-dialog-title">{"Slet opgave?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Er du sikker på at du vil slette den valgte opgave fra listen?
-            Bemærk at dit valg ikke kan fortrydes!
+            Er du sikker på at du vil slette den valgte opgave fra listen? Bemærk at dit valg ikke
+            kan fortrydes!
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              ResetInputFields(
-                setStartDate,
-                setDescription,
-                setEndDate,
-                setSelectedWorkers
-              );
+              ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
               handleClose();
             }}
             color="primary"
@@ -101,10 +98,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                   text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
                 });
               } else {
-                const returnmsg = DeleteJob(
-                  selectedTasks.id,
-                  localStorage.getItem("accesstoken")
-                );
+                const returnmsg = DeleteJob(selectedTasks.id, accessToken);
                 returnmsg
                   .then(
                     () => {
@@ -113,7 +107,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                         title: "Succes",
                         text: "Job blev slettet fra kalenderen.",
                       });
-                      GetJobs(setTasks, localStorage.getItem("accesstoken"));
+                      GetJobs(setTasks, accessToken);
                     },
                     () => {
                       setUsrAlert({
