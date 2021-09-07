@@ -1,19 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { GetJobs, GetAccessTokenFromRefresh } from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
-import {
-  Job_Worker,
-  DateProp,
-  CalendarDataProps,
-  IsUserLoggedInProp,
-} from "../models/models";
-import {
-  addDays,
-  subDays,
-  startOfWeek,
-  format,
-  differenceInCalendarDays,
-} from "date-fns";
+import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
+import { addDays, subDays, startOfWeek, format, differenceInCalendarDays } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
@@ -59,16 +48,10 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
-        <IconButton
-          onClick={() => setCurrentDate(subDays(currentDate, 7))}
-          color="primary"
-        >
+        <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
           <ArrowBack></ArrowBack>
         </IconButton>
-        <IconButton
-          onClick={() => setCurrentDate(addDays(currentDate, 7))}
-          color="primary"
-        >
+        <IconButton onClick={() => setCurrentDate(addDays(currentDate, 7))} color="primary">
           <ArrowForward></ArrowForward>
         </IconButton>
       </div>
@@ -86,13 +69,9 @@ const DisplayHeaders: React.FC<DateProp> = ({ currentDate }) => {
   return (
     <>
       <div className="headermonthandyear">
-        <div className="headermonth">
-          {format(initialDate, "MMMM", { locale: da })}
-        </div>
+        <div className="headermonth">{format(initialDate, "MMMM", { locale: da })}</div>
         <div className="headerweek">Uge {format(initialDate, "ww")}</div>
-        <div className="headeryear">
-          {format(initialDate, "yyyy", { locale: da })}
-        </div>
+        <div className="headeryear">{format(initialDate, "yyyy", { locale: da })}</div>
       </div>
     </>
   );
@@ -111,9 +90,7 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   return (
     <div className="headersdate">
       {daysOfTheWeek.map((x) => (
-        <div className="headerdate">
-          {format(x, "EEEE dd/LL", { locale: da })}
-        </div>
+        <div className="headerdate">{format(x, "EEEE dd/LL", { locale: da })}</div>
       ))}
     </div>
   );
@@ -150,9 +127,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
 
   // Sort job data by worker
   for (let i = 0; i < uniqWorkers.length; i++) {
-    sortedByWorker.push(
-      tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i])
-    );
+    sortedByWorker.push(tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i]));
     // sort worker list alphabetically
     sortedByWorker.sort(function (a, b) {
       if (a[0].worker.name > b[0].worker.name) return 1;
@@ -173,12 +148,8 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
 };
 
 //Display all tasks of 1 worker during a week
-const WeeklyTasks: React.FC<CalendarDataProps> = ({
-  tasks,
-  index,
-  currentDate,
-}) => {
-  const numberOfDays: Number = 5;
+const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
+  const numberOfDays: number = 5;
   const oneWorkerWeekData = [];
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
@@ -213,10 +184,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
     <>
       <div className="workerjobs">
         {tasks.map((x) => (
-          <div
-            className="workerjob"
-            style={{ backgroundColor: NameBackgroundColor(index) }}
-          >
+          <div className="workerjob" style={{ backgroundColor: NameBackgroundColor(index) }}>
             <div>{x.description}</div>
             <div>
               {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}

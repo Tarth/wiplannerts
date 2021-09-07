@@ -48,7 +48,9 @@ export const EditUser = () => {
           setPassword(e.data.password);
           setUsergroup(e.data.usergroup_id);
           setUsername(e.data.username);
+          setUserId(e.data.id);
           setOpenModal(true);
+          console.log(e.data);
         }}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"

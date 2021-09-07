@@ -16,11 +16,10 @@ const axios = require("axios").default;
 
 const DeleteUserFromDB = async (localurl: string, userId: number, accessToken: string) => {
   try {
-    let res = await axios.delete(
-      localurl,
-      { id: userId },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    let res = await axios.delete(localurl, {
+      data: { id: userId },
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
     return res;
   } catch (error) {
     throw error;
