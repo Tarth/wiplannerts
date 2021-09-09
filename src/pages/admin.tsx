@@ -3,7 +3,7 @@ import "../css/admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
-import { GetWorkers, GetJobs } from "../utility/datahandler";
+import { GetUsers, GetJobs } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
@@ -57,14 +57,14 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   useEffect(() => {
     if (accessToken !== null) {
-      GetWorkers(setWorkers, accessToken, { querySelector: "workers" });
+      GetUsers(accessToken, setWorkers, { querySelector: "workers" });
       GetJobs(setTasks, accessToken);
     }
   }, []);
 
   const HandleClickAddJob = () => {
     if (accessToken !== null) {
-      GetWorkers(setWorkers, accessToken, { querySelector: "workers" });
+      GetUsers(accessToken, setWorkers, { querySelector: "workers" });
     }
     setViews("addjob");
     const defaultInfoText =

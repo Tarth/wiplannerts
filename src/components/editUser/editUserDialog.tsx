@@ -11,8 +11,8 @@ import {
 } from "@material-ui/core";
 import { EditUserDialogProp } from "../../models/models";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
-import { DeleteUser, GetWorkers } from "../../utility/datahandler";
-import { AlertDialog } from "./confirmationDialog";
+// import { DeleteUser, GetWorkers } from "../../utility/datahandler";
+import { DeleteUserDialog } from "./confirmationDialog";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   openModal,
@@ -29,7 +29,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
 }) => {
   const classes = useStylesDialog();
   const [password] = useState("");
-  const accessToken = localStorage.getItem("accesstoken");
 
   const HandleCloseSave = () => {
     HandleClose();
@@ -83,7 +82,11 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <AlertDialog userId={userId} setUsers={setUsers}></AlertDialog>
+        <DeleteUserDialog
+          userId={userId}
+          setUsers={setUsers}
+          HandleClose={HandleClose}
+        ></DeleteUserDialog>
         <Button onClick={HandleCloseSave}>Gem</Button>
       </DialogActions>
     </Dialog>

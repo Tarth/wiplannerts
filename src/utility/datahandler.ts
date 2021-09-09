@@ -77,8 +77,8 @@ export const PostUser = async (
       workername
     );
     return res;
-  } catch (err) {
-    throw err;
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -143,25 +143,30 @@ const GetDataFromDB = async (
   }
 };
 
-export const GetWorkers = async (
-  setState: (workers: Worker[]) => void,
+export const GetUsers = async (
   state: string,
-  params?: { querySelector: string }
+  returnNeeded?: boolean,
+  params?: { querySelector: string },
+  setState?: (workers: Worker[]) => void
 ) => {
   GetDataFromDB(`${url}/users`, state as string, params)
     .then((res) => {
       const dbdata = res.data as Worker[];
-      const data = dbdata.map((x) => ({
-        id: x.id,
-        name: x.name,
-        username: x.username,
-        usergroup_id: x.usergroup_id,
-        password: x.password,
+      const data = dbdata.map((user) => ({
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        usergroup_id: user.usergroup_id,
+        password: user.password,
       }));
-      setState(data);
+      if (!returnNeeded && setState !== undefined) {
+        setState(data);
+      } else {
+        return data;
+      }
     })
-    .catch((e) => {
-      return e;
+    .catch((error) => {
+      return error;
     });
 };
 

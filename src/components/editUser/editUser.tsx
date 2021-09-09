@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Worker } from "../../models/models";
-import { GetWorkers } from "../../utility/datahandler";
+import { GetUsers } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { EditUserDialog } from "./editUserDialog";
 
@@ -20,7 +20,7 @@ export const EditUser = () => {
     async function FetchUserData() {
       const token: string | null = localStorage.getItem("accesstoken");
       if (token !== null) {
-        await GetWorkers(setUsers, token, { querySelector: "" });
+        await GetUsers(token, setUsers);
       }
     }
     FetchUserData();

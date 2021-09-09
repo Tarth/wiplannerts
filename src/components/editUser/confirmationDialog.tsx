@@ -7,27 +7,32 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-import { DeleteUser, GetWorkers } from "../../utility/datahandler";
+import { DeleteUser, GetUsers } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp } from "../../models/models";
 
-export const AlertDialog: React.FC<DeleteUserConfirmationProp> = ({ userId, setUsers }) => {
-  const [open, setOpen] = useState(false);
-
-  const HandleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const HandleClose = () => {
-    setOpen(false);
-  };
-
+export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
+  userId,
+  setUsers,
+  HandleClose,
+}) => {
+  const [confirm, setConfirm] = useState(false);
   const accessToken = localStorage.getItem("accesstoken");
+
+  const ClickOpenConfirm = () => {
+    GetUsers(accessToken as string, true);
+    setConfirm(true);
+  };
+
+  const ClickCloseConfirm = () => {
+    setConfirm(false);
+  };
 
   const HandleCloseDelete = async () => {
     if (accessToken != null) {
       try {
         await DeleteUser(userId, accessToken);
-        await GetWorkers(setUsers, accessToken, { querySelector: "" });
+        await GetUsers(accessToken, setUsers);
+        ClickCloseConfirm();
         HandleClose();
       } catch (error) {
         throw error;
@@ -37,9 +42,9 @@ export const AlertDialog: React.FC<DeleteUserConfirmationProp> = ({ userId, setU
 
   return (
     <div>
-      <Button onClick={HandleClickOpen}>Slet</Button>
+      <Button onClick={ClickOpenConfirm}>Slet</Button>
       <Dialog
-        open={open}
+        open={confirm}
         onClose={HandleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -52,7 +57,7 @@ export const AlertDialog: React.FC<DeleteUserConfirmationProp> = ({ userId, setU
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={HandleClose} color="primary">
+          <Button onClick={ClickCloseConfirm} color="primary">
             Fortryd
           </Button>
           <Button onClick={HandleCloseDelete} color="primary" autoFocus>
