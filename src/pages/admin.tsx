@@ -3,7 +3,7 @@ import "../css/admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
-import { GetUsers, GetJobs } from "../utility/datahandler";
+import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
@@ -57,14 +57,14 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   useEffect(() => {
     if (accessToken !== null) {
-      GetUsers(accessToken, setWorkers, { querySelector: "workers" });
-      GetJobs(setTasks, accessToken);
+      GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
+      GetJobsState(accessToken, setTasks);
     }
   }, []);
 
   const HandleClickAddJob = () => {
     if (accessToken !== null) {
-      GetUsers(accessToken, setWorkers, { querySelector: "workers" });
+      GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
     }
     setViews("addjob");
     const defaultInfoText =
@@ -87,7 +87,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   };
 
   const HandleClickEditJob = () => {
-    GetJobs(setTasks, accessToken);
+    GetJobsState(accessToken, setTasks);
     setViews("editjob");
     const defaultInfoText =
       "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";

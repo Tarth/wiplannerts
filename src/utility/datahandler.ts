@@ -39,7 +39,7 @@ const PostUserToDB = async (
   _username: string,
   _usergroup: string,
   _password: string,
-  _state: string,
+  _accessToken: string,
   _workername?: string
 ) => {
   try {
@@ -51,7 +51,7 @@ const PostUserToDB = async (
         password: _password,
         workername: _workername,
       },
-      { headers: { Authorization: `Bearer ${_state as string}` } }
+      { headers: { Authorization: `Bearer ${_accessToken as string}` } }
     );
     return res;
   } catch (error) {
@@ -64,7 +64,7 @@ export const PostUser = async (
   username: string,
   usergroup: string,
   password: string,
-  state: string,
+  accessToken: string,
   workername?: string
 ) => {
   try {
@@ -73,7 +73,7 @@ export const PostUser = async (
       username,
       usergroup,
       password,
-      state,
+      accessToken,
       workername
     );
     return res;
@@ -89,7 +89,7 @@ const PostJobToDB = async (
   end_date: string,
   description: string,
   workersOnJob: number[],
-  state: string | null
+  accessToken: string | null
 ) => {
   try {
     let res = await axios.post(
@@ -100,7 +100,7 @@ const PostJobToDB = async (
         description: description,
         workerid: workersOnJob,
       },
-      { headers: { Authorization: `Bearer ${state as string}` } }
+      { headers: { Authorization: `Bearer ${accessToken as string}` } }
     );
     return res;
   } catch (error) {
@@ -113,9 +113,9 @@ export const PostJob = async (
   end_date: string,
   description: string,
   workersOnJob: number[],
-  state: string | null
+  accessToken: string | null
 ) => {
-  PostJobToDB(`${url}/jobs`, start_date, end_date, description, workersOnJob, state)
+  PostJobToDB(`${url}/jobs`, start_date, end_date, description, workersOnJob, accessToken)
     .then(function (response) {
       return response;
     })
@@ -127,11 +127,11 @@ export const PostJob = async (
 //General purpose Get data from db function. The parameters are optional and is used to call different queries from the frontend.
 const GetDataFromDB = async (
   localurl: string,
-  state: string,
-  parameters?: { querySelector: string }
+  accessToken: string,
+  parameters?: { querySelector?: string; id?: number }
 ) => {
   try {
-    let requestConfig = { headers: { Authorization: `Bearer ${state}` } };
+    let requestConfig = { headers: { Authorization: `Bearer ${accessToken}` } };
     if (parameters !== undefined) {
       let queryConfig = { params: parameters };
       Object.assign(requestConfig, queryConfig);
@@ -143,36 +143,54 @@ const GetDataFromDB = async (
   }
 };
 
-export const GetUsers = async (
-  state: string,
-  returnNeeded?: boolean,
-  params?: { querySelector: string },
-  setState?: (workers: Worker[]) => void
-) => {
-  GetDataFromDB(`${url}/users`, state as string, params)
-    .then((res) => {
-      const dbdata = res.data as Worker[];
-      const data = dbdata.map((user) => ({
-        id: user.id,
-        name: user.name,
-        username: user.username,
-        usergroup_id: user.usergroup_id,
-        password: user.password,
-      }));
-      if (!returnNeeded && setState !== undefined) {
-        setState(data);
-      } else {
-        return data;
-      }
-    })
-    .catch((error) => {
-      return error;
-    });
+const GetUsers = async (accessToken: string, params?: { querySelector?: string; id?: number }) => {
+  try {
+    const res = await GetDataFromDB(`${url}/users`, accessToken as string, params);
+    const dbdata = res.data as Worker[];
+    const data = dbdata.map((user) => ({
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      usergroup_id: user.usergroup_id,
+      password: user.password,
+    }));
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
-export const GetJobs = async (setState: (jobs: Job_Worker[]) => void, state: string | null) => {
+export const GetUsersReturn = async (accessToken: string, params?: { querySelector: string }) => {
+  const promise = await GetUsers(accessToken, params);
+  return promise;
+};
+
+export const GetUsersState = async (
+  accessToken: string,
+  setState: (workers: Worker[]) => void,
+  params?: { querySelector: string }
+) => {
+  const res = await GetUsers(accessToken, params);
+  setState(res);
+};
+
+export const GetJobsReturn = async (accessToken: string | null, params?: { id: number }) => {
+  const res = await GetJobs(accessToken, params);
+  return res;
+};
+
+export const GetJobsState = async (
+  accessToken: string | null,
+  setState: (jobs: Job_Worker[]) => void,
+  params?: { id: number }
+) => {
+  const res = await GetJobs(accessToken, params);
+  setState(res);
+};
+
+export const GetJobs = async (accessToken: string | null, params?: { id: number }) => {
   try {
-    const res = await GetDataFromDB(`${url}/calendar`, state as string);
+    const res = await GetDataFromDB(`${url}/calendar`, accessToken as string, params);
     if (res.hasOwnProperty("response")) {
       throw new Error(res.response.data);
     } else {
@@ -187,7 +205,6 @@ export const GetJobs = async (setState: (jobs: Job_Worker[]) => void, state: str
             end: new Date(x.end_date),
           } as Job_Worker)
       );
-      setState(data);
       return data;
     }
   } catch (error) {
@@ -195,21 +212,21 @@ export const GetJobs = async (setState: (jobs: Job_Worker[]) => void, state: str
   }
 };
 
-const DeleteJobFromDB = async (localurl: string, job_id: number, state: string) => {
+const DeleteJobFromDB = async (localurl: string, job_id: number, accessToken: string) => {
   try {
     let res = await axios.delete(localurl, {
       data: {
         jobid: job_id,
       },
-      headers: { Authorization: `Bearer ${state}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
     return res;
   } catch (error) {
     return error;
   }
 };
-export const DeleteJob = async (job_id: number, state: string | null) => {
-  DeleteJobFromDB(`${url}/jobs`, job_id, state as string)
+export const DeleteJob = async (job_id: number, accessToken: string | null) => {
+  DeleteJobFromDB(`${url}/jobs`, job_id, accessToken as string)
     .then(function (response) {
       return response;
     })
@@ -225,7 +242,7 @@ const UpdateJobInDB = async (
   description: string,
   workersOnJob: number[],
   job_id: number,
-  state: string
+  accessToken: string
 ) => {
   try {
     let res = await axios.put(
@@ -238,7 +255,7 @@ const UpdateJobInDB = async (
         jobid: job_id,
       },
       {
-        headers: { Authorization: `Bearer ${state}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
     return res;
@@ -253,7 +270,7 @@ export const UpdateJob = async (
   description: string,
   workersOnJob: number[],
   job_id: number,
-  state: string | null
+  accessToken: string | null
 ) => {
   UpdateJobInDB(
     `${url}/jobs`,
@@ -262,7 +279,7 @@ export const UpdateJob = async (
     description,
     workersOnJob,
     job_id,
-    state as string
+    accessToken as string
   )
     .then(function (response) {
       return response;

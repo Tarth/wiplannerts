@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Worker } from "../../models/models";
-import { GetUsers } from "../../utility/datahandler";
+import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { EditUserDialog } from "./editUserDialog";
 
@@ -20,7 +20,7 @@ export const EditUser = () => {
     async function FetchUserData() {
       const token: string | null = localStorage.getItem("accesstoken");
       if (token !== null) {
-        await GetUsers(token, setUsers);
+        await GetUsersState(token, setUsers);
       }
     }
     FetchUserData();
@@ -50,7 +50,6 @@ export const EditUser = () => {
           setUsername(e.data.username);
           setUserId(e.data.id);
           setOpenModal(true);
-          console.log(e.data);
         }}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"

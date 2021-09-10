@@ -11,7 +11,7 @@ import { Description } from "../utilityComponents/descriptionInput";
 import { DateInput } from "../utilityComponents/calendarInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
 import { JobFormProp } from "../../models/models";
-import { UpdateJob, GetJobs } from "../../utility/datahandler";
+import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
 
 export const EditJobDialog: React.FC<JobFormProp> = ({
@@ -87,7 +87,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
               });
               ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
               if (setTasks !== undefined) {
-                GetJobs(setTasks, localStorage.getItem("accesstoken"));
+                GetJobsState(localStorage.getItem("accesstoken"), setTasks);
               }
               handleClose();
             },

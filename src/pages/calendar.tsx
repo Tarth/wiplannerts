@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetJobs, GetAccessTokenFromRefresh } from "../utility/datahandler";
+import { GetJobsState, GetAccessTokenFromRefresh } from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
 import { addDays, subDays, startOfWeek, format, differenceInCalendarDays } from "date-fns";
@@ -15,17 +15,15 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const accessToken = localStorage.getItem("accesstoken");
+  const refreshToken = localStorage.getItem("refreshtoken");
 
   async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
-    const res = await GetJobs(setTasks, localStorage.getItem("accesstoken"));
-    if (res.message === "invalid token") {
-      if (localStorage.getItem("refreshtoken") !== null) {
-        let newAccessToken: string = await GetAccessTokenFromRefresh(
-          localStorage.getItem("refreshtoken") as string
-        );
-        localStorage.setItem("accesstoken", newAccessToken);
-        await GetJobs(setTasks, newAccessToken);
-      }
+    await GetJobsState(accessToken, setTasks);
+    if (refreshToken !== null) {
+      let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
+      localStorage.setItem("accesstoken", newAccessToken);
+      await GetJobsState(newAccessToken, setTasks);
     }
   }
 

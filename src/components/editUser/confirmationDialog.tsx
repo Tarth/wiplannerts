@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-import { DeleteUser, GetUsers } from "../../utility/datahandler";
+import { DeleteUser, GetUsersReturn, GetJobsReturn } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp } from "../../models/models";
 
 export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
@@ -18,9 +18,17 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   const [confirm, setConfirm] = useState(false);
   const accessToken = localStorage.getItem("accesstoken");
 
-  const ClickOpenConfirm = () => {
-    GetUsers(accessToken as string, true);
-    setConfirm(true);
+  const ClickOpenConfirm = async () => {
+    if (accessToken !== null) {
+      const userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
+      console.log(userJobsInDb);
+      if (Array.isArray(userJobsInDb)) {
+        if (userJobsInDb.length !== 0) {
+          console.log("Denne bruger har ");
+        }
+      }
+      setConfirm(true);
+    }
   };
 
   const ClickCloseConfirm = () => {
@@ -30,10 +38,9 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   const HandleCloseDelete = async () => {
     if (accessToken != null) {
       try {
-        await DeleteUser(userId, accessToken);
-        await GetUsers(accessToken, setUsers);
         ClickCloseConfirm();
         HandleClose();
+        await DeleteUser(userId, accessToken);
       } catch (error) {
         throw error;
       }

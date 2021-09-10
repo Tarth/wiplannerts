@@ -11,7 +11,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import { DeleteJob, GetJobs } from "../../utility/datahandler";
+import { DeleteJob, GetJobsState } from "../../utility/datahandler";
 
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   setStartDate,
@@ -107,7 +107,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
                         title: "Succes",
                         text: "Job blev slettet fra kalenderen.",
                       });
-                      GetJobs(setTasks, accessToken);
+                      GetJobsState(accessToken, setTasks);
                     },
                     () => {
                       setUsrAlert({
