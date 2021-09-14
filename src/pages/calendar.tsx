@@ -19,21 +19,26 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   const refreshToken = localStorage.getItem("refreshtoken");
 
   async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
-    await GetJobsState(accessToken, setTasks);
-    if (refreshToken !== null) {
-      let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
-      localStorage.setItem("accesstoken", newAccessToken);
-      await GetJobsState(newAccessToken, setTasks);
+    try {
+      await GetJobsState(accessToken, setTasks);
+      if (refreshToken !== null) {
+        let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
+        localStorage.setItem("accesstoken", newAccessToken);
+        await GetJobsState(newAccessToken, setTasks);
+      }
+    } catch (error) {
+      throw error;
     }
   }
 
   // fetch the data from the db every minute
   useEffect(() => {
     GetJobData(setTasks);
-    const interval = setInterval(async () => {
-      GetJobData(setTasks);
-    }, 60000);
-    return () => clearInterval(interval);
+    // GetJobsState(accessToken, setTasks);
+    // const interval = setInterval(async () => {
+    //   GetJobData(setTasks);
+    // }, 60000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
