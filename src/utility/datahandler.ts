@@ -172,7 +172,7 @@ export const GetUsersState = async (
   params?: { querySelector: string }
 ) => {
   const res = await GetUsers(accessToken, params);
-  setState(res);
+  setState(res as Worker[]);
 };
 
 export const GetJobsReturn = async (accessToken: string | null, params?: { id: number }) => {
@@ -186,7 +186,7 @@ export const GetJobsState = async (
   params?: { id: number }
 ) => {
   const res = await GetJobs(accessToken, params);
-  setState(res);
+  setState(res as Job_Worker[]);
 };
 
 export const GetJobs = async (accessToken: string | null, params?: { id: number }) => {
