@@ -31,11 +31,16 @@ export interface DbJob {
   job_id: number;
 }
 
-export interface User {
-  id: number;
-  username: string;
-  password: string;
+export interface JobUserDelete {
+  job_id: number;
+  worker_id: number;
 }
+
+// export interface User {
+//   id: number;
+//   username: string;
+//   password: string;
+// }
 
 export interface User {
   id: number;

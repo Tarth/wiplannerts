@@ -1,4 +1,4 @@
-import { Job_Worker, DbJob, Worker } from "../models/models";
+import { Job_Worker, DbJob, Worker, JobUserDelete } from "../models/models";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiPort = process.env.REACT_APP_API_PORT;
@@ -176,7 +176,7 @@ export const GetUsersState = async (
 };
 
 export const GetJobsReturn = async (accessToken: string | null, params?: { id: number }) => {
-  const res = await GetJobs(accessToken, params);
+  const res = await GetJobData(accessToken, params);
   return res;
 };
 
@@ -185,29 +185,40 @@ export const GetJobsState = async (
   setState: (jobs: Job_Worker[]) => void,
   params?: { id: number }
 ) => {
-  const res = await GetJobs(accessToken, params);
+  const res = await GetJobData(accessToken, params);
   setState(res as Job_Worker[]);
 };
 
-export const GetJobs = async (accessToken: string | null, params?: { id: number }) => {
+const MapJob_Worker = (res: DbJob[]) => {
+  const data = res.map(
+    (x) =>
+      ({
+        description: x.description,
+        id: x.job_id,
+        worker: { id: x.worker_id, name: x.name },
+        start: new Date(x.start_date),
+        end: new Date(x.end_date),
+      } as Job_Worker)
+  );
+  return data;
+};
+
+export const GetJobData = async (accessToken: string | null, params?: { id: number }) => {
   try {
     const res = await GetDataFromDB(`${url}/calendar`, accessToken as string, params);
-    if (res.hasOwnProperty("response")) {
-      throw new Error(res.response.data);
-    } else {
-      const dbdata = res.data as DbJob[];
-      const data = dbdata.map(
-        (x) =>
-          ({
-            description: x.description,
-            id: x.job_id,
-            worker: { id: x.worker_id, name: x.name },
-            start: new Date(x.start_date),
-            end: new Date(x.end_date),
-          } as Job_Worker)
-      );
-      return data;
+    // if (res.hasOwnProperty("response")) {
+    //   throw new Error(res.response.data);
+    // } else {
+    let data: Job_Worker[] | JobUserDelete[] = [];
+    if (res.data.length > 0) {
+      if (res.data[0].hasOwnProperty("description")) {
+        data = MapJob_Worker(res.data);
+      } else {
+        data = res.data;
+      }
     }
+    return data;
+    // }
   } catch (error) {
     return error;
   }

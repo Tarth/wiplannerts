@@ -21,10 +21,13 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   const ClickOpenConfirm = async () => {
     if (accessToken !== null) {
       const userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
-      console.log(userJobsInDb);
       if (Array.isArray(userJobsInDb)) {
         if (userJobsInDb.length !== 0) {
-          console.log("Denne bruger har ");
+          console.log(
+            "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også"
+          );
+        } else {
+          console.log("Ingen jobs!!!!");
         }
       }
       setConfirm(true);
@@ -59,8 +62,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
         <DialogTitle id="alert-dialog-title">Slet bruger?</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Slet denne bruger fra systemet? Bemærk, at hvis brugeren har jobs i kalenderen, bliver
-            disse også slettet!
+            Slet denne bruger fra systemet?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

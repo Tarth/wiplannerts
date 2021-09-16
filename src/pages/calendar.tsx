@@ -41,11 +41,11 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   // fetch the data from the db every minute
   useEffect(() => {
     GetJobData(setTasks);
-    GetJobsState(accessToken, setTasks);
-    const interval = setInterval(async () => {
-      GetJobData(setTasks);
-    }, 60000);
-    return () => clearInterval(interval);
+    // GetJobsState(accessToken, setTasks);
+    // const interval = setInterval(async () => {
+    //   GetJobData(setTasks);
+    // }, 60000);
+    // return () => clearInterval(interval);
   }, []);
 
   return (
