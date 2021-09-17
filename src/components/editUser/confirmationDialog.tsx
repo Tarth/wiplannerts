@@ -8,7 +8,8 @@ import {
   Button,
 } from "@material-ui/core";
 import { DeleteUser, GetUsersReturn, GetJobsReturn } from "../../utility/datahandler";
-import { DeleteUserConfirmationProp } from "../../models/models";
+import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
+import { UserAlertHandler } from "../utilityComponents/userAlert";
 
 export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   userId,
@@ -16,6 +17,11 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   HandleClose,
 }) => {
   const [confirm, setConfirm] = useState(false);
+  const [userAlert, setUserAlert] = useState<AlertProp>({
+    type: undefined,
+    title: "",
+    text: "",
+  });
   const accessToken = localStorage.getItem("accesstoken");
 
   const ClickOpenConfirm = async () => {
@@ -23,11 +29,11 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
       const userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
       if (Array.isArray(userJobsInDb)) {
         if (userJobsInDb.length !== 0) {
-          console.log(
-            "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også"
-          );
-        } else {
-          console.log("Ingen jobs!!!!");
+          setUserAlert({
+            type: "warning",
+            title: "Advarsel",
+            text: "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også",
+          });
         }
       }
       setConfirm(true);
@@ -50,6 +56,15 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     }
   };
 
+  let alert = (
+    <div>
+      <UserAlertHandler
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
+      ></UserAlertHandler>
+    </div>
+  );
   return (
     <div>
       <Button onClick={ClickOpenConfirm}>Slet</Button>
@@ -63,6 +78,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Slet denne bruger fra systemet?
+            {alert}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
