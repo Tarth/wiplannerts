@@ -6,6 +6,7 @@ import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { EditUserDialog } from "./editUserDialog";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { useStyles } from "./style";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
@@ -18,9 +19,11 @@ export const EditUser = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [userAlert, setUserAlert] = useState<AlertProp>({
     type: "info",
-    title: "Rediger bruger",
-    text: "Brug tabellen nedenfor til at slette eller redigere en bruger",
+    title: "Information",
+    text: "Brug tabellen nedenfor til at slette eller redigere en bruger.",
   });
+
+  const classes = useStyles();
 
   useEffect(() => {
     async function FetchUserData() {
@@ -44,7 +47,7 @@ export const EditUser = () => {
   }, [users]);
 
   let alert = (
-    <div>
+    <div className={classes.alertDiv}>
       <UserAlertHandler
         type={userAlert.type}
         title={userAlert.title}
@@ -110,6 +113,7 @@ export const EditUser = () => {
         setName={setUsername}
         userId={userId}
         setUsers={setUsers}
+        setUserAlert={setUserAlert}
       ></EditUserDialog>
     </div>
   );

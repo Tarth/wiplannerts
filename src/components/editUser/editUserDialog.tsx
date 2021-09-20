@@ -25,6 +25,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setName,
   userId,
   setUsers,
+  setUserAlert,
 }) => {
   const classes = useStylesDialog();
   const [password] = useState("");
@@ -81,7 +82,12 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <DeleteUserDialog userId={userId} HandleClose={HandleClose}></DeleteUserDialog>
+        <DeleteUserDialog
+          userId={userId}
+          setUsers={setUsers}
+          HandleClose={HandleClose}
+          setUserAlert={setUserAlert}
+        ></DeleteUserDialog>
         <Button onClick={HandleCloseSave}>Gem</Button>
       </DialogActions>
     </Dialog>

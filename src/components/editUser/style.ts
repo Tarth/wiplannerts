@@ -1,5 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+  alertDiv: {
+    marginBottom: "1em",
+  },
+});
+
 const useStylesDialog = makeStyles({
   container: {
     display: "flex",
@@ -25,4 +31,4 @@ const useStylesDialog = makeStyles({
   },
 });
 
-export { useStylesDialog };
+export { useStylesDialog, useStyles };

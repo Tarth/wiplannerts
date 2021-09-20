@@ -173,6 +173,7 @@ export interface EditUserDialogProp {
   setOpenModal: (setOpen: boolean) => void;
   userId: number;
   setUsers: (users: Worker[]) => void;
+  setUserAlert: (setUserAlert: AlertProp) => void;
 }
 
 export interface UserSelectBoxProp {
@@ -183,5 +184,7 @@ export interface UserSelectBoxProp {
 
 export interface DeleteUserConfirmationProp {
   userId: number;
+  setUsers: (users: Worker[]) => void;
   HandleClose: () => void;
+  setUserAlert: (userAlert: AlertProp) => void;
 }

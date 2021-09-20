@@ -7,13 +7,18 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-import { DeleteUser, GetJobsReturn, DeleteJob } from "../../utility/datahandler";
+import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersState } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 
-export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({ userId, HandleClose }) => {
+export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
+  userId,
+  setUsers,
+  HandleClose,
+  setUserAlert,
+}) => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-  const [userAlert, setUserAlert] = useState<AlertProp>({
+  const [localAlert, setLocalAlert] = useState<AlertProp>({
     type: undefined,
     title: "",
     text: "",
@@ -26,7 +31,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({ userId,
       userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
       if (Array.isArray(userJobsInDb)) {
         if (userJobsInDb.length !== 0) {
-          setUserAlert({
+          setLocalAlert({
             type: "warning",
             title: "Advarsel",
             text: "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også",
@@ -53,13 +58,19 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({ userId,
           await DeleteJob(newMap, accessToken);
         }
         await DeleteUser(userId, accessToken);
+        await GetUsersState(accessToken, setUsers);
+        setUserAlert({
+          type: "success",
+          title: "Succes",
+          text: "Bruger og evt. tilhørende jobs blev slettet fra databasen",
+        });
         ClickCloseConfirm();
         HandleClose();
       } catch (error) {
-        setUserAlert({
+        setLocalAlert({
           type: "error",
           title: "Fejl",
-          text: `${error}`,
+          text: `${error} - Kontakt Winoto`,
         });
       }
     }
@@ -68,9 +79,9 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({ userId,
   let alert = (
     <div>
       <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
+        type={localAlert.type}
+        title={localAlert.title}
+        text={localAlert.text}
       ></UserAlertHandler>
     </div>
   );
