@@ -183,6 +183,5 @@ export interface UserSelectBoxProp {
 
 export interface DeleteUserConfirmationProp {
   userId: number;
-  setUsers: (users: Worker[]) => void;
   HandleClose: () => void;
 }

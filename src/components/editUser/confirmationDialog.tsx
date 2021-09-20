@@ -7,26 +7,23 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
-import { DeleteUser, GetUsersReturn, GetJobsReturn } from "../../utility/datahandler";
+import { DeleteUser, GetJobsReturn, DeleteJob } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 
-export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
-  userId,
-  setUsers,
-  HandleClose,
-}) => {
-  const [confirm, setConfirm] = useState(false);
+export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({ userId, HandleClose }) => {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [userAlert, setUserAlert] = useState<AlertProp>({
     type: undefined,
     title: "",
     text: "",
   });
   const accessToken = localStorage.getItem("accesstoken");
+  let userJobsInDb: unknown;
 
   const ClickOpenConfirm = async () => {
     if (accessToken !== null) {
-      const userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
+      userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
       if (Array.isArray(userJobsInDb)) {
         if (userJobsInDb.length !== 0) {
           setUserAlert({
@@ -36,22 +33,34 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
           });
         }
       }
-      setConfirm(true);
+      setConfirmDialogOpen(true);
     }
   };
 
   const ClickCloseConfirm = () => {
-    setConfirm(false);
+    setConfirmDialogOpen(false);
   };
 
   const HandleCloseDelete = async () => {
     if (accessToken != null) {
       try {
+        userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
+        if (Array.isArray(userJobsInDb)) {
+          const newMap: number[] = [];
+          userJobsInDb.forEach((job) => {
+            newMap.push(job.job_id);
+          });
+          await DeleteJob(newMap, accessToken);
+        }
+        await DeleteUser(userId, accessToken);
         ClickCloseConfirm();
         HandleClose();
-        await DeleteUser(userId, accessToken);
       } catch (error) {
-        throw error;
+        setUserAlert({
+          type: "error",
+          title: "Fejl",
+          text: `${error}`,
+        });
       }
     }
   };
@@ -69,7 +78,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     <div>
       <Button onClick={ClickOpenConfirm}>Slet</Button>
       <Dialog
-        open={confirm}
+        open={confirmDialogOpen}
         onClose={HandleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

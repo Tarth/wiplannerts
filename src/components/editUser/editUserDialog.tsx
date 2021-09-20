@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import { EditUserDialogProp } from "../../models/models";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
-// import { DeleteUser, GetWorkers } from "../../utility/datahandler";
 import { DeleteUserDialog } from "./confirmationDialog";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
@@ -82,11 +81,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         </div>
       </DialogContent>
       <DialogActions>
-        <DeleteUserDialog
-          userId={userId}
-          setUsers={setUsers}
-          HandleClose={HandleClose}
-        ></DeleteUserDialog>
+        <DeleteUserDialog userId={userId} HandleClose={HandleClose}></DeleteUserDialog>
         <Button onClick={HandleCloseSave}>Gem</Button>
       </DialogActions>
     </Dialog>

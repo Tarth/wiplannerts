@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Worker } from "../../models/models";
+import { AlertProp, Worker } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { EditUserDialog } from "./editUserDialog";
+import { UserAlertHandler } from "../utilityComponents/userAlert";
 
 export const EditUser = () => {
   const [users, setUsers] = useState<Worker[]>([]);
@@ -15,6 +16,11 @@ export const EditUser = () => {
   const [usergroup, setUsergroup] = useState("worker");
   const [name, setName] = useState("");
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [userAlert, setUserAlert] = useState<AlertProp>({
+    type: "info",
+    title: "Rediger bruger",
+    text: "Brug tabellen nedenfor til at slette eller redigere en bruger",
+  });
 
   useEffect(() => {
     async function FetchUserData() {
@@ -37,8 +43,18 @@ export const EditUser = () => {
     setUsergroupStringUsers(tempArray);
   }, [users]);
 
+  let alert = (
+    <div>
+      <UserAlertHandler
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
+      ></UserAlertHandler>
+    </div>
+  );
   return (
     <div>
+      {alert}
       <DataTable
         value={usergroupStringUsers}
         dataKey="id"
@@ -58,14 +74,6 @@ export const EditUser = () => {
         rowsPerPageOptions={[10, 20, 50]}
       >
         <Column
-          field="usergroup_id"
-          header="Brugergruppe"
-          filter
-          sortable
-          filterMatchMode="contains"
-          filterPlaceholder="Søg brugernavn"
-        ></Column>
-        <Column
           field="username"
           header="Brugernavn"
           sortable
@@ -80,6 +88,14 @@ export const EditUser = () => {
           filter
           filterMatchMode="contains"
           filterPlaceholder="Søg navn"
+        ></Column>
+        <Column
+          field="usergroup_id"
+          header="Brugergruppe"
+          filter
+          sortable
+          filterMatchMode="contains"
+          filterPlaceholder="Søg brugernavn"
         ></Column>
       </DataTable>
       <EditUserDialog

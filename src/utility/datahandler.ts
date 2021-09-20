@@ -206,9 +206,6 @@ const MapJob_Worker = (res: DbJob[]) => {
 export const GetJobData = async (accessToken: string | null, params?: { id: number }) => {
   try {
     const res = await GetDataFromDB(`${url}/calendar`, accessToken as string, params);
-    // if (res.hasOwnProperty("response")) {
-    //   throw new Error(res.response.data);
-    // } else {
     let data: Job_Worker[] | JobUserDelete[] = [];
     if (res.data.length > 0) {
       if (res.data[0].hasOwnProperty("description")) {
@@ -224,7 +221,11 @@ export const GetJobData = async (accessToken: string | null, params?: { id: numb
   }
 };
 
-const DeleteJobFromDB = async (localurl: string, job_id: number, accessToken: string) => {
+const DeleteJobFromDB = async (
+  localurl: string,
+  job_id: number | number[],
+  accessToken: string
+) => {
   try {
     let res = await axios.delete(localurl, {
       data: {
@@ -237,7 +238,7 @@ const DeleteJobFromDB = async (localurl: string, job_id: number, accessToken: st
     return error;
   }
 };
-export const DeleteJob = async (job_id: number, accessToken: string | null) => {
+export const DeleteJob = async (job_id: number | number[], accessToken: string | null) => {
   DeleteJobFromDB(`${url}/jobs`, job_id, accessToken as string)
     .then(function (response) {
       return response;
