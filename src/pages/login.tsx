@@ -57,6 +57,15 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
           flexDirection="column"
           width="25%"
           className={classes.item}
+<<<<<<< Updated upstream
+=======
+          onKeyPress={async (e) => {
+            if (e.key === "Enter") {
+              setIsLoading(true);
+              await LoginResponse();
+            }
+          }}
+>>>>>>> Stashed changes
         >
           <h1 className={classes.header}>Wiplanner</h1>
           <TextField
