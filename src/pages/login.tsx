@@ -50,7 +50,18 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   return (
     <>
       <div className={classes.container}>
-        <Box display="flex" flexDirection="column" width="25%" className={classes.item}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="25%"
+          className={classes.item}
+          onKeyPress={async (e) => {
+            if (e.key === "Enter") {
+              setIsLoading(true);
+              await LoginResponse();
+            }
+          }}
+        >
           <h1 className={classes.header}>Wiplanner</h1>
           <TextField
             className={classes.textField}
