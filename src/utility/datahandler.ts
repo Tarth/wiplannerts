@@ -329,6 +329,17 @@ export const AuthenticateUser = async (accessToken: string) => {
   }
 };
 
+export const IsTokenValidated = (accessToken: string | null) => {
+  const query = axios.get(`${url}/validate`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (typeof query !== "object" || accessToken == null) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 export const GetAccessTokenFromRefresh = async (refreshToken: string) => {
   try {
     const res = await axios.post(`${url}/token`, { token: refreshToken });

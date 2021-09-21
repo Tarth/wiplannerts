@@ -1,38 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "../pages/calendar";
 import { Admin } from "../pages/admin";
 import { Login } from "../pages/login";
+import { IsTokenValidated } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 export const Index: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userGroup, setUserGroup] = useState("");
+  const accessToken = localStorage.getItem("accesstoken");
 
+  const LoginSwitch: React.FC = () => {
+    if (isLoggedIn && IsTokenValidated(accessToken)) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/calendar",
+            state: {
+              accesstoken: accessToken,
+            },
+          }}
+        />
+      );
+    } else {
+      return (
+        <Login
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          setUserGroup={setUserGroup}
+        ></Login>
+      );
+    }
+  };
   return (
     <>
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
-            {isLoggedIn ? (
-              <Redirect
-                to={{
-                  pathname: "/calendar",
-                  state: {
-                    accesstoken: localStorage.getItem("accesstoken"),
-                  },
-                }}
-              />
-            ) : (
-              <Login
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                setUserGroup={setUserGroup}
-              ></Login>
-            )}
+            <LoginSwitch></LoginSwitch>
           </Route>
           <Route path="/calendar">
-            {isLoggedIn && getUserGroupNumber(userGroup) <= 3 ? (
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 3 && IsTokenValidated(accessToken) ? (
               <>
                 <Calendar
                   isLoggedIn={isLoggedIn}
@@ -45,7 +54,7 @@ export const Index: React.FC = () => {
             )}
           </Route>
           <Route path="/admin">
-            {isLoggedIn && getUserGroupNumber(userGroup) <= 2 ? (
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 2 && IsTokenValidated(accessToken) ? (
               <>
                 <Admin
                   isLoggedIn={isLoggedIn}
