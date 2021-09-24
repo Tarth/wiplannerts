@@ -20,30 +20,33 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   async function LoginResponse() {
-    const returnmsg = await PostLogin(username, password);
-    if (returnmsg.hasOwnProperty("response")) {
-      if (returnmsg.response.data === "User not found") {
+    try {
+      const returnmsg = await PostLogin(username, password);
+      if (returnmsg.data.isSuccess === false) {
+        console.log(returnmsg.data.errorText);
+        setIsError(true);
         setIsLoading(false);
       } else {
+        const accessToken = returnmsg.data.accessToken;
+        const refreshToken = returnmsg.data.refreshToken;
+        const userdata = ParseJWT(accessToken);
+        localStorage.setItem("accesstoken", accessToken);
+        localStorage.setItem("refreshtoken", refreshToken);
+
+        if (setUserGroup !== undefined) {
+          setUserGroup(userdata.usergroup);
+        }
+        if (accessToken !== null) {
+          await AuthenticateUser(accessToken);
+          setIsLoggedIn(true);
+        }
         setIsLoading(false);
       }
-    } else {
-      const accessToken = returnmsg.data.accessToken;
-      const refreshToken = returnmsg.data.refreshToken;
-      const userdata = ParseJWT(accessToken);
-      localStorage.setItem("accesstoken", accessToken);
-      localStorage.setItem("refreshtoken", refreshToken);
-
-      if (setUserGroup !== undefined) {
-        setUserGroup(userdata.usergroup);
-      }
-      if (accessToken !== null) {
-        await AuthenticateUser(accessToken);
-        setIsLoggedIn(true);
-      }
-      setIsLoading(false);
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -63,6 +66,11 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
           }}
         >
           <h1 className={classes.header}>Wiplanner</h1>
+          {isError ? (
+            <p className={classes.errorText}>Forkert brugernavn og/eller adgangskode!</p>
+          ) : (
+            <></>
+          )}
           <TextField
             className={classes.textField}
             label="Brugernavn"
@@ -71,6 +79,7 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
             onChange={(e) => {
               setUsername(e.target.value);
             }}
+            error={isError ? true : false}
           ></TextField>
           <TextField
             className={classes.textField}
@@ -81,6 +90,7 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            error={isError ? true : false}
           ></TextField>
           <Button
             className={classes.button}

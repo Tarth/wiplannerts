@@ -36,6 +36,9 @@ const useStyles = makeStyles({
   button: {
     margin: "25px auto 0 auto",
   },
+  errorText: {
+    color: "red",
+  },
 });
 
 export { useStyles };
