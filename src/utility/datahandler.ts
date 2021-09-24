@@ -137,7 +137,6 @@ const GetDataFromDB = async (
       Object.assign(requestConfig, queryConfig);
     }
     let res = await axios.get(localurl, requestConfig);
-    // let res = await axios.get(localurl, { headers: { Authorization: `Bearer ${accessToken}` } });
     return res;
   } catch (error) {
     return error;
@@ -215,7 +214,6 @@ export const GetJobData = async (accessToken: string | null, params?: { id: numb
       }
     }
     return data;
-    // }
   } catch (error) {
     return error;
   }
