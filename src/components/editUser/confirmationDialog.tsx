@@ -51,11 +51,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
       try {
         userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
         if (Array.isArray(userJobsInDb)) {
-          const newMap: number[] = [];
-          userJobsInDb.forEach((job) => {
-            newMap.push(job.job_id);
-          });
-          await DeleteJob(newMap, accessToken);
+          await DeleteJob(userJobsInDb, accessToken);
         }
         await DeleteUser(userId, accessToken);
         await GetUsersState(accessToken, setUsers);
