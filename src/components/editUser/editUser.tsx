@@ -106,11 +106,12 @@ export const EditUser = () => {
         setOpenModal={setOpenModal}
         username={username}
         setUsername={setUsername}
+        password={password}
         setPassword={setPassword}
         usergroup={usergroup}
         setUsergroup={setUsergroup}
         name={name}
-        setName={setUsername}
+        setName={setName}
         userId={userId}
         setUsers={setUsers}
         setUserAlert={setUserAlert}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useStylesDialog } from "./style";
 import {
   Dialog,
@@ -18,6 +18,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setOpenModal,
   username,
   setUsername,
+  password,
   setPassword,
   usergroup,
   setUsergroup,
@@ -28,7 +29,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setUserAlert,
 }) => {
   const classes = useStylesDialog();
-  const [password] = useState("");
+  const [tempPassword, setTempPassword] = useState("");
+  const [tempRepeatedPassword, setTempRepeatedPassword] = useState("");
 
   const HandleCloseSave = () => {
     HandleClose();
@@ -39,9 +41,9 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   };
 
   return (
-    <Dialog open={openModal} onClose={HandleClose}>
-      <DialogTitle>Rediger</DialogTitle>
-      <DialogContent className={classes.container}>
+    <Dialog open={openModal} onClose={HandleClose} className={classes.container}>
+      <DialogTitle>Rediger/slet</DialogTitle>
+      <DialogContent>
         <DialogContentText>
           Rediger indholdet af de forskellige felter og tryk på Gem når du er færdig
         </DialogContentText>
@@ -49,35 +51,49 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           <div className={classes.dialogInput}>
             <UserSelectBox
               setUserGroup={setUsergroup}
+              workerName={name}
               setWorkerName={setName}
               userGroup={usergroup}
             ></UserSelectBox>
           </div>
           <TextField
+            className={classes.dialogInput}
             variant="filled"
             label="Brugernavn"
             value={username}
-            className={classes.dialogInput}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
           ></TextField>
           <TextField
+            className={classes.dialogInput}
             variant="filled"
             label="Kalendernavn"
             value={name}
-            className={classes.dialogInput}
+            disabled={usergroup !== "worker" ? true : false}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           ></TextField>
         </div>
         <div className={classes.passwordWrapper}>
           <TextField
             variant="filled"
             label="Password"
-            value={password}
+            value={tempPassword}
             className={classes.dialogInput}
+            onChange={(e) => {
+              setTempPassword(e.target.value);
+            }}
           ></TextField>
           <TextField
             variant="filled"
             label="Gentag password"
-            value={password}
+            value={tempRepeatedPassword}
             className={classes.dialogInput}
+            onChange={(e) => {
+              setTempRepeatedPassword(e.target.value);
+            }}
           ></TextField>
         </div>
       </DialogContent>
@@ -88,6 +104,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           HandleClose={HandleClose}
           setUserAlert={setUserAlert}
         ></DeleteUserDialog>
+        <Button onClick={HandleClose}>Annuller</Button>
         <Button onClick={HandleCloseSave}>Gem</Button>
       </DialogActions>
     </Dialog>

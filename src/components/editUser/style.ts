@@ -31,4 +31,10 @@ const useStylesDialog = makeStyles({
   },
 });
 
-export { useStylesDialog, useStyles };
+const useStylesConfirmationDialog = makeStyles({
+  deleteButton: {
+    marginRight: "auto",
+  },
+});
+
+export { useStylesDialog, useStyles, useStylesConfirmationDialog };

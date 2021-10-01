@@ -34,22 +34,49 @@ export const DeleteUser = async (userId: number, accessToken: string) => {
   }
 };
 
-const PostUserToDB = async (
+// Post a new worker into the DB
+export const UpdateUser = async (
+  username: string,
+  usergroup: string,
+  password: string,
+  accessToken: string,
+  id: number,
+  workername?: string
+) => {
+  try {
+    const res = await UpdateUserToDB(
+      `${url}/users`,
+      username,
+      usergroup,
+      password,
+      accessToken,
+      id,
+      workername
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const UpdateUserToDB = async (
   localurl: string,
   _username: string,
   _usergroup: string,
   _password: string,
   _accessToken: string,
+  _id: number,
   _workername?: string
 ) => {
   try {
-    let res = await axios.post(
+    let res = await axios.put(
       localurl,
       {
         username: _username,
         usergroup: _usergroup,
         password: _password,
         workername: _workername,
+        id: _id,
       },
       { headers: { Authorization: `Bearer ${_accessToken as string}` } }
     );
@@ -82,6 +109,47 @@ export const PostUser = async (
   }
 };
 
+const PostUserToDB = async (
+  localurl: string,
+  _username: string,
+  _usergroup: string,
+  _password: string,
+  _accessToken: string,
+  _workername?: string
+) => {
+  try {
+    let res = await axios.post(
+      localurl,
+      {
+        username: _username,
+        usergroup: _usergroup,
+        password: _password,
+        workername: _workername,
+      },
+      { headers: { Authorization: `Bearer ${_accessToken as string}` } }
+    );
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const PostJob = async (
+  start_date: string,
+  end_date: string,
+  description: string,
+  workersOnJob: number[],
+  accessToken: string | null
+) => {
+  PostJobToDB(`${url}/jobs`, start_date, end_date, description, workersOnJob, accessToken)
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};
+
 // Post a new job into the DB
 const PostJobToDB = async (
   localurl: string,
@@ -108,20 +176,21 @@ const PostJobToDB = async (
   }
 };
 
-export const PostJob = async (
-  start_date: string,
-  end_date: string,
-  description: string,
-  workersOnJob: number[],
-  accessToken: string | null
-) => {
-  PostJobToDB(`${url}/jobs`, start_date, end_date, description, workersOnJob, accessToken)
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return error;
-    });
+const GetUsers = async (accessToken: string, params?: { querySelector?: string; id?: number }) => {
+  try {
+    const res = await GetDataFromDB(`${url}/users`, accessToken as string, params);
+    const dbdata = res.data as Worker[];
+    const data = dbdata.map((user) => ({
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      usergroup_id: user.usergroup_id,
+      password: user.password,
+    }));
+    return data;
+  } catch (error) {
+    return error;
+  }
 };
 
 //General purpose Get data from db function. The parameters are optional and is used to call different queries from the frontend.
@@ -138,23 +207,6 @@ const GetDataFromDB = async (
     }
     let res = await axios.get(localurl, requestConfig);
     return res;
-  } catch (error) {
-    return error;
-  }
-};
-
-const GetUsers = async (accessToken: string, params?: { querySelector?: string; id?: number }) => {
-  try {
-    const res = await GetDataFromDB(`${url}/users`, accessToken as string, params);
-    const dbdata = res.data as Worker[];
-    const data = dbdata.map((user) => ({
-      id: user.id,
-      name: user.name,
-      username: user.username,
-      usergroup_id: user.usergroup_id,
-      password: user.password,
-    }));
-    return data;
   } catch (error) {
     return error;
   }
@@ -219,6 +271,16 @@ export const GetJobData = async (accessToken: string | null, params?: { id: numb
   }
 };
 
+export const DeleteJob = async (job_id: number | number[], accessToken: string | null) => {
+  DeleteJobFromDB(`${url}/jobs`, job_id, accessToken as string)
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      return error;
+    });
+};
+
 const DeleteJobFromDB = async (
   localurl: string,
   job_id: number | number[],
@@ -236,8 +298,24 @@ const DeleteJobFromDB = async (
     return error;
   }
 };
-export const DeleteJob = async (job_id: number | number[], accessToken: string | null) => {
-  DeleteJobFromDB(`${url}/jobs`, job_id, accessToken as string)
+
+export const UpdateJob = async (
+  start_date: string,
+  end_date: string,
+  description: string,
+  workersOnJob: number[],
+  job_id: number,
+  accessToken: string | null
+) => {
+  UpdateJobInDB(
+    `${url}/jobs`,
+    start_date,
+    end_date,
+    description,
+    workersOnJob,
+    job_id,
+    accessToken as string
+  )
     .then(function (response) {
       return response;
     })
@@ -273,31 +351,6 @@ const UpdateJobInDB = async (
   } catch (error) {
     return error;
   }
-};
-
-export const UpdateJob = async (
-  start_date: string,
-  end_date: string,
-  description: string,
-  workersOnJob: number[],
-  job_id: number,
-  accessToken: string | null
-) => {
-  UpdateJobInDB(
-    `${url}/jobs`,
-    start_date,
-    end_date,
-    description,
-    workersOnJob,
-    job_id,
-    accessToken as string
-  )
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      return error;
-    });
 };
 
 const PostLoginToDB = async (localurl: string, _username: string, _password: string) => {

@@ -10,6 +10,7 @@ import {
 import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersState } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { useStylesConfirmationDialog } from "./style";
 
 export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   userId,
@@ -26,6 +27,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   const accessToken = localStorage.getItem("accesstoken");
   let userJobsInDb: unknown;
 
+  const classes = useStylesConfirmationDialog();
   const ClickOpenConfirm = async () => {
     if (accessToken !== null) {
       userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
@@ -82,7 +84,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     </div>
   );
   return (
-    <div>
+    <div className={classes.deleteButton}>
       <Button onClick={ClickOpenConfirm}>Slet</Button>
       <Dialog
         open={confirmDialogOpen}
