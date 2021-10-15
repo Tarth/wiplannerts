@@ -34,7 +34,7 @@ export const DeleteUser = async (userId: number, accessToken: string) => {
   }
 };
 
-// Post a new worker into the DB
+// Update a user in the DB
 export const UpdateUser = async (
   username: string,
   usergroup: string,
