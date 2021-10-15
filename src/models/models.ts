@@ -164,6 +164,7 @@ export interface UserAlertProp {
 export interface EditUserDialogProp {
   username: string;
   setUsername: (username: string) => void;
+  password: string;
   setPassword: (password: string) => void;
   usergroup: string;
   setUsergroup: (usergroup: string) => void;
@@ -174,11 +175,13 @@ export interface EditUserDialogProp {
   userId: number;
   setUsers: (users: Worker[]) => void;
   setUserAlert: (setUserAlert: AlertProp) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export interface UserSelectBoxProp {
   userGroup: string;
   setUserGroup: (userGroup: string) => void;
+  workerName: string;
   setWorkerName: (workerName: string) => void;
 }
 

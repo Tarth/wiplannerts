@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { GetJobsState, GetAccessTokenFromRefresh } from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
-import { addDays, subDays, startOfWeek, format, differenceInCalendarDays } from "date-fns";
+import {
+  addDays,
+  subDays,
+  startOfWeek,
+  format,
+  differenceInCalendarDays,
+  getISOWeek,
+} from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
@@ -80,12 +87,13 @@ const DisplayHeaders: React.FC<DateProp> = ({ currentDate }) => {
     <>
       <div className="headermonthandyear">
         <div className="headermonth">{format(initialDate, "MMMM", { locale: da })}</div>
-        <div className="headerweek">Uge {format(initialDate, "ww")}</div>
+        <div className="headerweek">Uge {getISOWeek(initialDate)}</div>
         <div className="headeryear">{format(initialDate, "yyyy", { locale: da })}</div>
       </div>
     </>
   );
 };
+
 // Display the headers of the weekdays in the calendar ie Mon, tue etc with dates
 const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   const firstDayOfWeek = startOfWeek(currentDate, {

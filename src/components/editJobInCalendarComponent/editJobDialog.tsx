@@ -133,9 +133,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           <DialogContentText>
             Rediger indholdet af de forskellige felter og tryk gem, når du er færdig
           </DialogContentText>
-
           <Description description={description} setDescription={setDescription}></Description>
-
           <DateInput
             date={startDate}
             setDate={setStartDate}

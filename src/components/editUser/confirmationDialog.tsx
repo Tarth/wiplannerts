@@ -6,10 +6,12 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
 import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersState } from "../../utility/datahandler";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { useStylesConfirmationDialog } from "./style";
 
 export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   userId,
@@ -23,22 +25,31 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     title: "",
     text: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [deleteConfirmationLoading, setDeleteConfirmationLoading] = useState(false);
   const accessToken = localStorage.getItem("accesstoken");
   let userJobsInDb: unknown;
 
+  const classes = useStylesConfirmationDialog();
   const ClickOpenConfirm = async () => {
-    if (accessToken !== null) {
-      userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
-      if (Array.isArray(userJobsInDb)) {
-        if (userJobsInDb.length !== 0) {
-          setLocalAlert({
-            type: "warning",
-            title: "Advarsel",
-            text: "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også",
-          });
+    try {
+      setLoading(true);
+      if (accessToken !== null) {
+        userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
+        if (Array.isArray(userJobsInDb)) {
+          if (userJobsInDb.length !== 0) {
+            setLocalAlert({
+              type: "warning",
+              title: "Advarsel",
+              text: "Denne bruger har jobs i databasen. Hvis brugeren slettes, så fjernes disse også",
+            });
+          }
         }
+        setLoading(false);
+        setConfirmDialogOpen(true);
       }
-      setConfirmDialogOpen(true);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -49,6 +60,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   const HandleCloseDelete = async () => {
     if (accessToken != null) {
       try {
+        setDeleteConfirmationLoading(true);
         userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
         if (Array.isArray(userJobsInDb)) {
           await DeleteJob(userJobsInDb, accessToken);
@@ -60,6 +72,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
           title: "Succes",
           text: "Bruger og evt. tilhørende jobs blev slettet fra databasen",
         });
+        setDeleteConfirmationLoading(false);
         ClickCloseConfirm();
         HandleClose();
       } catch (error) {
@@ -82,8 +95,14 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     </div>
   );
   return (
-    <div>
-      <Button onClick={ClickOpenConfirm}>Slet</Button>
+    <div className={classes.deleteButton}>
+      {loading ? (
+        <Button>
+          <CircularProgress size="1em" />
+        </Button>
+      ) : (
+        <Button onClick={ClickOpenConfirm}>Slet</Button>
+      )}
       <Dialog
         open={confirmDialogOpen}
         onClose={HandleClose}
@@ -101,9 +120,15 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
           <Button onClick={ClickCloseConfirm} color="primary">
             Fortryd
           </Button>
-          <Button onClick={HandleCloseDelete} color="primary" autoFocus>
-            Ja
-          </Button>
+          {deleteConfirmationLoading ? (
+            <Button color="primary" autoFocus>
+              <CircularProgress size="1em" />
+            </Button>
+          ) : (
+            <Button onClick={HandleCloseDelete} color="primary" autoFocus>
+              Ja
+            </Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>

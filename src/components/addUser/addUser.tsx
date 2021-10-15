@@ -72,6 +72,7 @@ export const AddUser: React.FC<UserAlertProp> = ({ usrAlert, setUsrAlert }) => {
           </InputLabel>
           <UserSelectBox
             setUserGroup={setUserGroup}
+            workerName={workerName}
             setWorkerName={setWorkerName}
             userGroup={userGroup}
           ></UserSelectBox>
