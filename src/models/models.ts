@@ -175,6 +175,7 @@ export interface EditUserDialogProp {
   userId: number;
   setUsers: (users: Worker[]) => void;
   setUserAlert: (setUserAlert: AlertProp) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export interface UserSelectBoxProp {

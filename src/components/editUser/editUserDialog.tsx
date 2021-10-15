@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStylesDialog } from "./style";
 import {
   Dialog,
@@ -29,6 +29,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   userId,
   setUsers,
   setUserAlert,
+  setLoading,
 }) => {
   const classes = useStylesDialog();
   const [tempPassword, setTempPassword] = useState("");
@@ -40,30 +41,30 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     text: "",
   });
 
-  const isBothPasswordsEqual = (password1: string, password2: string) => {
-    if (password1 === password2) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const isBothPasswordsEqual = (password1: string, password2: string) => {
+  //   if (password1 === password2) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
-  const IsCharsInvalid = (input: string) => {
-    const invalidInput = /[!"#$%/{()=}?+<>*[\]']/g;
-    if (invalidInput.test(input)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const IsCharsInvalid = (input: string) => {
+  //   const invalidInput = /[!"#$%/{()=}?+<>*[\]']/g;
+  //   if (invalidInput.test(input)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
-  const IsInputInvalid = (input: string | string[]) => {
-    if (input.length === 0 || IsCharsInvalid) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  // const IsInputInvalid = (input: string | string[]) => {
+  //   if (input.length === 0 || IsCharsInvalid) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
 
   const CloseAndSave = () => {
     let _password = "";
@@ -86,10 +87,27 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     } else {
       _password = tempPassword;
     }
-    UpdateUser(username, usergroup, _password, accessToken as string, userId, name);
-    GetUsersState(accessToken as string, setUsers);
-    setError(false);
-    Close();
+
+    async function Return() {
+      try {
+        await UpdateUser(username, usergroup, _password, accessToken as string, userId, name);
+        setLoading(true);
+        await GetUsersState(accessToken as string, setUsers);
+        setLoading(false);
+        if (error === true) {
+          setError(false);
+        }
+        Close();
+      } catch (error) {
+        setUsrAlert({
+          type: "error",
+          title: "Fejl",
+          text: `Fejl - ${error}`,
+        });
+      }
+    }
+
+    Return();
   };
 
   const Close = () => {

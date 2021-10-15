@@ -35,6 +35,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   setIsEndValid,
 }) => {
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const useStyles = makeStyles({
     button: {
@@ -133,9 +134,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           <DialogContentText>
             Rediger indholdet af de forskellige felter og tryk gem, når du er færdig
           </DialogContentText>
-
           <Description description={description} setDescription={setDescription}></Description>
-
           <DateInput
             date={startDate}
             setDate={setStartDate}
