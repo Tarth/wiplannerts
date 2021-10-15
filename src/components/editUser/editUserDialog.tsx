@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Button,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import { EditUserDialogProp, AlertProp } from "../../models/models";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
@@ -35,6 +36,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   const [tempPassword, setTempPassword] = useState("");
   const [tempRepeatedPassword, setTempRepeatedPassword] = useState("");
   const [error, setError] = useState(false);
+  const [dialogLoadingOnSave, setDialogLoadingOnSave] = useState(false);
   const [usrAlert, setUsrAlert] = useState<AlertProp>({
     type: undefined,
     title: "",
@@ -90,20 +92,26 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
 
     async function Return() {
       try {
+        setDialogLoadingOnSave(true);
         await UpdateUser(username, usergroup, _password, accessToken as string, userId, name);
-        setLoading(true);
-        await GetUsersState(accessToken as string, setUsers);
-        setLoading(false);
+        Close();
+        setDialogLoadingOnSave(false);
         if (error === true) {
           setError(false);
         }
-        Close();
       } catch (error) {
         setUsrAlert({
           type: "error",
           title: "Fejl",
           text: `Fejl - ${error}`,
         });
+      }
+      try {
+        setLoading(true);
+        await GetUsersState(accessToken as string, setUsers);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
       }
     }
 
@@ -194,7 +202,13 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           setUserAlert={setUserAlert}
         ></DeleteUserDialog>
         <Button onClick={Close}>Annuller</Button>
-        <Button onClick={CloseAndSave}>Gem</Button>
+        {dialogLoadingOnSave ? (
+          <Button onClick={CloseAndSave}>
+            <CircularProgress size="1em" />
+          </Button>
+        ) : (
+          <Button onClick={CloseAndSave}>Gem</Button>
+        )}
       </DialogActions>
     </Dialog>
   );

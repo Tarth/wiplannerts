@@ -35,7 +35,6 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   setIsEndValid,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
 
   const useStyles = makeStyles({
     button: {

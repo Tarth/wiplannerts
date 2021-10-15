@@ -61,53 +61,57 @@ export const EditUser = () => {
   );
   return (
     <div>
-      {alert}
       {loading ? (
-        <CircularProgress size="10rem" />
+        <div className={classes.spinnerDiv}>
+          <CircularProgress size="10rem" />
+        </div>
       ) : (
-        <DataTable
-          value={usergroupStringUsers}
-          dataKey="id"
-          paginator
-          onRowClick={(e) => {
-            setName(e.data.name);
-            setPassword(e.data.password);
-            setUsergroup(e.data.usergroup_id);
-            setUsername(e.data.username);
-            setUserId(e.data.id);
-            setOpenModal(true);
-          }}
-          selectionMode="single"
-          paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-          currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
-          rows={20}
-          rowsPerPageOptions={[10, 20, 50]}
-        >
-          <Column
-            field="username"
-            header="Brugernavn"
-            sortable
-            filter
-            filterMatchMode="contains"
-            filterPlaceholder="Søg brugergruppe"
-          ></Column>
-          <Column
-            field="name"
-            header="Navn"
-            sortable
-            filter
-            filterMatchMode="contains"
-            filterPlaceholder="Søg navn"
-          ></Column>
-          <Column
-            field="usergroup_id"
-            header="Brugergruppe"
-            filter
-            sortable
-            filterMatchMode="contains"
-            filterPlaceholder="Søg brugernavn"
-          ></Column>
-        </DataTable>
+        <div>
+          {alert}
+          <DataTable
+            value={usergroupStringUsers}
+            dataKey="id"
+            paginator
+            onRowClick={(e) => {
+              setName(e.data.name);
+              setPassword(e.data.password);
+              setUsergroup(e.data.usergroup_id);
+              setUsername(e.data.username);
+              setUserId(e.data.id);
+              setOpenModal(true);
+            }}
+            selectionMode="single"
+            paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+            currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
+            rows={20}
+            rowsPerPageOptions={[10, 20, 50]}
+          >
+            <Column
+              field="username"
+              header="Brugernavn"
+              sortable
+              filter
+              filterMatchMode="contains"
+              filterPlaceholder="Søg brugergruppe"
+            ></Column>
+            <Column
+              field="name"
+              header="Navn"
+              sortable
+              filter
+              filterMatchMode="contains"
+              filterPlaceholder="Søg navn"
+            ></Column>
+            <Column
+              field="usergroup_id"
+              header="Brugergruppe"
+              filter
+              sortable
+              filterMatchMode="contains"
+              filterPlaceholder="Søg brugernavn"
+            ></Column>
+          </DataTable>
+        </div>
       )}
       <EditUserDialog
         openModal={openModal}

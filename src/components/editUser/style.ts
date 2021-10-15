@@ -1,8 +1,15 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { flexbox } from "@material-ui/system";
 
 const useStyles = makeStyles({
   alertDiv: {
     marginBottom: "1em",
+  },
+  spinnerDiv: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "75vh",
   },
 });
 
