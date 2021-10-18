@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { CircularProgress, Snackbar } from "@material-ui/core";
+import { CircularProgress, Snackbar, IconButton } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { AlertProp, Worker } from "../../models/models";
+import { PersonAdd, List } from "@material-ui/icons";
+import { AlertProp, Worker, ViewProp } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { ParseJWT } from "../../utility/parsetoken";
@@ -11,7 +12,7 @@ import { EditUserDialog } from "./editUserDialog";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyles } from "./style";
 
-export const EditUser = () => {
+export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
   const [users, setUsers] = useState<Worker[]>([]);
   const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
@@ -53,6 +54,10 @@ export const EditUser = () => {
     setUsergroupStringUsers(tempArray);
   }, [users]);
 
+  const AddUserClick = () => {
+    setViews("adduser");
+  };
+
   const RowClick = (e: any) => {
     setName(e.data.name);
     setPassword(e.data.password);
@@ -89,6 +94,12 @@ export const EditUser = () => {
       ) : (
         <div>
           {alert}
+          <IconButton color="primary" aria-label="Tilføj bruger">
+            <List></List>
+          </IconButton>
+          <IconButton onClick={AddUserClick} color="primary" aria-label="Tilføj bruger">
+            <PersonAdd></PersonAdd>
+          </IconButton>
           <DataTable
             value={usergroupStringUsers}
             dataKey="id"

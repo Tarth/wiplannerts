@@ -191,3 +191,7 @@ export interface DeleteUserConfirmationProp {
   HandleClose: () => void;
   setUserAlert: (userAlert: AlertProp) => void;
 }
+
+export interface ViewProp {
+  setViews: (views: string) => void;
+}

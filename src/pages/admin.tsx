@@ -177,7 +177,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   } else if (views === "adduser") {
     view = <AddUser usrAlert={usrAlert} setUsrAlert={setUsrAlert} />;
   } else {
-    view = <EditUser></EditUser>;
+    view = <EditUser setViews={setViews}></EditUser>;
   }
 
   return (
@@ -189,7 +189,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       ></Navigation>
       <div className="body">
         <div className="buttongroup">
-          <Button
+          {/* <Button
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
@@ -197,7 +197,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             onClick={HandleClickAddJob}
           >
             Tilføj Job
-          </Button>
+          </Button> */}
           <Button
             className={classes.buttonStyle}
             variant="contained"
@@ -209,7 +209,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
           </Button>
           {getUserGroupNumber(userGroup as string) < 2 ? (
             <>
-              <Button
+              {/* <Button
                 className={classes.buttonStyle}
                 variant="contained"
                 color="primary"
@@ -217,7 +217,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
                 onClick={HandleClickAddUser}
               >
                 Tilføj Bruger
-              </Button>
+              </Button> */}
               <Button
                 className={classes.buttonStyle}
                 variant="contained"
