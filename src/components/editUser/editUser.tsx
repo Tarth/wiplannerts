@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { AlertProp, Worker } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
+import { ParseJWT } from "../../utility/parsetoken";
 import { EditUserDialog } from "./editUserDialog";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyles } from "./style";
@@ -17,7 +19,8 @@ export const EditUser = () => {
   const [userId, setUserId] = useState(0);
   const [usergroup, setUsergroup] = useState("worker");
   const [name, setName] = useState("");
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userAlert, setUserAlert] = useState<AlertProp>({
     type: "info",
@@ -50,6 +53,24 @@ export const EditUser = () => {
     setUsergroupStringUsers(tempArray);
   }, [users]);
 
+  const RowClick = (e: any) => {
+    setName(e.data.name);
+    setPassword(e.data.password);
+    setUsergroup(e.data.usergroup_id);
+    setUsername(e.data.username);
+    setUserId(e.data.id);
+    const parsedToken = ParseJWT(localStorage.getItem("accesstoken") as string);
+    if (e.data.username === parsedToken.username) {
+      setOpenSnackbar(true);
+    } else {
+      setOpenModal(true);
+    }
+  };
+
+  const closeSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   let alert = (
     <div className={classes.alertDiv}>
       <UserAlertHandler
@@ -72,14 +93,7 @@ export const EditUser = () => {
             value={usergroupStringUsers}
             dataKey="id"
             paginator
-            onRowClick={(e) => {
-              setName(e.data.name);
-              setPassword(e.data.password);
-              setUsergroup(e.data.usergroup_id);
-              setUsername(e.data.username);
-              setUserId(e.data.id);
-              setOpenModal(true);
-            }}
+            onRowClick={RowClick}
             selectionMode="single"
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
@@ -129,6 +143,11 @@ export const EditUser = () => {
         setUserAlert={setUserAlert}
         setLoading={setLoading}
       ></EditUserDialog>
+      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={closeSnackbar}>
+        <Alert onClose={closeSnackbar} severity="error">
+          Du kan ikke redigere den bruger, du er logget ind på
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
