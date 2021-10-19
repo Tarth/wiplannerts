@@ -36,12 +36,6 @@ export interface JobUserDelete {
   worker_id: number;
 }
 
-// export interface User {
-//   id: number;
-//   username: string;
-//   password: string;
-// }
-
 export interface User {
   id: number;
   username: string;
@@ -161,6 +155,12 @@ export interface UserAlertProp {
   setUsrAlert: (usrAlert: AlertProp) => void;
 }
 
+export interface AddUserProp extends UserAlertProp {
+  openAddModal: boolean;
+  setOpenAddModal: (openAddModal: boolean) => void;
+  setUsers: (users: Worker[]) => void;
+}
+
 export interface EditUserDialogProp {
   username: string;
   setUsername: (username: string) => void;
@@ -170,8 +170,8 @@ export interface EditUserDialogProp {
   setUsergroup: (usergroup: string) => void;
   name: string;
   setName: (name: string) => void;
-  openModal: boolean;
-  setOpenModal: (setOpen: boolean) => void;
+  openEditModal: boolean;
+  setOpenEditModal: (setOpen: boolean) => void;
   userId: number;
   setUsers: (users: Worker[]) => void;
   setUserAlert: (setUserAlert: AlertProp) => void;
@@ -194,4 +194,6 @@ export interface DeleteUserConfirmationProp {
 
 export interface ViewProp {
   setViews: (views: string) => void;
+  usrAlert: AlertProp;
+  setUsrAlert: (usrAlert: AlertProp) => void;
 }

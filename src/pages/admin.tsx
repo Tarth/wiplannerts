@@ -9,12 +9,9 @@ import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/mod
 import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
 import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
-import { AddUser } from "../components/addUser/addUser";
 import { EditUser } from "../components/editUser/editUser";
 import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Create";
-import PersonAdd from "@material-ui/icons/PersonAdd";
+import { Add, Create, PeopleAlt } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 import { getUserGroupNumber } from "../utility/usergroups";
@@ -115,15 +112,6 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   const HandleClickEditUser = () => {
     setViews("edituser");
-    const defaultInfoText =
-      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-    if (usrAlert.text !== defaultInfoText) {
-      setUsrAlert({
-        type: "info",
-        title: "Information",
-        text: defaultInfoText,
-      });
-    }
   };
 
   if (views === "addjob") {
@@ -174,10 +162,8 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
         />
       </div>
     );
-  } else if (views === "adduser") {
-    view = <AddUser usrAlert={usrAlert} setUsrAlert={setUsrAlert} />;
   } else {
-    view = <EditUser setViews={setViews}></EditUser>;
+    view = <EditUser setViews={setViews} usrAlert={usrAlert} setUsrAlert={setUsrAlert}></EditUser>;
   }
 
   return (
@@ -193,7 +179,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            startIcon={<AddIcon />}
+            startIcon={<Add />}
             onClick={HandleClickAddJob}
           >
             Tilføj Job
@@ -202,30 +188,21 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            startIcon={<EditIcon />}
+            startIcon={<Create />}
             onClick={HandleClickEditJob}
           >
             Rediger Job
           </Button>
           {getUserGroupNumber(userGroup as string) < 2 ? (
             <>
-              {/* <Button
-                className={classes.buttonStyle}
-                variant="contained"
-                color="primary"
-                startIcon={<PersonAdd />}
-                onClick={HandleClickAddUser}
-              >
-                Tilføj Bruger
-              </Button> */}
               <Button
                 className={classes.buttonStyle}
                 variant="contained"
                 color="primary"
-                startIcon={<EditIcon />}
+                startIcon={<PeopleAlt />}
                 onClick={HandleClickEditUser}
               >
-                Rediger Bruger
+                Brugere
               </Button>
             </>
           ) : (

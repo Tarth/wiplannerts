@@ -3,16 +3,17 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { CircularProgress, Snackbar, IconButton } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { PersonAdd, List } from "@material-ui/icons";
+import { PersonAdd } from "@material-ui/icons";
 import { AlertProp, Worker, ViewProp } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { ParseJWT } from "../../utility/parsetoken";
-import { EditUserDialog } from "./editUserDialog";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { EditUserDialog } from "./editUserDialog";
+import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
 
-export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
+export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }) => {
   const [users, setUsers] = useState<Worker[]>([]);
   const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
@@ -20,7 +21,8 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
   const [userId, setUserId] = useState(0);
   const [usergroup, setUsergroup] = useState("worker");
   const [name, setName] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(true);
   const [userAlert, setUserAlert] = useState<AlertProp>({
@@ -55,7 +57,7 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
   }, [users]);
 
   const AddUserClick = () => {
-    setViews("adduser");
+    setOpenAddModal(true);
   };
 
   const RowClick = (e: any) => {
@@ -68,7 +70,7 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
     if (e.data.username === parsedToken.username) {
       setOpenSnackbar(true);
     } else {
-      setOpenModal(true);
+      setOpenEditModal(true);
     }
   };
 
@@ -136,8 +138,8 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
         </div>
       )}
       <EditUserDialog
-        openModal={openModal}
-        setOpenModal={setOpenModal}
+        openEditModal={openEditModal}
+        setOpenEditModal={setOpenEditModal}
         username={username}
         setUsername={setUsername}
         password={password}
@@ -151,6 +153,13 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
         setUserAlert={setUserAlert}
         setLoading={setLoading}
       ></EditUserDialog>
+      <AddUser
+        usrAlert={usrAlert}
+        setUsrAlert={setUsrAlert}
+        openAddModal={openAddModal}
+        setOpenAddModal={setOpenAddModal}
+        setUsers={setUsers}
+      ></AddUser>
       <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={closeSnackbar}>
         <Alert onClose={closeSnackbar} severity="error">
           Du kan ikke redigere den bruger, du er logget ind på

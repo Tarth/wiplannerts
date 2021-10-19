@@ -17,8 +17,8 @@ import { UpdateUser, GetUsersState } from "../../utility/datahandler";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
-  openModal,
-  setOpenModal,
+  openEditModal,
+  setOpenEditModal,
   username,
   setUsername,
   password,
@@ -119,7 +119,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   };
 
   const Close = () => {
-    setOpenModal(false);
+    setOpenEditModal(false);
   };
 
   let alert = (
@@ -133,7 +133,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   );
 
   return (
-    <Dialog open={openModal} onClose={Close} className={classes.container}>
+    <Dialog open={openEditModal} onClose={Close} className={classes.container}>
       <DialogTitle>Rediger/slet</DialogTitle>
       <DialogContent>
         <DialogContentText>
