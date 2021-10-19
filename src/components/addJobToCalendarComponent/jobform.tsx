@@ -56,7 +56,7 @@ export const AddJobForm: React.FC<JobFormProp> = ({
     <>
       {alert}
       <div className="parentDiv">
-        <div className="leftContainer">
+        <div className={classes.leftContainer}>
           <Description description={description} setDescription={setDescription} />
           <DateInput
             date={startDate}
