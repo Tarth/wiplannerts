@@ -4,26 +4,23 @@
 }
 
 .parentDiv {
-  width: 600px;
+  max-width: 600px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 40px;
 }
 
 .leftContainer {
   grid-column: 1 / 2;
   grid-row: 1;
-  margin-top: 48px;
-}
-
-.leftContainer > div {
-  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .rightContainer {
   grid-column: 2 / 3;
   grid-row: 1;
-  margin-left: 40px;
 }
 .buttonContainer {
   grid-row: 2;

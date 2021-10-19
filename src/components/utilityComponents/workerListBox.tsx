@@ -15,21 +15,17 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 240,
       backgroundColor: theme.palette.background.paper,
       padding: "0px",
+      overflow: "auto",
+      maxHeight: "300px",
     },
   })
 );
 
-export const CheckboxList: React.FC<Props> = ({
-  workers,
-  selectedWorkers,
-  setSelectedWorkers,
-}) => {
+export const CheckboxList: React.FC<Props> = ({ workers, selectedWorkers, setSelectedWorkers }) => {
   const classes = useStyles();
 
   const handleToggle = (worker: Worker) => () => {
-    const currentIndex = selectedWorkers.findIndex(
-      (painter) => painter.id === worker.id
-    );
+    const currentIndex = selectedWorkers.findIndex((painter) => painter.id === worker.id);
     const newChecked = [...selectedWorkers];
 
     if (currentIndex === -1) {
@@ -42,24 +38,18 @@ export const CheckboxList: React.FC<Props> = ({
   return (
     <List
       className={classes.root}
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Medarbejdere:
-        </ListSubheader>
-      }
+      // subheader={
+      //   <ListSubheader component="div" id="nested-list-subheader">
+      //     Medarbejdere:
+      //   </ListSubheader>
+      // }
+      // style={{ overflow: "auto", maxHeight: "300px" }}
     >
       {workers.map((e) => {
         const labelId = `checkbox-list-label-${e.id}`;
 
         return (
-          <ListItem
-            key={e.id}
-            role={undefined}
-            dense
-            button
-            selected
-            onClick={handleToggle(e)}
-          >
+          <ListItem key={e.id} role={undefined} dense button selected onClick={handleToggle(e)}>
             <ListItemIcon>
               <Checkbox
                 edge="start"

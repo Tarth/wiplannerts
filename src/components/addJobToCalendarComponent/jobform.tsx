@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import { useStyles } from "./style";
 import { JobFormProp } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
@@ -8,15 +9,6 @@ import { DateInput } from "../utilityComponents/calendarInput";
 import { Description } from "../utilityComponents/descriptionInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
-
-const useStyles = makeStyles({
-  button: {
-    marginTop: "50px",
-  },
-  leftContainer: {
-    marginRight: "40px",
-  },
-});
 
 export const AddJobForm: React.FC<JobFormProp> = ({
   description,
@@ -89,7 +81,6 @@ export const AddJobForm: React.FC<JobFormProp> = ({
         </div>
         <div className="buttonContainer">
           <Button
-            className={classes.button}
             variant="outlined"
             color="primary"
             onClick={() => {

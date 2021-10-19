@@ -94,9 +94,6 @@ export const EditUser: React.FC<ViewProp> = ({ setViews }) => {
       ) : (
         <div>
           {alert}
-          <IconButton color="primary" aria-label="Tilføj bruger">
-            <List></List>
-          </IconButton>
           <IconButton onClick={AddUserClick} color="primary" aria-label="Tilføj bruger">
             <PersonAdd></PersonAdd>
           </IconButton>

@@ -189,7 +189,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       ></Navigation>
       <div className="body">
         <div className="buttongroup">
-          {/* <Button
+          <Button
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
@@ -197,7 +197,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             onClick={HandleClickAddJob}
           >
             Tilføj Job
-          </Button> */}
+          </Button>
           <Button
             className={classes.buttonStyle}
             variant="contained"
