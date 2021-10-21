@@ -10,23 +10,22 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import { AddUserProp } from "../../models/models";
+import { AddUserProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { useStyles } from "./style";
 import { PostUser, GetJobsState, GetUsersState } from "../../utility/datahandler";
 
-export const AddUser: React.FC<AddUserProp> = ({
-  usrAlert,
-  setUsrAlert,
-  openAddModal,
-  setOpenAddModal,
-  setUsers,
-}) => {
+export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, setUsers }) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [userGroup, setUserGroup] = useState("worker");
   const [workerName, setWorkerName] = useState("");
+  const [userAlert, setUserAlert] = useState<AlertProp>({
+    type: undefined,
+    title: "",
+    text: "",
+  });
   const classes = useStyles();
 
   // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -39,9 +38,9 @@ export const AddUser: React.FC<AddUserProp> = ({
   let alert = (
     <div className="alertDiv">
       <UserAlertHandler
-        type={usrAlert.type}
-        title={usrAlert.title}
-        text={usrAlert.text}
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
       ></UserAlertHandler>
     </div>
   );
@@ -59,11 +58,16 @@ export const AddUser: React.FC<AddUserProp> = ({
 
   const CloseModal = () => {
     setOpenAddModal(false);
+    setUserAlert({
+      type: undefined,
+      title: "",
+      text: "",
+    });
   };
 
   const SubmitUser = async () => {
     if (userName === "" || password === "" || (userGroup === "worker" && workerName === "")) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "Forkert indtastning. Ingen tomme felter.",
@@ -78,13 +82,13 @@ export const AddUser: React.FC<AddUserProp> = ({
         await PostUser(userName, userGroup, password, accessToken);
       }
       GetUsersState(accessToken, setUsers);
-      setUsrAlert({
+      setUserAlert({
         type: "success",
         title: "Success",
         text: "Bruger tilføjet til databasen",
       });
     } catch (err) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: `Fejltext: ${err}`,

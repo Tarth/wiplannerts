@@ -154,8 +154,6 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
         setLoading={setLoading}
       ></EditUserDialog>
       <AddUser
-        usrAlert={usrAlert}
-        setUsrAlert={setUsrAlert}
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
         setUsers={setUsers}

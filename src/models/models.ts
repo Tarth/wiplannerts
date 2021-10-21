@@ -155,7 +155,7 @@ export interface UserAlertProp {
   setUsrAlert: (usrAlert: AlertProp) => void;
 }
 
-export interface AddUserProp extends UserAlertProp {
+export interface AddUserProp {
   openAddModal: boolean;
   setOpenAddModal: (openAddModal: boolean) => void;
   setUsers: (users: Worker[]) => void;
