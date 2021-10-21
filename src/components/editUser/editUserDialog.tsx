@@ -15,6 +15,7 @@ import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { DeleteUserDialog } from "./confirmationDialog";
 import { UpdateUser, GetUsersState } from "../../utility/datahandler";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   openEditModal,
@@ -114,7 +115,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         console.log(error);
       }
     }
-
     Return();
   };
 
@@ -201,14 +201,26 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           HandleClose={Close}
           setUserAlert={setUserAlert}
         ></DeleteUserDialog>
-        <Button onClick={Close}>Annuller</Button>
-        {dialogLoadingOnSave ? (
+        {/* <Button onClick={Close}>Annuller</Button> */}
+        <ButtonWrapper
+          onClick={Close}
+          caption="Annuller"
+          variant="outlined"
+          color="default"
+        ></ButtonWrapper>
+        <ButtonWrapper
+          onClick={CloseAndSave}
+          caption="Gem"
+          variant="outlined"
+          color="primary"
+        ></ButtonWrapper>
+        {/* {dialogLoadingOnSave ? (
           <Button onClick={CloseAndSave}>
             <CircularProgress size="1em" />
           </Button>
         ) : (
           <Button onClick={CloseAndSave}>Gem</Button>
-        )}
+        )} */}
       </DialogActions>
     </Dialog>
   );

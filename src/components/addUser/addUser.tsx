@@ -3,7 +3,6 @@ import {
   TextField,
   InputLabel,
   FormControl,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,6 +12,7 @@ import {
 import { AddUserProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { useStyles } from "./style";
 import { PostUser, GetJobsState, GetUsersState } from "../../utility/datahandler";
 
@@ -148,12 +148,13 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
         </div>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={CloseModal}>
-          Annuller
-        </Button>
-        <Button color="primary" variant="outlined" onClick={SubmitUser}>
-          Tilføj
-        </Button>
+        <ButtonWrapper onClick={CloseModal} caption="Annuller" variant="outlined"></ButtonWrapper>
+        <ButtonWrapper
+          onClick={SubmitUser}
+          caption="Tilføj"
+          variant="outlined"
+          color="primary"
+        ></ButtonWrapper>
       </DialogActions>
     </Dialog>
   );
