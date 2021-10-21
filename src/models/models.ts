@@ -84,6 +84,13 @@ export interface AlertProp {
   text: string;
 }
 
+export interface SnackbarProp {
+  openSnackbar: boolean;
+  setOpenSnackbar: (openSnackbar: boolean) => void;
+  severity: "success" | "info" | "warning" | "error" | undefined;
+  message: string;
+}
+
 export interface JobListProps {
   jobs: Job_Worker[];
   setTasks: (job: Job_Worker[]) => void;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { CircularProgress, Snackbar, IconButton } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import { CircularProgress, IconButton } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { AlertProp, Worker, ViewProp } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
@@ -12,6 +11,7 @@ import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { EditUserDialog } from "./editUserDialog";
 import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
+import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 
 export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }) => {
   const [users, setUsers] = useState<Worker[]>([]);
@@ -72,10 +72,6 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
     } else {
       setOpenEditModal(true);
     }
-  };
-
-  const closeSnackbar = () => {
-    setOpenSnackbar(false);
   };
 
   let alert = (
@@ -158,11 +154,12 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
         setOpenAddModal={setOpenAddModal}
         setUsers={setUsers}
       ></AddUser>
-      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={closeSnackbar}>
-        <Alert onClose={closeSnackbar} severity="error">
-          Du kan ikke redigere den bruger, du er logget ind på
-        </Alert>
-      </Snackbar>
+      <SnackbarWrapper
+        severity="error"
+        message="Du kan ikke redigere den bruger, du er logget ind med"
+        openSnackbar={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+      ></SnackbarWrapper>
     </div>
   );
 };
