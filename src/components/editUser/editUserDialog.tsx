@@ -69,7 +69,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   //   }
   // };
 
-  const CloseAndSave = () => {
+  const CloseAndSave = async () => {
     let _password = "";
     const accessToken = localStorage.getItem("accesstoken");
     if (
@@ -93,13 +93,13 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
 
     async function Return() {
       try {
-        setDialogLoadingOnSave(true);
+        // setDialogLoadingOnSave(true);
         await UpdateUser(username, usergroup, _password, accessToken as string, userId, name);
-        Close();
-        setDialogLoadingOnSave(false);
+        // setDialogLoadingOnSave(false);
         if (error === true) {
           setError(false);
         }
+        // Close();
       } catch (error) {
         setUsrAlert({
           type: "error",
@@ -108,9 +108,9 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         });
       }
       try {
-        setLoading(true);
+        // setLoading(true);
         await GetUsersState(accessToken as string, setUsers);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.log(error);
       }

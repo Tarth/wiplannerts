@@ -11,9 +11,14 @@ export const ButtonWrapper: React.FC<Prop> = ({ onClick, caption, variant, color
   const [loading, setLoading] = useState(false);
 
   async function Click() {
-    setLoading(true);
-    await onClick();
-    setLoading(false);
+    try {
+      setLoading(true);
+      await onClick();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
