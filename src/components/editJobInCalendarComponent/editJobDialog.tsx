@@ -4,17 +4,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import EditIcon from "@material-ui/icons/Edit";
-import { makeStyles } from "@material-ui/core/styles";
+import { ConfirmationDialog } from "./confirmationDialog";
 import { Description } from "../utilityComponents/descriptionInput";
 import { DateInput } from "../utilityComponents/calendarInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { JobFormProp } from "../../models/models";
+import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
 
-export const EditJobDialog: React.FC<JobFormProp> = ({
+export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   description,
   setDescription,
   startDate,
@@ -33,25 +32,11 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   setIsStartValid,
   isEndValid,
   setIsEndValid,
+  openModal,
+  setOpenModal,
 }) => {
-  const [open, setOpen] = React.useState(false);
-
-  const useStyles = makeStyles({
-    button: {
-      backgroundColor: "#007ad9",
-      "&:hover": {
-        backgroundColor: "#006DCC",
-      },
-    },
-  });
-
-  const classes = useStyles();
-  const HandleClickOpen = () => {
-    setOpen(true);
-  };
-
   const HandleClose = () => {
-    setOpen(false);
+    setOpenModal(false);
     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
   };
 
@@ -65,18 +50,6 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
       return true;
     } else {
       return false;
-    }
-  }
-
-  function NoItemSelected() {
-    if (startDate === "" || startDate === undefined) {
-      setUsrAlert({
-        type: "error",
-        title: "Fejl",
-        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-      });
-    } else {
-      HandleClickOpen();
     }
   }
 
@@ -120,15 +93,7 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
 
   return (
     <div>
-      <ButtonWrapper
-        className={classes.button}
-        onClick={NoItemSelected}
-        caption="Rediger"
-        variant="contained"
-        color="primary"
-        startIcon={<EditIcon />}
-      ></ButtonWrapper>
-      <Dialog open={open} onClose={HandleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={openModal} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -154,9 +119,19 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           ></CheckboxList>
         </DialogContent>
         <DialogActions>
+          <ConfirmationDialog
+            setStartDate={setStartDate}
+            startDate={startDate}
+            setEndDate={setEndDate}
+            setDescription={setDescription}
+            setSelectedWorkers={setSelectedWorkers}
+            selectedTasks={selectedTasks as Job_Worker}
+            setUsrAlert={setUsrAlert}
+            setTasks={setTasks}
+          ></ConfirmationDialog>
           <ButtonWrapper
             onClick={HandleClose}
-            caption="Fortryd"
+            caption="Annuller"
             color="default"
             variant="text"
           ></ButtonWrapper>

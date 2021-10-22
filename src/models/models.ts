@@ -73,9 +73,14 @@ export interface JobsStateProps extends JobProp {
 }
 
 export interface JobFormProp extends JobProp {
-  tasks?: Job_Worker[];
   selectedTasks?: Job_Worker;
-  setTasks?: (job: Job_Worker[]) => void;
+  tasks: Job_Worker[];
+  setTasks: (job: Job_Worker[]) => void;
+}
+
+export interface JobFormPropWithModal extends JobFormProp {
+  openModal: boolean;
+  setOpenModal: (openModal: boolean) => void;
 }
 
 export interface AlertProp {

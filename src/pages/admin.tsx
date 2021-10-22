@@ -97,18 +97,18 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     }
   };
 
-  const HandleClickAddUser = () => {
-    setViews("adduser");
-    const defaultInfoText =
-      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
-    if (usrAlert.text !== defaultInfoText) {
-      setUsrAlert({
-        type: "info",
-        title: "Information",
-        text: defaultInfoText,
-      });
-    }
-  };
+  // const HandleClickAddUser = () => {
+  //   setViews("adduser");
+  //   const defaultInfoText =
+  //     "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+  //   if (usrAlert.text !== defaultInfoText) {
+  //     setUsrAlert({
+  //       type: "info",
+  //       title: "Information",
+  //       text: defaultInfoText,
+  //     });
+  //   }
+  // };
 
   const HandleClickEditUser = () => {
     setViews("edituser");
@@ -117,7 +117,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   if (views === "addjob") {
     view = (
       <div>
-        <AddJobForm
+        {/* <AddJobForm
           description={description}
           setDescription={setDescription}
           startDate={startDate}
@@ -133,7 +133,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
           setIsStartValid={setIsStartValid}
           isEndValid={isEndValid}
           setIsEndValid={setIsEndValid}
-        ></AddJobForm>
+        ></AddJobForm> */}
       </div>
     );
   } else if (views === "editjob") {

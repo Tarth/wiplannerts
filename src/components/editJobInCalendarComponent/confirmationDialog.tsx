@@ -94,17 +94,6 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         color="primary"
         startIcon={<Delete />}
       ></ButtonWrapper>
-
-      {/* <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        onClick={InvalidInput}
-        startIcon={<Delete />}
-      >
-        SLET
-      </Button> */}
-
       <Dialog
         open={open}
         onClose={HandleClose}
