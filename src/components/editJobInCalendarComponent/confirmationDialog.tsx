@@ -1,14 +1,12 @@
 import React from "react";
 import { ConfirmationDialogProp } from "../../models/models";
 import { makeStyles } from "@material-ui/core/styles";
-import { Delete } from "@material-ui/icons";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button,
 } from "@material-ui/core";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { ResetInputFields } from "../../utility/resetinputfields";
@@ -28,10 +26,9 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   const useStyles = makeStyles({
     button: {
       marginRight: "10px",
-      backgroundColor: "#007ad9",
-      "&:hover": {
-        backgroundColor: "#006DCC",
-      },
+    },
+    buttonWrapper: {
+      marginRight: "auto",
     },
   });
 
@@ -85,14 +82,13 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
     }
   }
   return (
-    <div>
+    <div className={classes.buttonWrapper}>
       <ButtonWrapper
         className={classes.button}
         onClick={InvalidInput}
         caption="Slet"
-        variant="contained"
-        color="primary"
-        startIcon={<Delete />}
+        variant="text"
+        color="secondary"
       ></ButtonWrapper>
       <Dialog
         open={open}
@@ -114,18 +110,12 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
             color="primary"
             variant="text"
           ></ButtonWrapper>
-          {/* <Button onClick={HandleClose} color="primary">
-            Nej
-          </Button> */}
           <ButtonWrapper
             onClick={ConfirmJobDelete}
             caption="Ja"
             variant="text"
             color="primary"
           ></ButtonWrapper>
-          {/* <Button onClick={ConfirmJobDelete} color="primary" autoFocus>
-            Ja
-          </Button> */}
         </DialogActions>
       </Dialog>
     </div>

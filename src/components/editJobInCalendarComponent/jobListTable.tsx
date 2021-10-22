@@ -145,16 +145,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         ></Column>
       </DataTable>
       <ButtonGroup className={classes.buttonGrp}>
-        <ConfirmationDialog
-          setStartDate={setStartDate}
-          startDate={startDate}
-          setEndDate={setEndDate}
-          setDescription={setDescription}
-          setSelectedWorkers={setSelectedWorkers}
-          selectedTasks={selectedTasks}
-          setUsrAlert={setUsrAlert}
-          setTasks={setTasks}
-        ></ConfirmationDialog>
         <EditJobDialog
           description={description}
           setDescription={setDescription}
