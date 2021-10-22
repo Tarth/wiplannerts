@@ -1,6 +1,5 @@
 import React from "react";
 import { ConfirmationDialogProp } from "../../models/models";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Dialog,
   DialogActions,
@@ -11,7 +10,7 @@ import {
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { ResetInputFields } from "../../utility/resetinputfields";
 import { DeleteJob, GetJobsState } from "../../utility/datahandler";
-
+import { useStyleConfirmationDialog } from "./style";
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   setStartDate,
   setDescription,
@@ -23,16 +22,8 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   startDate,
 }) => {
   const [open, setOpen] = React.useState(false);
-  const useStyles = makeStyles({
-    button: {
-      marginRight: "10px",
-    },
-    buttonWrapper: {
-      marginRight: "auto",
-    },
-  });
 
-  const classes = useStyles();
+  const classes = useStyleConfirmationDialog();
   const accessToken = localStorage.getItem("accesstoken");
   const handleClickOpen = () => {
     setOpen(true);

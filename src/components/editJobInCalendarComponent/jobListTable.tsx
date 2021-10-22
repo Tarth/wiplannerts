@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import { ConfirmationDialog } from "./confirmationDialog";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EditJobDialog } from "./editJobDialog";
 import { format } from "date-fns";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
-import { useStyle } from "./style";
+import { useStyleJobListTable } from "./style";
 export const JobListBox: React.FC<JobsStateProps> = ({
   description,
   setDescription,
@@ -32,7 +31,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   let [jobsstr] = useState<jobsstr[]>([]);
   const [openModal, setOpenModal] = useState(false);
   let alert;
-  const classes = useStyle();
+  const classes = useStyleJobListTable();
 
   // Functions to open and close confirmation dialog
   alert = (
@@ -97,17 +96,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         value={jobsstr}
         dataKey="id"
         paginator
-        // selection={selectedTasks}
-        // onSelectionChange={(e) => {
-        //   setSelectedTasks(e.value);
-        //   setDescription(e.value.description);
-        //   setStartDate(e.value.start);
-        //   setEndDate(e.value.end);
-        //   let job = concatJobs.find((element) => element.id === parseInt(e.value.id));
-        //   if (job !== undefined) {
-        //     setSelectedWorkers(job.workers);
-        //   }
-        // }}
         onRowClick={RowClick}
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
