@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Button,
 } from "@material-ui/core";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { ResetInputFields } from "../../utility/resetinputfields";
 import { DeleteJob, GetJobsState } from "../../utility/datahandler";
 
@@ -40,35 +41,73 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const HandleClose = () => {
+    ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
     setOpen(false);
   };
 
+  function InvalidInput() {
+    if (startDate === "" || startDate === undefined) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+      });
+    } else {
+      handleClickOpen();
+    }
+  }
+
+  async function ConfirmJobDelete() {
+    if (selectedTasks.id === -1) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+      });
+    } else {
+      try {
+        await DeleteJob(selectedTasks.id, accessToken);
+        setUsrAlert({
+          type: "success",
+          title: "Succes",
+          text: "Job blev slettet fra kalenderen.",
+        });
+        GetJobsState(accessToken, setTasks);
+        HandleClose();
+      } catch (error) {
+        setUsrAlert({
+          type: "error",
+          title: "Fejl",
+          text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
+        });
+      }
+    }
+  }
   return (
     <div>
-      <Button
+      <ButtonWrapper
+        className={classes.button}
+        onClick={InvalidInput}
+        caption="Slet"
+        variant="contained"
+        color="primary"
+        startIcon={<Delete />}
+      ></ButtonWrapper>
+
+      {/* <Button
         className={classes.button}
         variant="contained"
         color="primary"
-        onClick={() => {
-          if (startDate === "" || startDate === undefined) {
-            setUsrAlert({
-              type: "error",
-              title: "Fejl",
-              text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-            });
-          } else {
-            handleClickOpen();
-          }
-        }}
+        onClick={InvalidInput}
         startIcon={<Delete />}
       >
         SLET
-      </Button>
+      </Button> */}
 
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={HandleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -80,58 +119,24 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
-              handleClose();
-            }}
+          <ButtonWrapper
+            onClick={HandleClose}
+            caption="Nej"
             color="primary"
-          >
+            variant="text"
+          ></ButtonWrapper>
+          {/* <Button onClick={HandleClose} color="primary">
             Nej
-          </Button>
-          <Button
-            onClick={() => {
-              if (selectedTasks.id === -1) {
-                setUsrAlert({
-                  type: "error",
-                  title: "Fejl",
-                  text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-                });
-              } else {
-                const returnmsg = DeleteJob(selectedTasks.id, accessToken);
-                returnmsg
-                  .then(
-                    () => {
-                      setUsrAlert({
-                        type: "success",
-                        title: "Succes",
-                        text: "Job blev slettet fra kalenderen.",
-                      });
-                      GetJobsState(accessToken, setTasks);
-                    },
-                    () => {
-                      setUsrAlert({
-                        type: "error",
-                        title: "Fejl",
-                        text: "Job blev ikke slettet pga en fejl. Kontakt Winoto support",
-                      });
-                    }
-                  )
-                  .catch((error) => {
-                    setUsrAlert({
-                      type: "error",
-                      title: "Fejl",
-                      text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
-                    });
-                  });
-              }
-              handleClose();
-            }}
+          </Button> */}
+          <ButtonWrapper
+            onClick={ConfirmJobDelete}
+            caption="Ja"
+            variant="text"
             color="primary"
-            autoFocus
-          >
+          ></ButtonWrapper>
+          {/* <Button onClick={ConfirmJobDelete} color="primary" autoFocus>
             Ja
-          </Button>
+          </Button> */}
         </DialogActions>
       </Dialog>
     </div>

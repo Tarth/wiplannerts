@@ -8,6 +8,7 @@ import { DateInput } from "../utilityComponents/calendarInput";
 import { Description } from "../utilityComponents/descriptionInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 
 export const AddJobForm: React.FC<JobFormProp> = ({
   description,
@@ -51,6 +52,49 @@ export const AddJobForm: React.FC<JobFormProp> = ({
     </div>
   );
 
+  function InvalidInput() {
+    if (
+      description === "" ||
+      startDate === "" ||
+      endDate === "" ||
+      isStartValid === false ||
+      isEndValid === false ||
+      selectedWorkers.length === 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  const AddJob = async () => {
+    if (InvalidInput()) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
+      });
+    } else {
+      try {
+        await PostJob(
+          startDate as string,
+          endDate as string,
+          description,
+          selectedWorkers.map((x) => x.id),
+          localStorage.getItem("accesstoken")
+        );
+        setUsrAlert({
+          type: "success",
+          title: "Succes",
+          text: "Job tilføjet til kalenderen.",
+        });
+        ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <>
       {alert}
@@ -79,62 +123,16 @@ export const AddJobForm: React.FC<JobFormProp> = ({
           ></CheckboxList>
         </div>
         <div className="buttonContainer">
-          <Button
-            variant="outlined"
+          <ButtonWrapper
+            onClick={AddJob}
+            caption="Tilføj"
+            variant="text"
             color="primary"
-            onClick={() => {
-              if (
-                description === "" ||
-                startDate === "" ||
-                endDate === "" ||
-                isStartValid === false ||
-                isEndValid === false ||
-                selectedWorkers.length === 0
-              ) {
-                setUsrAlert({
-                  type: "error",
-                  title: "Fejl",
-                  text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
-                });
-              } else {
-                const returnmsg = PostJob(
-                  startDate as string,
-                  endDate as string,
-                  description,
-                  selectedWorkers.map((x) => x.id),
-                  localStorage.getItem("accesstoken")
-                );
-                returnmsg
-                  .then(
-                    () => {
-                      setUsrAlert({
-                        type: "success",
-                        title: "Succes",
-                        text: "Job tilføjet til kalenderen.",
-                      });
-                      ResetInputFields(
-                        setDescription,
-                        setStartDate,
-                        setEndDate,
-                        setSelectedWorkers
-                      );
-                    },
-                    () => {
-                      setUsrAlert({
-                        type: "error",
-                        title: "Fejl",
-                        text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
-                      });
-                    }
-                  )
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
-            }}
-          >
+          ></ButtonWrapper>
+
+          {/* <Button variant="outlined" color="primary" onClick={AddJob}>
             Tilføj
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

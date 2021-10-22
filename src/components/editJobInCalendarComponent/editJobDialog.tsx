@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -10,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Description } from "../utilityComponents/descriptionInput";
 import { DateInput } from "../utilityComponents/calendarInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { JobFormProp } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
@@ -46,88 +46,89 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
   });
 
   const classes = useStyles();
-  const handleClickOpen = () => {
+  const HandleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const HandleClose = () => {
     setOpen(false);
+    ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
   };
 
-  //TODO: Refactor
-  const HandleClickSave = () => {
+  function InvalidInput() {
     if (
       description === "" ||
       isStartValid === false ||
       isEndValid === false ||
       selectedWorkers.length === 0
     ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function NoItemSelected() {
+    if (startDate === "" || startDate === undefined) {
+      setUsrAlert({
+        type: "error",
+        title: "Fejl",
+        text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
+      });
+    } else {
+      HandleClickOpen();
+    }
+  }
+
+  const HandleClickSave = async () => {
+    if (InvalidInput()) {
       setUsrAlert({
         type: "error",
         title: "Fejl",
         text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
       });
     } else {
-      if (selectedTasks !== undefined) {
-        const returnmsg = UpdateJob(
-          startDate as string,
-          endDate as string,
-          description,
-          selectedWorkers.map((x) => x.id),
-          selectedTasks.id,
-          localStorage.getItem("accesstoken")
-        );
-        returnmsg
-          .then(
-            () => {
-              setUsrAlert({
-                type: "success",
-                title: "Succes",
-                text: "Job redigeret",
-              });
-              ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
-              if (setTasks !== undefined) {
-                GetJobsState(localStorage.getItem("accesstoken"), setTasks);
-              }
-              handleClose();
-            },
-            () => {
-              setUsrAlert({
-                type: "error",
-                title: "Fejl",
-                text: "Job blev ikke tilføjet til kalenderen pga en fejl. Kontakt Winoto support",
-              });
-            }
-          )
-          .catch((error) => {
-            console.log(error);
+      try {
+        if (selectedTasks !== undefined) {
+          await UpdateJob(
+            startDate as string,
+            endDate as string,
+            description,
+            selectedWorkers.map((x) => x.id),
+            selectedTasks.id,
+            localStorage.getItem("accesstoken")
+          );
+          setUsrAlert({
+            type: "success",
+            title: "Succes",
+            text: "Job redigeret",
           });
+          if (setTasks !== undefined) {
+            GetJobsState(localStorage.getItem("accesstoken"), setTasks);
+          }
+          HandleClose();
+        }
+      } catch (error) {
+        setUsrAlert({
+          type: "error",
+          title: "Fejl",
+          text: `Job blev ikke tilføjet - ${error}. Kontakt Winoto support`,
+        });
       }
     }
   };
 
   return (
     <div>
-      <Button
+      <ButtonWrapper
         className={classes.button}
+        onClick={NoItemSelected}
+        caption="Rediger"
         variant="contained"
         color="primary"
-        onClick={() => {
-          if (startDate === "" || startDate === undefined) {
-            setUsrAlert({
-              type: "error",
-              title: "Fejl",
-              text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
-            });
-          } else {
-            handleClickOpen();
-          }
-        }}
         startIcon={<EditIcon />}
-      >
-        Rediger
-      </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      ></ButtonWrapper>
+      <Dialog open={open} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -153,18 +154,18 @@ export const EditJobDialog: React.FC<JobFormProp> = ({
           ></CheckboxList>
         </DialogContent>
         <DialogActions>
-          <Button
-            onClick={() => {
-              handleClose();
-              ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
-            }}
+          <ButtonWrapper
+            onClick={HandleClose}
+            caption="Fortryd"
+            color="default"
+            variant="text"
+          ></ButtonWrapper>
+          <ButtonWrapper
+            onClick={HandleClickSave}
+            caption="Gem"
             color="primary"
-          >
-            Fortryd
-          </Button>
-          <Button onClick={HandleClickSave} color="primary">
-            Gem
-          </Button>
+            variant="text"
+          ></ButtonWrapper>
         </DialogActions>
       </Dialog>
     </div>

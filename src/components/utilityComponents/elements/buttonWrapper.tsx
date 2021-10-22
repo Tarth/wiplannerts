@@ -6,8 +6,17 @@ interface Prop {
   variant: "contained" | "outlined" | "text";
   onClick: () => void;
   color?: "primary" | "secondary" | "default" | "inherit";
+  className?: string;
+  startIcon?: React.ReactNode;
 }
-export const ButtonWrapper: React.FC<Prop> = ({ onClick, caption, variant, color = "default" }) => {
+export const ButtonWrapper: React.FC<Prop> = ({
+  onClick,
+  caption,
+  variant,
+  color = "default",
+  className,
+  startIcon,
+}) => {
   const [loading, setLoading] = useState(false);
 
   async function Click() {
@@ -22,10 +31,19 @@ export const ButtonWrapper: React.FC<Prop> = ({ onClick, caption, variant, color
   }
 
   return (
-    <div>
-      <Button onClick={Click} variant={variant} color={color} disabled={loading ? true : false}>
-        {loading ? <CircularProgress size="1.5em"></CircularProgress> : caption}
-      </Button>
-    </div>
+    <Button
+      className={className}
+      onClick={Click}
+      variant={variant}
+      color={color}
+      disabled={loading ? true : false}
+      startIcon={startIcon}
+    >
+      {loading ? <CircularProgress size="1.5em"></CircularProgress> : caption}
+    </Button>
+
+    // <div>
+
+    // </div>
   );
 };

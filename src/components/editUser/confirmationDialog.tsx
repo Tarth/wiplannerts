@@ -5,12 +5,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button,
-  CircularProgress,
 } from "@material-ui/core";
 import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersState } from "../../utility/datahandler";
-import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
+import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
 import { useStylesConfirmationDialog } from "./style";
 
 export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
@@ -96,13 +95,12 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   );
   return (
     <div className={classes.deleteButton}>
-      {loading ? (
-        <Button>
-          <CircularProgress size="1em" />
-        </Button>
-      ) : (
-        <Button onClick={ClickOpenConfirm}>Slet</Button>
-      )}
+      <ButtonWrapper
+        onClick={ClickOpenConfirm}
+        caption="Slet"
+        variant="text"
+        color="secondary"
+      ></ButtonWrapper>
       <Dialog
         open={confirmDialogOpen}
         onClose={HandleClose}
@@ -117,18 +115,18 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={ClickCloseConfirm} color="primary">
-            Fortryd
-          </Button>
-          {deleteConfirmationLoading ? (
-            <Button color="primary" autoFocus>
-              <CircularProgress size="1em" />
-            </Button>
-          ) : (
-            <Button onClick={HandleCloseDelete} color="primary" autoFocus>
-              Ja
-            </Button>
-          )}
+          <ButtonWrapper
+            onClick={ClickCloseConfirm}
+            caption="Fortryd"
+            variant="text"
+            color="default"
+          ></ButtonWrapper>
+          <ButtonWrapper
+            onClick={HandleCloseDelete}
+            caption="Ja"
+            variant="text"
+            color="primary"
+          ></ButtonWrapper>
         </DialogActions>
       </Dialog>
     </div>
