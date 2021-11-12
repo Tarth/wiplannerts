@@ -179,19 +179,10 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            startIcon={<Add />}
-            onClick={HandleClickAddJob}
-          >
-            Tilføj Job
-          </Button>
-          <Button
-            className={classes.buttonStyle}
-            variant="contained"
-            color="primary"
             startIcon={<Create />}
             onClick={HandleClickEditJob}
           >
-            Rediger Job
+            Jobs
           </Button>
           {getUserGroupNumber(userGroup as string) < 2 ? (
             <>

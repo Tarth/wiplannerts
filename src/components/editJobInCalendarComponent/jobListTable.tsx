@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import { ButtonGroup, IconButton } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EditJobDialog } from "./editJobDialog";
@@ -92,6 +93,15 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   return (
     <div>
       {alert}
+      <IconButton
+        onClick={() => {
+          console.log("Test");
+        }}
+        color="primary"
+        aria-label="Tilføj job"
+      >
+        <Add></Add>
+      </IconButton>
       <DataTable
         value={jobsstr}
         dataKey="id"

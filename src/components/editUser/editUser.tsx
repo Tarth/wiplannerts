@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { CircularProgress, IconButton } from "@material-ui/core";
-import { PersonAdd } from "@material-ui/icons";
+import { Add } from "@material-ui/icons";
 import { AlertProp, Worker, ViewProp } from "../../models/models";
 import { GetUsersState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
@@ -93,7 +93,7 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
         <div>
           {alert}
           <IconButton onClick={AddUserClick} color="primary" aria-label="Tilføj bruger">
-            <PersonAdd></PersonAdd>
+            <Add></Add>
           </IconButton>
           <DataTable
             value={usergroupStringUsers}
