@@ -2,7 +2,28 @@ import React from "react";
 import { useStyles } from "./formJob.style";
 import { JobFormProp } from "../../../models/models";
 import { FormControl } from "@material-ui/core";
-export const formJob: React.FC<JobFormProp> = ({ description, setDescription }) => {
+import { DateInput } from "../calendarInput";
+import { Description } from "../descriptionInput";
+import { CheckboxList } from "../workerListBox";
+export const formJob: React.FC<JobFormProp> = ({
+  description,
+  setDescription,
+  endDate,
+  isEndValid,
+  isStartValid,
+  selectedWorkers,
+  setEndDate,
+  setIsEndValid,
+  setIsStartValid,
+  setSelectedWorkers,
+  setStartDate,
+  setTasks,
+  setUsrAlert,
+  startDate,
+  tasks,
+  usrAlert,
+  workers,
+}) => {
   const classes = useStyles();
 
   return (

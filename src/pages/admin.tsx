@@ -7,7 +7,7 @@ import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { AddJobForm } from "../components/addJob/addJob";
-import { JobListBox } from "../components/editJob/jobListTable";
+import { JobListBox } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
 import { EditUser } from "../components/editUser/editUser";
 import Button from "@material-ui/core/Button";
