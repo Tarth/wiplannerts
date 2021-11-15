@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
 import { AddUserProp, AlertProp } from "../../models/models";
@@ -148,11 +147,11 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
         </div>
       </DialogContent>
       <DialogActions>
-        <ButtonWrapper onClick={CloseModal} caption="Annuller" variant="outlined"></ButtonWrapper>
+        <ButtonWrapper onClick={CloseModal} caption="Annuller" variant="text"></ButtonWrapper>
         <ButtonWrapper
           onClick={SubmitUser}
           caption="Tilføj"
-          variant="outlined"
+          variant="text"
           color="primary"
         ></ButtonWrapper>
       </DialogActions>

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import Button from "@material-ui/core/Button";
+import React, { useState, useEffect } from "react";
 import { useStyles } from "./style";
-import { JobFormProp } from "../../models/models";
+import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
 import { DateInput } from "../utilityComponents/calendarInput";
@@ -9,8 +8,9 @@ import { Description } from "../utilityComponents/descriptionInput";
 import { CheckboxList } from "../utilityComponents/workerListBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
+import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl } from "@material-ui/core";
 
-export const AddJobForm: React.FC<JobFormProp> = ({
+export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   description,
   setDescription,
   startDate,
@@ -26,6 +26,8 @@ export const AddJobForm: React.FC<JobFormProp> = ({
   setIsStartValid,
   isEndValid,
   setIsEndValid,
+  openModal,
+  setOpenModal,
 }) => {
   const classes = useStyles();
   let alert;
@@ -94,47 +96,58 @@ export const AddJobForm: React.FC<JobFormProp> = ({
       }
     }
   };
+  const CloseAddModal = () => {
+    setOpenModal(false);
+  };
 
   return (
     <>
-      {alert}
-      <div className="parentDiv">
-        <div className={classes.leftContainer}>
-          <Description description={description} setDescription={setDescription} />
-          <DateInput
-            date={startDate}
-            setDate={setStartDate}
-            isDateValid={isStartValid}
-            setIsDateValid={setIsStartValid}
-          />
-          <DateInput
-            date={endDate}
-            setDate={setEndDate}
-            isDateValid={isEndValid}
-            setIsDateValid={setIsEndValid}
-          />
-        </div>
-
-        <div className="rightContainer">
-          <CheckboxList
-            workers={workers}
-            selectedWorkers={selectedWorkers}
-            setSelectedWorkers={setSelectedWorkers}
-          ></CheckboxList>
-        </div>
-        <div className="buttonContainer">
-          <ButtonWrapper
-            onClick={AddJob}
-            caption="Tilføj"
-            variant="text"
-            color="primary"
-          ></ButtonWrapper>
-
-          {/* <Button variant="outlined" color="primary" onClick={AddJob}>
-            Tilføj
-          </Button> */}
-        </div>
-      </div>
+      <Dialog open={openModal} onClose={CloseAddModal}>
+        <DialogTitle>Tilføj Job</DialogTitle>
+        <DialogContent>
+          <form className={classes.form}>
+            <div className={classes.leftContainer}>
+              <Description description={description} setDescription={setDescription} />
+              <FormControl>
+                <DateInput
+                  date={startDate}
+                  setDate={setStartDate}
+                  isDateValid={isStartValid}
+                  setIsDateValid={setIsStartValid}
+                />
+              </FormControl>
+              <FormControl>
+                <DateInput
+                  date={endDate}
+                  setDate={setEndDate}
+                  isDateValid={isEndValid}
+                  setIsDateValid={setIsEndValid}
+                />
+              </FormControl>
+            </div>
+            <CheckboxList
+              workers={workers}
+              selectedWorkers={selectedWorkers}
+              setSelectedWorkers={setSelectedWorkers}
+            ></CheckboxList>
+          </form>
+        </DialogContent>
+        <DialogActions>
+          <div className="buttonContainer">
+            <ButtonWrapper
+              onClick={CloseAddModal}
+              caption="Annuller"
+              variant="text"
+            ></ButtonWrapper>
+            <ButtonWrapper
+              onClick={AddJob}
+              caption="Tilføj"
+              variant="text"
+              color="primary"
+            ></ButtonWrapper>
+          </div>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

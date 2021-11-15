@@ -6,12 +6,12 @@ import "primereact/resources/primereact.css";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
-import { AddJobForm } from "../components/addJobToCalendarComponent/jobform";
-import { JobListBox } from "../components/editJobInCalendarComponent/jobListTable";
+import { AddJobForm } from "../components/addJob/addJob";
+import { JobListBox } from "../components/editJob/jobListTable";
 import { Navigation } from "../components/navigation/navigation";
 import { EditUser } from "../components/editUser/editUser";
 import Button from "@material-ui/core/Button";
-import { Add, Create, PeopleAlt } from "@material-ui/icons";
+import { PeopleAlt, CalendarToday } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 import { getUserGroupNumber } from "../utility/usergroups";
@@ -179,7 +179,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             className={classes.buttonStyle}
             variant="contained"
             color="primary"
-            startIcon={<Create />}
+            startIcon={<CalendarToday />}
             onClick={HandleClickEditJob}
           >
             Jobs

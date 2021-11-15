@@ -8,6 +8,7 @@ import { EditJobDialog } from "./editJobDialog";
 import { format } from "date-fns";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyleJobListTable } from "./style";
+import { AddJobForm } from "../addJob/addJob";
 export const JobListBox: React.FC<JobsStateProps> = ({
   description,
   setDescription,
@@ -31,6 +32,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 }) => {
   let [jobsstr] = useState<jobsstr[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   let alert;
   const classes = useStyleJobListTable();
 
@@ -90,16 +92,15 @@ export const JobListBox: React.FC<JobsStateProps> = ({
     }
     setOpenModal(true);
   }
+
+  function AddJobClick() {
+    setOpenAddModal(true);
+  }
+
   return (
     <div>
       {alert}
-      <IconButton
-        onClick={() => {
-          console.log("Test");
-        }}
-        color="primary"
-        aria-label="Tilføj job"
-      >
+      <IconButton onClick={AddJobClick} color="primary" aria-label="Tilføj job">
         <Add></Add>
       </IconButton>
       <DataTable
@@ -166,6 +167,28 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           setOpenModal={setOpenModal}
         ></EditJobDialog>
       </ButtonGroup>
+      <AddJobForm
+        description={description}
+        setDescription={setDescription}
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+        workers={workers}
+        selectedWorkers={selectedWorkers}
+        setSelectedWorkers={setSelectedWorkers}
+        tasks={tasks}
+        setTasks={setTasks}
+        usrAlert={usrAlert}
+        setUsrAlert={setUsrAlert}
+        isStartValid={isStartValid}
+        setIsStartValid={setIsStartValid}
+        isEndValid={isEndValid}
+        setIsEndValid={setIsEndValid}
+        selectedTasks={selectedTasks}
+        openModal={openAddModal}
+        setOpenModal={setOpenAddModal}
+      ></AddJobForm>
     </div>
   );
 };

@@ -1,13 +1,15 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
+  form: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    columnGap: "2em",
+  },
   leftContainer: {
-    marginRight: "40px",
-    gridColumn: "1 / 2",
-    gridRow: "1",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    gap: "1.5em",
   },
 });
 
