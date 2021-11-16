@@ -33,19 +33,8 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   let [jobsstr] = useState<jobsstr[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-  let alert;
-  const classes = useStyleJobListTable();
 
-  // Functions to open and close confirmation dialog
-  alert = (
-    <div className="alertDiv">
-      <UserAlertHandler
-        type={usrAlert.type}
-        title={usrAlert.title}
-        text={usrAlert.text}
-      ></UserAlertHandler>
-    </div>
-  );
+  const classes = useStyleJobListTable();
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
   let concatJobs: Job_WorkerArray[] = [];
@@ -99,7 +88,7 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 
   return (
     <div>
-      {alert}
+      {/* {alert} */}
       <IconButton onClick={AddJobClick} color="primary" aria-label="Tilføj job">
         <Add></Add>
       </IconButton>

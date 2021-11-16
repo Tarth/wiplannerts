@@ -1,14 +1,13 @@
-import React from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import React, { useState } from "react";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { ConfirmationDialog } from "./confirmationDialog";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/elements/formJob";
-import { JobFormPropWithModal, Job_Worker } from "../../models/models";
+import { UserAlertHandler } from "../utilityComponents/userAlert";
+import { AlertProp, JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
+import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 
 export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   description,
@@ -32,8 +31,49 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   openModal,
   setOpenModal,
 }) => {
+  const [userAlert, setUserAlert] = useState<AlertProp>({
+    type: undefined,
+    title: "",
+    text: "",
+  });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState({
+    severity: "",
+    message: "",
+  });
+
+  let alert = (
+    <div className="alertDiv">
+      <UserAlertHandler
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
+      ></UserAlertHandler>
+    </div>
+  );
+
+  let snackbar = (
+    <SnackbarWrapper
+      openSnackbar={openSnackbar}
+      setOpenSnackbar={setOpenSnackbar}
+      severity={snackbarMessage.severity as "success" | "info" | "warning" | "error" | undefined}
+      message={snackbarMessage.message}
+    ></SnackbarWrapper>
+  );
+
+  const ResetUserAlert = () => {
+    setUserAlert({
+      type: undefined,
+      title: "",
+      text: "",
+    });
+  };
+
   const HandleClose = () => {
     setOpenModal(false);
+    if (userAlert.type !== undefined) {
+      ResetUserAlert();
+    }
     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
   };
 
@@ -52,7 +92,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
 
   const HandleClickSave = async () => {
     if (InvalidInput()) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
@@ -68,21 +108,20 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
             selectedTasks.id,
             localStorage.getItem("accesstoken")
           );
-          setUsrAlert({
-            type: "success",
-            title: "Succes",
-            text: "Job redigeret",
-          });
+          setSnackbarMessage({ severity: "success", message: "Job redigeret" });
+          setOpenSnackbar(true);
+
           if (setTasks !== undefined) {
             GetJobsState(localStorage.getItem("accesstoken"), setTasks);
           }
           HandleClose();
+          ResetUserAlert();
         }
       } catch (error) {
-        setUsrAlert({
+        setUserAlert({
           type: "error",
           title: "Fejl",
-          text: `Job blev ikke tilføjet - ${error}. Kontakt Winoto support`,
+          text: `${error}. Kontakt Winoto support`,
         });
       }
     }
@@ -93,6 +132,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
       <Dialog open={openModal} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
+          {alert}
           <FormJob
             description={description}
             endDate={endDate}
@@ -135,6 +175,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
           ></ButtonWrapper>
         </DialogActions>
       </Dialog>
+      {snackbar}
     </div>
   );
 };

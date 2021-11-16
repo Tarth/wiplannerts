@@ -98,6 +98,8 @@ export interface JobFormAddProp {
   setIsStartValid: (isStartValid: boolean) => void;
   isEndValid: boolean;
   setIsEndValid: (isEndValid: boolean) => void;
+  userAlert?: AlertProp;
+  setUserAlert?: (userAlert: AlertProp) => void;
 }
 
 export interface AlertProp {

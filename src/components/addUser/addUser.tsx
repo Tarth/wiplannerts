@@ -25,6 +25,7 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
     title: "",
     text: "",
   });
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const classes = useStyles();
 
   let alert = (
@@ -78,65 +79,67 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
   };
 
   return (
-    <Dialog open={openAddModal} onClose={CloseModal}>
-      <DialogTitle>Tilføj bruger</DialogTitle>
-      <DialogContent>
-        <div>
-          {alert}
-          <form className={classes.form}>
-            <FormControl className={classes.formElement}>
-              <TextField
-                variant="filled"
-                label="Brugernavn"
-                value={userName}
-                onChange={(e) => {
-                  setUserName(e.target.value);
-                }}
-              ></TextField>
-            </FormControl>
-            <FormControl className={classes.formElement}>
-              <TextField
-                variant="filled"
-                type="password"
-                label="Kodeord"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              ></TextField>
-            </FormControl>
-            <FormControl className={classes.formElement}>
-              <InputLabel id="inputUserClassSelect" className={classes.inputLabel}>
-                Brugerklasse
-              </InputLabel>
-              <UserSelectBox
-                setUserGroup={setUserGroup}
-                workerName={workerName}
-                setWorkerName={setWorkerName}
-                userGroup={userGroup}
-              ></UserSelectBox>
-            </FormControl>
-            <FormControl className={classes.formElement}>
-              <TextField
-                variant="filled"
-                label="Kalendernavn"
-                disabled={userGroup !== "worker" ? true : false}
-                onChange={(e) => {
-                  setWorkerName(e.target.value);
-                }}
-              ></TextField>
-            </FormControl>
-          </form>
-        </div>
-      </DialogContent>
-      <DialogActions>
-        <ButtonWrapper onClick={CloseModal} caption="Annuller" variant="text"></ButtonWrapper>
-        <ButtonWrapper
-          onClick={SubmitUser}
-          caption="Tilføj"
-          variant="text"
-          color="primary"
-        ></ButtonWrapper>
-      </DialogActions>
-    </Dialog>
+    <>
+      <Dialog open={openAddModal} onClose={CloseModal}>
+        <DialogTitle>Tilføj bruger</DialogTitle>
+        <DialogContent>
+          <div>
+            {alert}
+            <form className={classes.form}>
+              <FormControl className={classes.formElement}>
+                <TextField
+                  variant="filled"
+                  label="Brugernavn"
+                  value={userName}
+                  onChange={(e) => {
+                    setUserName(e.target.value);
+                  }}
+                ></TextField>
+              </FormControl>
+              <FormControl className={classes.formElement}>
+                <TextField
+                  variant="filled"
+                  type="password"
+                  label="Kodeord"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                ></TextField>
+              </FormControl>
+              <FormControl className={classes.formElement}>
+                <InputLabel id="inputUserClassSelect" className={classes.inputLabel}>
+                  Brugerklasse
+                </InputLabel>
+                <UserSelectBox
+                  setUserGroup={setUserGroup}
+                  workerName={workerName}
+                  setWorkerName={setWorkerName}
+                  userGroup={userGroup}
+                ></UserSelectBox>
+              </FormControl>
+              <FormControl className={classes.formElement}>
+                <TextField
+                  variant="filled"
+                  label="Kalendernavn"
+                  disabled={userGroup !== "worker" ? true : false}
+                  onChange={(e) => {
+                    setWorkerName(e.target.value);
+                  }}
+                ></TextField>
+              </FormControl>
+            </form>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <ButtonWrapper onClick={CloseModal} caption="Annuller" variant="text"></ButtonWrapper>
+          <ButtonWrapper
+            onClick={SubmitUser}
+            caption="Tilføj"
+            variant="text"
+            color="primary"
+          ></ButtonWrapper>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
