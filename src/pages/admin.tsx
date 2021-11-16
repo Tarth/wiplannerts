@@ -58,36 +58,12 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     }
   }, []);
 
-  // const HandleClickAddJob = () => {
-  //   if (accessToken !== null) {
-  //     GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
-  //   }
-  //   setViews("addjob");
-  //   const defaultInfoText =
-  //     "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-  //   if (usrAlert.text !== defaultInfoText) {
-  //     setUsrAlert({
-  //       type: "info",
-  //       title: "Information",
-  //       text: defaultInfoText,
-  //     });
-  //   }
-  //   if (
-  //     description !== "" ||
-  //     (startDate !== "" && startDate !== undefined) ||
-  //     (endDate !== "" && endDate !== undefined) ||
-  //     selectedWorkers !== []
-  //   ) {
-  //     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
-  //   }
-  // };
-
-  const HandleClickEditJob = () => {
+  const ClickJobs = () => {
     GetJobsState(accessToken, setTasks);
     setViews("editjob");
   };
 
-  const HandleClickEditUser = () => {
+  const ClickUsers = () => {
     setViews("edituser");
   };
 
@@ -135,7 +111,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             variant="contained"
             color="primary"
             startIcon={<CalendarToday />}
-            onClick={HandleClickEditJob}
+            onClick={ClickJobs}
           >
             Jobs
           </Button>
@@ -146,7 +122,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
                 variant="contained"
                 color="primary"
                 startIcon={<PeopleAlt />}
-                onClick={HandleClickEditUser}
+                onClick={ClickUsers}
               >
                 Brugere
               </Button>
