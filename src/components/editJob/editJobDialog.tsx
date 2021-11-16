@@ -2,13 +2,10 @@ import React from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { ConfirmationDialog } from "./confirmationDialog";
-import { Description } from "../utilityComponents/descriptionInput";
-import { DateInput } from "../utilityComponents/calendarInput";
-import { CheckboxList } from "../utilityComponents/workerListBox";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
+import { FormJob } from "../utilityComponents/elements/formJob";
 import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
@@ -96,27 +93,22 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
       <Dialog open={openModal} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Rediger indholdet af de forskellige felter og tryk gem, når du er færdig
-          </DialogContentText>
-          <Description description={description} setDescription={setDescription}></Description>
-          <DateInput
-            date={startDate}
-            setDate={setStartDate}
-            isDateValid={isStartValid}
-            setIsDateValid={setIsStartValid}
-          ></DateInput>
-          <DateInput
-            date={endDate}
-            setDate={setEndDate}
-            isDateValid={isEndValid}
-            setIsDateValid={setIsEndValid}
-          ></DateInput>
-          <CheckboxList
-            workers={workers}
+          <FormJob
+            description={description}
+            endDate={endDate}
+            isEndValid={isEndValid}
+            isStartValid={isStartValid}
             selectedWorkers={selectedWorkers}
+            setDescription={setDescription}
+            setEndDate={setEndDate}
+            setIsEndValid={setIsEndValid}
+            setIsStartValid={setIsStartValid}
             setSelectedWorkers={setSelectedWorkers}
-          ></CheckboxList>
+            setStartDate={setStartDate}
+            setUsrAlert={setUsrAlert}
+            startDate={startDate}
+            workers={workers}
+          ></FormJob>
         </DialogContent>
         <DialogActions>
           <ConfirmationDialog

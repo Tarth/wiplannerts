@@ -83,6 +83,23 @@ export interface JobFormPropWithModal extends JobFormProp {
   setOpenModal: (openModal: boolean) => void;
 }
 
+export interface JobFormAddProp {
+  description: string;
+  setDescription: (description: string) => void;
+  startDate: string | undefined;
+  setStartDate: (date: string | undefined) => void;
+  endDate: string | undefined;
+  setEndDate: (date: string | undefined) => void;
+  workers: Worker[];
+  selectedWorkers: Worker[];
+  setSelectedWorkers: (worker: Worker[]) => void;
+  setUsrAlert: (usralert: AlertProp) => void;
+  isStartValid: boolean;
+  setIsStartValid: (isStartValid: boolean) => void;
+  isEndValid: boolean;
+  setIsEndValid: (isEndValid: boolean) => void;
+}
+
 export interface AlertProp {
   type: "success" | "info" | "warning" | "error" | undefined;
   title: string;

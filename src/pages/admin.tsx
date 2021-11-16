@@ -6,7 +6,6 @@ import "primereact/resources/primereact.css";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
-import { AddJobForm } from "../components/addJob/addJob";
 import { JobListBox } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
 import { EditUser } from "../components/editUser/editUser";
@@ -59,48 +58,13 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     }
   }, []);
 
-  const HandleClickAddJob = () => {
-    if (accessToken !== null) {
-      GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
-    }
-    setViews("addjob");
-    const defaultInfoText =
-      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-    if (usrAlert.text !== defaultInfoText) {
-      setUsrAlert({
-        type: "info",
-        title: "Information",
-        text: defaultInfoText,
-      });
-    }
-    if (
-      description !== "" ||
-      (startDate !== "" && startDate !== undefined) ||
-      (endDate !== "" && endDate !== undefined) ||
-      selectedWorkers !== []
-    ) {
-      ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
-    }
-  };
-
-  const HandleClickEditJob = () => {
-    GetJobsState(accessToken, setTasks);
-    setViews("editjob");
-    const defaultInfoText =
-      "Marker et af jobbene i tabellen nedenfor, og brug derefter knapperne i bunden til at slette/redigere det valgte. NB: På nuværende tidspunkt kan der desværre kun ændres et job ad gangen.";
-    if (usrAlert.text !== defaultInfoText) {
-      setUsrAlert({
-        type: "info",
-        title: "Information",
-        text: defaultInfoText,
-      });
-    }
-  };
-
-  // const HandleClickAddUser = () => {
-  //   setViews("adduser");
+  // const HandleClickAddJob = () => {
+  //   if (accessToken !== null) {
+  //     GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
+  //   }
+  //   setViews("addjob");
   //   const defaultInfoText =
-  //     "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en ny bruger til databasen.";
+  //     "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
   //   if (usrAlert.text !== defaultInfoText) {
   //     setUsrAlert({
   //       type: "info",
@@ -108,35 +72,26 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   //       text: defaultInfoText,
   //     });
   //   }
+  //   if (
+  //     description !== "" ||
+  //     (startDate !== "" && startDate !== undefined) ||
+  //     (endDate !== "" && endDate !== undefined) ||
+  //     selectedWorkers !== []
+  //   ) {
+  //     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+  //   }
   // };
+
+  const HandleClickEditJob = () => {
+    GetJobsState(accessToken, setTasks);
+    setViews("editjob");
+  };
 
   const HandleClickEditUser = () => {
     setViews("edituser");
   };
 
-  if (views === "addjob") {
-    view = (
-      <div>
-        {/* <AddJobForm
-          description={description}
-          setDescription={setDescription}
-          startDate={startDate}
-          setStartDate={setStartDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
-          workers={workers}
-          selectedWorkers={selectedWorkers}
-          setSelectedWorkers={setSelectedWorkers}
-          usrAlert={usrAlert}
-          setUsrAlert={setUsrAlert}
-          isStartValid={isStartValid}
-          setIsStartValid={setIsStartValid}
-          isEndValid={isEndValid}
-          setIsEndValid={setIsEndValid}
-        ></AddJobForm> */}
-      </div>
-    );
-  } else if (views === "editjob") {
+  if (views === "editjob") {
     view = (
       <div className="editjob">
         <JobListBox

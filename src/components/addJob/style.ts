@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   leftContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: "1.5em",
+    justifyContent: "space-between",
   },
 });
 

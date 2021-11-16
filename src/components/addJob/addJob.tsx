@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useStyles } from "./style";
+import React, { useEffect } from "react";
 import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import { DateInput } from "../utilityComponents/calendarInput";
-import { Description } from "../utilityComponents/descriptionInput";
-import { CheckboxList } from "../utilityComponents/workerListBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl } from "@material-ui/core";
+import { FormJob } from "../utilityComponents/elements/formJob";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 
 export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   description,
@@ -29,7 +26,6 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   openModal,
   setOpenModal,
 }) => {
-  const classes = useStyles();
   let alert;
 
   useEffect(() => {
@@ -105,32 +101,22 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
       <Dialog open={openModal} onClose={CloseAddModal}>
         <DialogTitle>Tilføj Job</DialogTitle>
         <DialogContent>
-          <form className={classes.form}>
-            <div className={classes.leftContainer}>
-              <Description description={description} setDescription={setDescription} />
-              <FormControl>
-                <DateInput
-                  date={startDate}
-                  setDate={setStartDate}
-                  isDateValid={isStartValid}
-                  setIsDateValid={setIsStartValid}
-                />
-              </FormControl>
-              <FormControl>
-                <DateInput
-                  date={endDate}
-                  setDate={setEndDate}
-                  isDateValid={isEndValid}
-                  setIsDateValid={setIsEndValid}
-                />
-              </FormControl>
-            </div>
-            <CheckboxList
-              workers={workers}
-              selectedWorkers={selectedWorkers}
-              setSelectedWorkers={setSelectedWorkers}
-            ></CheckboxList>
-          </form>
+          <FormJob
+            description={description}
+            endDate={endDate}
+            isEndValid={isEndValid}
+            isStartValid={isStartValid}
+            selectedWorkers={selectedWorkers}
+            setDescription={setDescription}
+            setEndDate={setEndDate}
+            setIsEndValid={setIsEndValid}
+            setIsStartValid={setIsStartValid}
+            setSelectedWorkers={setSelectedWorkers}
+            setStartDate={setStartDate}
+            setUsrAlert={setUsrAlert}
+            startDate={startDate}
+            workers={workers}
+          ></FormJob>
         </DialogContent>
         <DialogActions>
           <div className="buttonContainer">

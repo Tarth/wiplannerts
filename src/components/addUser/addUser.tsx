@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   InputLabel,
@@ -27,13 +27,6 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
   });
   const classes = useStyles();
 
-  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-  //   setUserGroup(event.target.value as string);
-  //   if (event.target.value !== "worker") {
-  //     setWorkerName("");
-  //   }
-  // };
-
   let alert = (
     <div className="alertDiv">
       <UserAlertHandler
@@ -43,17 +36,6 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
       ></UserAlertHandler>
     </div>
   );
-
-  // useEffect(() => {
-  //   const defaultInfoText = "Udfyld felterne nedenfor.";
-  //   if (usrAlert.text === "") {
-  //     setUsrAlert({
-  //       type: "info",
-  //       title: "Information",
-  //       text: defaultInfoText,
-  //     });
-  //   }
-  // }, [setUsrAlert, usrAlert]);
 
   const CloseModal = () => {
     setOpenAddModal(false);
