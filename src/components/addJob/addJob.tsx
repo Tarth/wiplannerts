@@ -79,7 +79,11 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
         });
         ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
       } catch (error) {
-        console.log(error);
+        setModalAlert({
+          type: "error",
+          title: "Fejl",
+          text: `${error} - Kontakt winoto support`,
+        });
       } finally {
         if (modalAlert.type !== "") {
           ResetAlert();
