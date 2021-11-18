@@ -19,9 +19,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-.alertDiv {
-  margin-bottom: 1em;
-}
+
 .p-tabmenu {
   margin-top: 10px;
 }

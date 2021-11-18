@@ -46,19 +46,8 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
     ></SnackbarWrapper>
   );
 
-  const ResetUserAlert = () => {
-    setUserAlert({
-      type: "",
-      title: "",
-      text: "",
-    });
-  };
-
   const HandleClose = () => {
     setOpenModal(false);
-    if (userAlert.type !== undefined) {
-      ResetUserAlert();
-    }
     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
   };
 
@@ -101,7 +90,6 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
           GetJobsState(localStorage.getItem("accesstoken"), setTasks);
         }
         HandleClose();
-        ResetUserAlert();
       }
     } catch (error) {
       setUserAlert({

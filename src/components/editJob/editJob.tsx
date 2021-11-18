@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Job_WorkerArray, Jobsstr, JobsStateProps, AlertProp } from "../../models/models";
+import { Job_WorkerArray, Jobsstr, JobsStateProps } from "../../models/models";
 import { ButtonGroup, IconButton } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EditJobDialog } from "./editJobDialog";
 import { format } from "date-fns";
-import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { useStyleJobListTable } from "./style";
 import { AddJobForm } from "../addJob/addJob";
 export const JobListBox: React.FC<JobsStateProps> = ({
@@ -154,6 +153,8 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           selectedTasks={selectedTasks}
           openModal={openModal}
           setOpenModal={setOpenModal}
+          modalAlert={modalAlert}
+          setModalAlert={setModalAlert}
         ></EditJobDialog>
       </ButtonGroup>
       <AddJobForm
@@ -177,6 +178,8 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         selectedTasks={selectedTasks}
         openModal={openAddModal}
         setOpenModal={setOpenAddModal}
+        modalAlert={modalAlert}
+        setModalAlert={setModalAlert}
       ></AddJobForm>
     </div>
   );

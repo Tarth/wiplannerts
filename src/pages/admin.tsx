@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
+import "fontsource-roboto";
 import "../css/admin.css";
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
+import { Button } from "@material-ui/core";
+import { PeopleAlt, CalendarToday } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { JobListBox } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
 import { EditUser } from "../components/editUser/editUser";
-import Button from "@material-ui/core/Button";
-import { PeopleAlt, CalendarToday } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
-import "fontsource-roboto";
-import { getUserGroupNumber } from "../utility/usergroups";
 import { UserAlertHandler } from "../components/utilityComponents/userAlert";
+import { getUserGroupNumber } from "../utility/usergroups";
+import { adminStyles } from "./admin.style";
+import { alertStyle } from "../components/utilityComponents/userAlert.style";
 
 export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -49,16 +51,8 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   });
   let view;
 
-  const useStyles = makeStyles({
-    buttonStyle: {
-      backgroundColor: "#007ad9",
-      "&:hover": {
-        backgroundColor: "#006DCC",
-      },
-    },
-  });
-
-  const classes = useStyles();
+  const classesAdmin = adminStyles();
+  const classesAlert = alertStyle();
   const accessToken: string | null = localStorage.getItem("accesstoken");
 
   useEffect(() => {
@@ -90,7 +84,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   };
 
   let alert = (
-    <div>
+    <div className={classesAlert.alertDiv}>
       <UserAlertHandler
         type={userAlert.type}
         title={userAlert.title}
@@ -143,7 +137,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       <div className="body">
         <div className="buttongroup">
           <Button
-            className={classes.buttonStyle}
+            className={classesAdmin.buttonStyle}
             variant="contained"
             color="primary"
             startIcon={<CalendarToday />}
@@ -154,7 +148,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
           {getUserGroupNumber(userGroup as string) < 2 ? (
             <>
               <Button
-                className={classes.buttonStyle}
+                className={classesAdmin.buttonStyle}
                 variant="contained"
                 color="primary"
                 startIcon={<PeopleAlt />}
