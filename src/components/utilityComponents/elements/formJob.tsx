@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useStyles } from "./formJob.style";
 import { JobFormAddProp } from "../../../models/models";
 import { FormControl } from "@material-ui/core";
@@ -26,19 +26,8 @@ export const FormJob: React.FC<JobFormAddProp> = ({
 }) => {
   const classes = useStyles();
 
-  let alert = (
-    <div className="alertDiv">
-      <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
-      ></UserAlertHandler>
-    </div>
-  );
-
   return (
     <>
-      {alert}
       <form className={classes.form}>
         <div className={classes.leftContainer}>
           <Description description={description} setDescription={setDescription} />

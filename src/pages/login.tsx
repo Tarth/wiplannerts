@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { PostLogin, AuthenticateUser } from "../utility/datahandler";
 import { ParseJWT } from "../utility/parsetoken";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
 import { ButtonWrapper } from "../components/utilityComponents/elements/buttonWrapper";
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "../css/login";
 import { IsUserLoggedInProp } from "../models/models";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import WaveTop from "../css/imgs/wave-top.png";
 import WaveMid from "../css/imgs/wave-mid.png";
 import WaveBot from "../css/imgs/wave-bot.png";
@@ -20,7 +18,7 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   async function LoginResponse() {
@@ -103,19 +101,6 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
             variant="contained"
             color="primary"
           ></ButtonWrapper>
-          {/* <Button
-            className={classes.button}
-            variant="contained"
-            color="primary"
-            onClick={async () => {
-              setIsLoading(true);
-              await LoginResponse();
-            }}
-            disabled={isLoading ? true : false}
-            startIcon={isLoading ? <CircularProgress size={20} /> : <></>}
-          >
-            Log ind
-          </Button> */}
         </Box>
         <div className="waveWrapper waveAnimation">
           <div className="waveWrapperInner bgTop">

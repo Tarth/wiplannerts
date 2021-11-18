@@ -4,7 +4,6 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
-import { ResetInputFields } from "../utility/resetinputfields";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { JobListBox } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
@@ -14,6 +13,7 @@ import { PeopleAlt, CalendarToday } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import "fontsource-roboto";
 import { getUserGroupNumber } from "../utility/usergroups";
+import { UserAlertHandler } from "../components/utilityComponents/userAlert";
 
 export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -30,13 +30,23 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
   const [views, setViews] = useState<string>("editjob"); // This state controls which view is drawn on the admin page
-  const [usrAlert, setUsrAlert] = useState<AlertProp>({
-    type: undefined,
+
+  const [isStartValid, setIsStartValid] = useState(true);
+  const [isEndValid, setIsEndValid] = useState(true);
+  const defaultJobText =
+    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+  const defaultUserText =
+    "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje en bruger.";
+  const [userAlert, setUserAlert] = useState<AlertProp>({
+    type: "info",
+    title: "Information",
+    text: defaultJobText,
+  });
+  const [modalAlert, setModalAlert] = useState<AlertProp>({
+    type: "",
     title: "",
     text: "",
   });
-  const [isStartValid, setIsStartValid] = useState(true);
-  const [isEndValid, setIsEndValid] = useState(true);
   let view;
 
   const useStyles = makeStyles({
@@ -61,11 +71,33 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const ClickJobs = () => {
     GetJobsState(accessToken, setTasks);
     setViews("editjob");
+    if (userAlert.text !== defaultJobText) {
+      setUserAlert({
+        type: "info",
+        title: "information",
+        text: defaultJobText,
+      });
+    }
   };
 
   const ClickUsers = () => {
     setViews("edituser");
+    setUserAlert({
+      type: "info",
+      title: "information",
+      text: defaultUserText,
+    });
   };
+
+  let alert = (
+    <div>
+      <UserAlertHandler
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
+      ></UserAlertHandler>
+    </div>
+  );
 
   if (views === "editjob") {
     view = (
@@ -84,8 +116,10 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
           selectedTasks={selectedTasks}
           setSelectedTasks={setSelectedTasks}
           setTasks={setTasks}
-          usrAlert={usrAlert}
-          setUsrAlert={setUsrAlert}
+          userAlert={userAlert}
+          setUserAlert={setUserAlert}
+          modalAlert={modalAlert}
+          setModalAlert={setModalAlert}
           isStartValid={isStartValid}
           setIsStartValid={setIsStartValid}
           isEndValid={isEndValid}
@@ -94,7 +128,9 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       </div>
     );
   } else {
-    view = <EditUser setViews={setViews} usrAlert={usrAlert} setUsrAlert={setUsrAlert}></EditUser>;
+    view = (
+      <EditUser setViews={setViews} userAlert={userAlert} setUserAlert={setUserAlert}></EditUser>
+    );
   }
 
   return (
@@ -131,6 +167,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
             <></>
           )}
         </div>
+        {alert}
         {view}
       </div>
     </>

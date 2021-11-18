@@ -17,7 +17,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   setEndDate,
   setSelectedWorkers,
   selectedTasks,
-  setUsrAlert,
+  setUserAlert,
   setTasks,
   startDate,
 }) => {
@@ -36,7 +36,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
 
   function InvalidInput() {
     if (startDate === "" || startDate === undefined) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
@@ -48,7 +48,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
 
   async function ConfirmJobDelete() {
     if (selectedTasks.id === -1) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
@@ -56,7 +56,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
     } else {
       try {
         await DeleteJob(selectedTasks.id, accessToken);
-        setUsrAlert({
+        setUserAlert({
           type: "success",
           title: "Succes",
           text: "Job blev slettet fra kalenderen.",
@@ -64,7 +64,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         GetJobsState(accessToken, setTasks);
         HandleClose();
       } catch (error) {
-        setUsrAlert({
+        setUserAlert({
           type: "error",
           title: "Fejl",
           text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,

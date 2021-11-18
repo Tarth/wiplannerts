@@ -20,12 +20,12 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
 }) => {
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [localAlert, setLocalAlert] = useState<AlertProp>({
-    type: undefined,
+    type: "",
     title: "",
     text: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [deleteConfirmationLoading, setDeleteConfirmationLoading] = useState(false);
+  const [, setLoading] = useState(false);
+  const [, setDeleteConfirmationLoading] = useState(false);
   const accessToken = localStorage.getItem("accesstoken");
   let userJobsInDb: unknown;
 

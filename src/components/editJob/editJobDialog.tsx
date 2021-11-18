@@ -20,10 +20,10 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   selectedWorkers,
   setSelectedWorkers,
   selectedTasks,
-  usrAlert,
+  userAlert,
   tasks,
   setTasks,
-  setUsrAlert,
+  setUserAlert,
   isStartValid,
   setIsStartValid,
   isEndValid,
@@ -31,26 +31,11 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   openModal,
   setOpenModal,
 }) => {
-  const [userAlert, setUserAlert] = useState<AlertProp>({
-    type: undefined,
-    title: "",
-    text: "",
-  });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState({
     severity: "",
     message: "",
   });
-
-  let alert = (
-    <div className="alertDiv">
-      <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
-      ></UserAlertHandler>
-    </div>
-  );
 
   let snackbar = (
     <SnackbarWrapper
@@ -63,7 +48,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
 
   const ResetUserAlert = () => {
     setUserAlert({
-      type: undefined,
+      type: "",
       title: "",
       text: "",
     });
@@ -97,33 +82,33 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
         title: "Fejl",
         text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
       });
-    } else {
-      try {
-        if (selectedTasks !== undefined) {
-          await UpdateJob(
-            startDate as string,
-            endDate as string,
-            description,
-            selectedWorkers.map((x) => x.id),
-            selectedTasks.id,
-            localStorage.getItem("accesstoken")
-          );
-          setSnackbarMessage({ severity: "success", message: "Job redigeret" });
-          setOpenSnackbar(true);
+      return;
+    }
+    try {
+      if (selectedTasks !== undefined) {
+        await UpdateJob(
+          startDate as string,
+          endDate as string,
+          description,
+          selectedWorkers.map((x) => x.id),
+          selectedTasks.id,
+          localStorage.getItem("accesstoken")
+        );
+        setSnackbarMessage({ severity: "success", message: "Job redigeret" });
+        setOpenSnackbar(true);
 
-          if (setTasks !== undefined) {
-            GetJobsState(localStorage.getItem("accesstoken"), setTasks);
-          }
-          HandleClose();
-          ResetUserAlert();
+        if (setTasks !== undefined) {
+          GetJobsState(localStorage.getItem("accesstoken"), setTasks);
         }
-      } catch (error) {
-        setUserAlert({
-          type: "error",
-          title: "Fejl",
-          text: `${error}. Kontakt Winoto support`,
-        });
+        HandleClose();
+        ResetUserAlert();
       }
+    } catch (error) {
+      setUserAlert({
+        type: "error",
+        title: "Fejl",
+        text: `${error}. Kontakt Winoto support`,
+      });
     }
   };
 
@@ -132,7 +117,6 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
       <Dialog open={openModal} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
-          {alert}
           <FormJob
             description={description}
             endDate={endDate}
@@ -145,7 +129,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
             setIsStartValid={setIsStartValid}
             setSelectedWorkers={setSelectedWorkers}
             setStartDate={setStartDate}
-            setUsrAlert={setUsrAlert}
+            setUserAlert={setUserAlert}
             startDate={startDate}
             workers={workers}
           ></FormJob>
@@ -158,7 +142,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
             setDescription={setDescription}
             setSelectedWorkers={setSelectedWorkers}
             selectedTasks={selectedTasks as Job_Worker}
-            setUsrAlert={setUsrAlert}
+            setUserAlert={setUserAlert}
             setTasks={setTasks}
           ></ConfirmationDialog>
           <ButtonWrapper

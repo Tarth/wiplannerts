@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import { UserAlertHandler } from "../utilityComponents/userAlert";
+// import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/elements/formJob";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
@@ -17,8 +17,8 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   workers,
   selectedWorkers,
   setSelectedWorkers,
-  usrAlert,
-  setUsrAlert,
+  userAlert,
+  setUserAlert,
   isStartValid,
   setIsStartValid,
   isEndValid,
@@ -26,29 +26,28 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   openModal,
   setOpenModal,
 }) => {
-  let alert;
+  // useEffect(() => {
+  //   const defaultInfoText =
+  //     "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
+  //   if (userAlert.text === "") {
+  //     setUserAlert({
+  //       type: "info",
+  //       title: "Information",
+  //       text: defaultInfoText,
+  //     });
+  //   }
+  // }, [setUserAlert, userAlert]);
 
-  useEffect(() => {
-    const defaultInfoText =
-      "Udfyld felterne nedenfor og brug derefter knappen i bunden til at tilføje et job til kalenderen.";
-    if (usrAlert.text === "") {
-      setUsrAlert({
-        type: "info",
-        title: "Information",
-        text: defaultInfoText,
-      });
-    }
-  }, [setUsrAlert, usrAlert]);
-
-  alert = (
-    <div className="alertDiv">
-      <UserAlertHandler
-        type={usrAlert.type}
-        title={usrAlert.title}
-        text={usrAlert.text}
-      ></UserAlertHandler>
-    </div>
-  );
+  // let alert;
+  // alert = (
+  //   <div className="alertDiv">
+  //     <UserAlertHandler
+  //       type={userAlert.type}
+  //       title={userAlert.title}
+  //       text={userAlert.text}
+  //     ></UserAlertHandler>
+  //   </div>
+  // );
 
   function InvalidInput() {
     if (
@@ -67,7 +66,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
 
   const AddJob = async () => {
     if (InvalidInput()) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
@@ -81,7 +80,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
           selectedWorkers.map((x) => x.id),
           localStorage.getItem("accesstoken")
         );
-        setUsrAlert({
+        setUserAlert({
           type: "success",
           title: "Succes",
           text: "Job tilføjet til kalenderen.",
@@ -113,7 +112,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
             setIsStartValid={setIsStartValid}
             setSelectedWorkers={setSelectedWorkers}
             setStartDate={setStartDate}
-            setUsrAlert={setUsrAlert}
+            setUserAlert={setUserAlert}
             startDate={startDate}
             workers={workers}
           ></FormJob>

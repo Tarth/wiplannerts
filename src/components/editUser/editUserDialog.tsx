@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useStylesDialog } from "./style";
 import {
   Dialog,
@@ -28,18 +28,19 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setName,
   userId,
   setUsers,
-  setUserAlert,
   setLoading,
+  userAlert,
+  setUserAlert,
 }) => {
   const classes = useStylesDialog();
   const [tempPassword, setTempPassword] = useState("");
   const [tempRepeatedPassword, setTempRepeatedPassword] = useState("");
   const [error, setError] = useState(false);
-  const [usrAlert, setUsrAlert] = useState<AlertProp>({
-    type: undefined,
-    title: "",
-    text: "",
-  });
+  // const [userAlert, setUserAlert] = useState<AlertProp>({
+  //   type: "",
+  //   title: "",
+  //   text: "",
+  // });
 
   const CloseAndSave = async () => {
     let _password = "";
@@ -49,7 +50,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
       tempPassword !== tempRepeatedPassword ||
       (usergroup === "worker" && name.length === 0)
     ) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: "Et eller flere felter er ugyldige/tomme",
@@ -68,7 +69,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         setError(false);
       }
     } catch (error) {
-      setUsrAlert({
+      setUserAlert({
         type: "error",
         title: "Fejl",
         text: `Fejl - ${error}`,
@@ -89,9 +90,9 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   let alert = (
     <div className="alertDiv">
       <UserAlertHandler
-        type={usrAlert.type}
-        title={usrAlert.title}
-        text={usrAlert.text}
+        type={userAlert.type}
+        title={userAlert.title}
+        text={userAlert.text}
       ></UserAlertHandler>
     </div>
   );

@@ -13,7 +13,7 @@ import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { useStyles } from "./style";
-import { PostUser, GetJobsState, GetUsersState } from "../../utility/datahandler";
+import { PostUser, GetUsersState } from "../../utility/datahandler";
 
 export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, setUsers }) => {
   const [userName, setUserName] = useState("");
@@ -21,11 +21,10 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
   const [userGroup, setUserGroup] = useState("worker");
   const [workerName, setWorkerName] = useState("");
   const [userAlert, setUserAlert] = useState<AlertProp>({
-    type: undefined,
+    type: "",
     title: "",
     text: "",
   });
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const classes = useStyles();
 
   let alert = (
@@ -41,7 +40,7 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
   const CloseModal = () => {
     setOpenAddModal(false);
     setUserAlert({
-      type: undefined,
+      type: "",
       title: "",
       text: "",
     });

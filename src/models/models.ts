@@ -5,7 +5,7 @@ export interface ConfirmationDialogProp {
   setEndDate: (date: string | undefined) => void;
   setSelectedWorkers: (worker: Worker[]) => void;
   selectedTasks: Job_Worker;
-  setUsrAlert: (usralert: AlertProp) => void;
+  setUserAlert: (userAlert: AlertProp) => void;
   setTasks: (job: Job_Worker[]) => void;
   startDate: string | undefined;
 }
@@ -57,15 +57,15 @@ interface JobProp {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usralert: AlertProp) => void;
+  userAlert: AlertProp;
+  setUserAlert: (userAlert: AlertProp) => void;
   isStartValid: boolean;
   setIsStartValid: (isStartValid: boolean) => void;
   isEndValid: boolean;
   setIsEndValid: (isEndValid: boolean) => void;
 }
 
-export interface JobsStateProps extends JobProp {
+export interface JobsStateProps extends JobProp, ModalAlertProp {
   tasks: Job_Worker[];
   setTasks: (job: Job_Worker[]) => void;
   selectedTasks: Job_Worker;
@@ -93,7 +93,6 @@ export interface JobFormAddProp {
   workers: Worker[];
   selectedWorkers: Worker[];
   setSelectedWorkers: (worker: Worker[]) => void;
-  setUsrAlert: (usralert: AlertProp) => void;
   isStartValid: boolean;
   setIsStartValid: (isStartValid: boolean) => void;
   isEndValid: boolean;
@@ -103,7 +102,7 @@ export interface JobFormAddProp {
 }
 
 export interface AlertProp {
-  type: "success" | "info" | "warning" | "error" | undefined;
+  type: "success" | "info" | "warning" | "error" | "";
   title: string;
   text: string;
 }
@@ -120,11 +119,11 @@ export interface JobListProps {
   setTasks: (job: Job_Worker[]) => void;
   selectedTasks: Job_Worker;
   setSelectedTasks: (job: Job_Worker) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usrAlert: AlertProp) => void;
+  userAlert: AlertProp;
+  setUserAlert: (userAlert: AlertProp) => void;
 }
 
-export interface jobsstr {
+export interface Jobsstr {
   description: string;
   start: string;
   end: string;
@@ -182,8 +181,13 @@ export interface IsUserLoggedInProp {
 }
 
 export interface UserAlertProp {
-  usrAlert: AlertProp;
-  setUsrAlert: (usrAlert: AlertProp) => void;
+  userAlert: AlertProp;
+  setUserAlert: (userAlert: AlertProp) => void;
+}
+
+export interface ModalAlertProp {
+  modalAlert: AlertProp;
+  setModalAlert: (modalAlert: AlertProp) => void;
 }
 
 export interface AddUserProp {
@@ -205,6 +209,7 @@ export interface EditUserDialogProp {
   setOpenEditModal: (setOpen: boolean) => void;
   userId: number;
   setUsers: (users: Worker[]) => void;
+  userAlert: AlertProp;
   setUserAlert: (setUserAlert: AlertProp) => void;
   setLoading: (loading: boolean) => void;
 }
@@ -225,6 +230,6 @@ export interface DeleteUserConfirmationProp {
 
 export interface ViewProp {
   setViews: (views: string) => void;
-  usrAlert: AlertProp;
-  setUsrAlert: (usrAlert: AlertProp) => void;
+  userAlert: AlertProp;
+  setUserAlert: (userAlert: AlertProp) => void;
 }

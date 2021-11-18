@@ -13,7 +13,7 @@ import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
 import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 
-export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }) => {
+export const EditUser: React.FC<ViewProp> = ({ setViews, userAlert, setUserAlert }) => {
   const [users, setUsers] = useState<Worker[]>([]);
   const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
@@ -25,11 +25,11 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [userAlert, setUserAlert] = useState<AlertProp>({
-    type: "info",
-    title: "Information",
-    text: "Brug tabellen nedenfor til at slette eller redigere en bruger.",
-  });
+  // const [userAlert, setUserAlert] = useState<AlertProp>({
+  //   type: "info",
+  //   title: "Information",
+  //   text: "Brug tabellen nedenfor til at slette eller redigere en bruger.",
+  // });
 
   const classes = useStyles();
 
@@ -75,7 +75,7 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
   };
 
   let alert = (
-    <div className={classes.alertDiv}>
+    <div>
       <UserAlertHandler
         type={userAlert.type}
         title={userAlert.title}
@@ -91,7 +91,6 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
         </div>
       ) : (
         <div>
-          {alert}
           <IconButton onClick={AddUserClick} color="primary" aria-label="Tilføj bruger">
             <PersonAdd></PersonAdd>
           </IconButton>
@@ -145,6 +144,7 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, usrAlert, setUsrAlert }
         name={name}
         setName={setName}
         userId={userId}
+        userAlert={userAlert}
         setUsers={setUsers}
         setUserAlert={setUserAlert}
         setLoading={setLoading}

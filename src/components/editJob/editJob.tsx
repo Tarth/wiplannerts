@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Job_WorkerArray, jobsstr, JobsStateProps } from "../../models/models";
+import { Job_WorkerArray, Jobsstr, JobsStateProps, AlertProp } from "../../models/models";
 import { ButtonGroup, IconButton } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { DataTable } from "primereact/datatable";
@@ -23,17 +23,18 @@ export const JobListBox: React.FC<JobsStateProps> = ({
   setTasks,
   selectedTasks,
   setSelectedTasks,
-  usrAlert,
-  setUsrAlert,
+  userAlert,
+  setUserAlert,
   isStartValid,
   setIsStartValid,
   isEndValid,
   setIsEndValid,
+  modalAlert,
+  setModalAlert,
 }) => {
-  let [jobsstr] = useState<jobsstr[]>([]);
+  let [jobsstr] = useState<Jobsstr[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-
   const classes = useStyleJobListTable();
 
   // find the jobs with the same id and gather the usernames into 1 entry and display them
@@ -88,7 +89,6 @@ export const JobListBox: React.FC<JobsStateProps> = ({
 
   return (
     <div>
-      {/* {alert} */}
       <IconButton onClick={AddJobClick} color="primary" aria-label="Tilføj job">
         <Add></Add>
       </IconButton>
@@ -145,8 +145,8 @@ export const JobListBox: React.FC<JobsStateProps> = ({
           setSelectedWorkers={setSelectedWorkers}
           tasks={tasks}
           setTasks={setTasks}
-          usrAlert={usrAlert}
-          setUsrAlert={setUsrAlert}
+          userAlert={userAlert}
+          setUserAlert={setUserAlert}
           isStartValid={isStartValid}
           setIsStartValid={setIsStartValid}
           isEndValid={isEndValid}
@@ -168,8 +168,8 @@ export const JobListBox: React.FC<JobsStateProps> = ({
         setSelectedWorkers={setSelectedWorkers}
         tasks={tasks}
         setTasks={setTasks}
-        usrAlert={usrAlert}
-        setUsrAlert={setUsrAlert}
+        userAlert={userAlert}
+        setUserAlert={setUserAlert}
         isStartValid={isStartValid}
         setIsStartValid={setIsStartValid}
         isEndValid={isEndValid}
