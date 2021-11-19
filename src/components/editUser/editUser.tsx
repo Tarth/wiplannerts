@@ -13,7 +13,13 @@ import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
 import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 
-export const EditUser: React.FC<ViewProp> = ({ setViews, userAlert, setUserAlert }) => {
+export const EditUser: React.FC<ViewProp> = ({
+  setViews,
+  userAlert,
+  setUserAlert,
+  modalAlert,
+  setModalAlert,
+}) => {
   const [users, setUsers] = useState<Worker[]>([]);
   const [usergroupStringUsers, setUsergroupStringUsers] = useState<Worker[]>([]);
   const [username, setUsername] = useState("");
@@ -25,11 +31,6 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, userAlert, setUserAlert
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [loading, setLoading] = useState(true);
-  // const [userAlert, setUserAlert] = useState<AlertProp>({
-  //   type: "info",
-  //   title: "Information",
-  //   text: "Brug tabellen nedenfor til at slette eller redigere en bruger.",
-  // });
 
   const classes = useStyles();
 
@@ -148,6 +149,8 @@ export const EditUser: React.FC<ViewProp> = ({ setViews, userAlert, setUserAlert
         setUsers={setUsers}
         setUserAlert={setUserAlert}
         setLoading={setLoading}
+        modalAlert={modalAlert}
+        setModalAlert={setModalAlert}
       ></EditUserDialog>
       <AddUser
         openAddModal={openAddModal}

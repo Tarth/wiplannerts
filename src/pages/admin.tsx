@@ -6,7 +6,6 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { Button } from "@material-ui/core";
 import { PeopleAlt, CalendarToday } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { JobListBox } from "../components/editJob/editJob";
@@ -32,7 +31,6 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const [endDate, setEndDate] = useState<string>();
   const [description, setDescription] = useState<string>("");
   const [views, setViews] = useState<string>("editjob"); // This state controls which view is drawn on the admin page
-
   const [isStartValid, setIsStartValid] = useState(true);
   const [isEndValid, setIsEndValid] = useState(true);
   const defaultJobText =
@@ -53,6 +51,9 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   const classesAdmin = adminStyles();
   const classesAlert = alertStyle();
+  const { buttonStyle } = classesAdmin;
+  const { alertDiv } = classesAlert;
+
   const accessToken: string | null = localStorage.getItem("accesstoken");
 
   useEffect(() => {
@@ -84,7 +85,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   };
 
   let alert = (
-    <div className={classesAlert.alertDiv}>
+    <div className={alertDiv}>
       <UserAlertHandler
         type={userAlert.type}
         title={userAlert.title}
@@ -123,7 +124,13 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     );
   } else {
     view = (
-      <EditUser setViews={setViews} userAlert={userAlert} setUserAlert={setUserAlert}></EditUser>
+      <EditUser
+        setViews={setViews}
+        userAlert={userAlert}
+        setUserAlert={setUserAlert}
+        modalAlert={modalAlert}
+        setModalAlert={setModalAlert}
+      ></EditUser>
     );
   }
 
@@ -137,7 +144,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       <div className="body">
         <div className="buttongroup">
           <Button
-            className={classesAdmin.buttonStyle}
+            className={buttonStyle}
             variant="contained"
             color="primary"
             startIcon={<CalendarToday />}
@@ -148,7 +155,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
           {getUserGroupNumber(userGroup as string) < 2 ? (
             <>
               <Button
-                className={classesAdmin.buttonStyle}
+                className={buttonStyle}
                 variant="contained"
                 color="primary"
                 startIcon={<PeopleAlt />}

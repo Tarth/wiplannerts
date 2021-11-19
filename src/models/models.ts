@@ -8,6 +8,7 @@ export interface ConfirmationDialogProp {
   setUserAlert: (userAlert: AlertProp) => void;
   setTasks: (job: Job_Worker[]) => void;
   startDate: string | undefined;
+  setOpenModal: (setOpenModal: boolean) => void;
 }
 
 interface Job {
@@ -196,7 +197,7 @@ export interface AddUserProp {
   setUsers: (users: Worker[]) => void;
 }
 
-export interface EditUserDialogProp {
+export interface EditUserDialogProp extends ModalAlertProp {
   username: string;
   setUsername: (username: string) => void;
   password: string;
@@ -228,7 +229,7 @@ export interface DeleteUserConfirmationProp {
   setUserAlert: (userAlert: AlertProp) => void;
 }
 
-export interface ViewProp {
+export interface ViewProp extends ModalAlertProp {
   setViews: (views: string) => void;
   userAlert: AlertProp;
   setUserAlert: (userAlert: AlertProp) => void;

@@ -20,18 +20,18 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   setUserAlert,
   setTasks,
   startDate,
+  setOpenModal,
 }) => {
-  const [open, setOpen] = React.useState(false);
-
+  const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
   const classes = useStyleConfirmationDialog();
   const accessToken = localStorage.getItem("accesstoken");
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenConfirmModal(true);
   };
-
   const HandleClose = () => {
     ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
-    setOpen(false);
+    setOpenConfirmModal(false);
+    setOpenModal(false);
   };
 
   function InvalidInput() {
@@ -82,7 +82,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         color="secondary"
       ></ButtonWrapper>
       <Dialog
-        open={open}
+        open={openConfirmModal}
         onClose={HandleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

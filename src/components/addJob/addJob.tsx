@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";

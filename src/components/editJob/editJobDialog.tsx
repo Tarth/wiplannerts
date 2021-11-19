@@ -4,10 +4,11 @@ import { ConfirmationDialog } from "./confirmationDialog";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/elements/formJob";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
-import { AlertProp, JobFormPropWithModal, Job_Worker } from "../../models/models";
+import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
-import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
+// import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
+import { alertStyle } from "../utilityComponents/userAlert.style";
 
 export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   description,
@@ -30,25 +31,35 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   setIsEndValid,
   openModal,
   setOpenModal,
+  modalAlert,
+  setModalAlert,
 }) => {
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState({
-    severity: "",
-    message: "",
-  });
+  const [, setOpenSnackbar] = useState(false);
+  const classes = alertStyle();
+  const { alertDiv } = classes;
 
-  let snackbar = (
-    <SnackbarWrapper
-      openSnackbar={openSnackbar}
-      setOpenSnackbar={setOpenSnackbar}
-      severity={snackbarMessage.severity as "success" | "info" | "warning" | "error" | undefined}
-      message={snackbarMessage.message}
-    ></SnackbarWrapper>
+  const ResetAlert = () => {
+    setModalAlert({
+      type: "",
+      title: "",
+      text: "",
+    });
+  };
+
+  let alert = (
+    <div className={alertDiv}>
+      <UserAlertHandler
+        type={modalAlert.type}
+        title={modalAlert.title}
+        text={modalAlert.text}
+      ></UserAlertHandler>
+    </div>
   );
 
   const HandleClose = () => {
     setOpenModal(false);
     ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+    ResetAlert();
   };
 
   function InvalidInput() {
@@ -66,7 +77,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
 
   const HandleClickSave = async () => {
     if (InvalidInput()) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: "En/flere ugyldig(e) indtastninger. Felterne må ikke være tomme.",
@@ -83,16 +94,20 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
           selectedTasks.id,
           localStorage.getItem("accesstoken")
         );
-        setSnackbarMessage({ severity: "success", message: "Job redigeret" });
+        setUserAlert({
+          type: "success",
+          title: "Succes",
+          text: "Job redigeret",
+        });
         setOpenSnackbar(true);
-
         if (setTasks !== undefined) {
           GetJobsState(localStorage.getItem("accesstoken"), setTasks);
         }
         HandleClose();
+        ResetAlert();
       }
     } catch (error) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: `${error}. Kontakt Winoto support`,
@@ -105,6 +120,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
       <Dialog open={openModal} onClose={HandleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Rediger job</DialogTitle>
         <DialogContent>
+          {alert}
           <FormJob
             description={description}
             endDate={endDate}
@@ -132,6 +148,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
             selectedTasks={selectedTasks as Job_Worker}
             setUserAlert={setUserAlert}
             setTasks={setTasks}
+            setOpenModal={setOpenModal}
           ></ConfirmationDialog>
           <ButtonWrapper
             onClick={HandleClose}
@@ -147,7 +164,6 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
           ></ButtonWrapper>
         </DialogActions>
       </Dialog>
-      {snackbar}
     </div>
   );
 };

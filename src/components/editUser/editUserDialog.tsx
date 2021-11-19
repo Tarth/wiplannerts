@@ -31,16 +31,13 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setLoading,
   userAlert,
   setUserAlert,
+  modalAlert,
+  setModalAlert,
 }) => {
   const classes = useStylesDialog();
   const [tempPassword, setTempPassword] = useState("");
   const [tempRepeatedPassword, setTempRepeatedPassword] = useState("");
   const [error, setError] = useState(false);
-  // const [userAlert, setUserAlert] = useState<AlertProp>({
-  //   type: "",
-  //   title: "",
-  //   text: "",
-  // });
 
   const CloseAndSave = async () => {
     let _password = "";
@@ -50,7 +47,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
       tempPassword !== tempRepeatedPassword ||
       (usergroup === "worker" && name.length === 0)
     ) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: "Et eller flere felter er ugyldige/tomme",
@@ -69,7 +66,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         setError(false);
       }
     } catch (error) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: `Fejl - ${error}`,
@@ -90,9 +87,9 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   let alert = (
     <div className="alertDiv">
       <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
+        type={modalAlert.type}
+        title={modalAlert.title}
+        text={modalAlert.text}
       ></UserAlertHandler>
     </div>
   );
