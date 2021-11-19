@@ -21,7 +21,7 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
   const { alertDiv } = alertStyle();
 
   let alert = (
-    <div className="alertDiv">
+    <div className={alertDiv}>
       <UserAlertHandler
         type={userAlert.type}
         title={userAlert.title}

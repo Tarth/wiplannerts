@@ -106,6 +106,7 @@ export const JobList: React.FC<JobsStateProps> = ({
           field="start"
           header="Start dato"
           filter
+          sortable
           filterMatchMode="contains"
           filterPlaceholder="Søg dato"
         ></Column>
@@ -113,6 +114,7 @@ export const JobList: React.FC<JobsStateProps> = ({
           field="end"
           header="Slut dato"
           filter
+          sortable
           filterMatchMode="contains"
           filterPlaceholder="Søg dato"
         ></Column>
@@ -120,6 +122,7 @@ export const JobList: React.FC<JobsStateProps> = ({
           field="description"
           header="Beskrivelse"
           filter
+          sortable
           filterMatchMode="contains"
           filterPlaceholder="Søg beskrivelse"
         ></Column>
@@ -127,6 +130,7 @@ export const JobList: React.FC<JobsStateProps> = ({
           field="name"
           header="Navn"
           filter
+          sortable
           filterPlaceholder="Søg navn"
           filterMatchMode="contains"
         ></Column>
