@@ -5,7 +5,6 @@ import { FormControl } from "@material-ui/core";
 import { DateInput } from "../calendarInput";
 import { Description } from "../descriptionInput";
 import { CheckboxList } from "../workerListBox";
-import { UserAlertHandler } from "../userAlert";
 
 export const FormJob: React.FC<JobFormAddProp> = ({
   description,
@@ -21,8 +20,6 @@ export const FormJob: React.FC<JobFormAddProp> = ({
   setStartDate,
   startDate,
   workers,
-  userAlert,
-  setUserAlert,
 }) => {
   const classes = useStyles();
 

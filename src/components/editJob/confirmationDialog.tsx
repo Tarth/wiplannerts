@@ -25,13 +25,17 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
   const classes = useStyleConfirmationDialog();
   const accessToken = localStorage.getItem("accesstoken");
+
   const handleClickOpen = () => {
     setOpenConfirmModal(true);
   };
-  const HandleClose = () => {
-    ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
-    setOpenConfirmModal(false);
+
+  const CloseEditModal = () => {
     setOpenModal(false);
+  };
+
+  const CloseConfirmModal = () => {
+    setOpenConfirmModal(false);
   };
 
   function InvalidInput() {
@@ -53,23 +57,25 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         title: "Fejl",
         text: "Du skal vælge en post i listen, inden du trykker på slette knappen.",
       });
-    } else {
-      try {
-        await DeleteJob(selectedTasks.id, accessToken);
-        setUserAlert({
-          type: "success",
-          title: "Succes",
-          text: "Job blev slettet fra kalenderen.",
-        });
-        GetJobsState(accessToken, setTasks);
-        HandleClose();
-      } catch (error) {
-        setUserAlert({
-          type: "error",
-          title: "Fejl",
-          text: `Job blev ikke slettet pga en fejl - ${error}. Kontakt Winoto support`,
-        });
-      }
+      return;
+    }
+    try {
+      await DeleteJob(selectedTasks.id, accessToken);
+      setUserAlert({
+        type: "success",
+        title: "Succes",
+        text: "Job blev slettet fra kalenderen.",
+      });
+      GetJobsState(accessToken, setTasks);
+      ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
+      CloseConfirmModal();
+      CloseEditModal();
+    } catch (error) {
+      setUserAlert({
+        type: "error",
+        title: "Fejl",
+        text: `${error}. Kontakt Winoto support`,
+      });
     }
   }
   return (
@@ -83,7 +89,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
       ></ButtonWrapper>
       <Dialog
         open={openConfirmModal}
-        onClose={HandleClose}
+        onClose={CloseEditModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -96,13 +102,13 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         </DialogContent>
         <DialogActions>
           <ButtonWrapper
-            onClick={HandleClose}
+            onClick={CloseConfirmModal} // Luk kun confirmModal
             caption="Nej"
             color="primary"
             variant="text"
           ></ButtonWrapper>
           <ButtonWrapper
-            onClick={ConfirmJobDelete}
+            onClick={ConfirmJobDelete} //Luk både confirm og normal modal
             caption="Ja"
             variant="text"
             color="primary"
