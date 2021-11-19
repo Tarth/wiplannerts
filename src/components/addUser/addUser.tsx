@@ -1,19 +1,11 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  InputLabel,
-  FormControl,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@material-ui/core";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { AddUserProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
-import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { useStyles } from "./style";
+import { FormUser } from "../utilityComponents/formUser";
 import { PostUser, GetUsersState } from "../../utility/datahandler";
+import { alertStyle } from "../utilityComponents/userAlert.style";
 
 export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, setUsers }) => {
   const [userName, setUserName] = useState("");
@@ -25,7 +17,8 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
     title: "",
     text: "",
   });
-  const classes = useStyles();
+
+  const { alertDiv } = alertStyle();
 
   let alert = (
     <div className="alertDiv">
@@ -84,7 +77,16 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
         <DialogContent>
           <div>
             {alert}
-            <form className={classes.form}>
+            <FormUser
+              userName={userName}
+              setUserName={setUserName}
+              setPassword={setPassword}
+              userGroup={userGroup}
+              setUserGroup={setUserGroup}
+              workerName={workerName}
+              setWorkerName={setWorkerName}
+            ></FormUser>
+            {/* <form className={classes.form}>
               <FormControl className={classes.formElement}>
                 <TextField
                   variant="filled"
@@ -126,7 +128,7 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
                   }}
                 ></TextField>
               </FormControl>
-            </form>
+            </form> */}
           </div>
         </DialogContent>
         <DialogActions>

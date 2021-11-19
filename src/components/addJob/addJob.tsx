@@ -29,10 +29,10 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   modalAlert,
   setModalAlert,
 }) => {
-  const classes = alertStyle();
+  const { alertDiv } = alertStyle();
 
   let alert = (
-    <div className={classes.alertDiv}>
+    <div className={alertDiv}>
       <UserAlertHandler
         type={modalAlert.type}
         title={modalAlert.title}

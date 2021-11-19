@@ -234,3 +234,22 @@ export interface ViewProp extends ModalAlertProp {
   userAlert: AlertProp;
   setUserAlert: (userAlert: AlertProp) => void;
 }
+
+export interface FormUserProp extends UserName, UserGroup, WorkerName {
+  setPassword: (password: string) => void;
+}
+
+interface UserName {
+  userName: string;
+  setUserName: (userName: string) => void;
+}
+
+interface UserGroup {
+  userGroup: string;
+  setUserGroup: (userGroup: string) => void;
+}
+
+interface WorkerName {
+  workerName: string;
+  setWorkerName: (workerName: string) => void;
+}

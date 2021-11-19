@@ -13,7 +13,7 @@ import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
 import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 
-export const EditUser: React.FC<ViewProp> = ({
+export const UserList: React.FC<ViewProp> = ({
   setViews,
   userAlert,
   setUserAlert,

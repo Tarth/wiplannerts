@@ -8,7 +8,7 @@ import { EditJobDialog } from "./editJobDialog";
 import { format } from "date-fns";
 import { useStyleJobListTable } from "./style";
 import { AddJobForm } from "../addJob/addJob";
-export const JobListBox: React.FC<JobsStateProps> = ({
+export const JobList: React.FC<JobsStateProps> = ({
   description,
   setDescription,
   startDate,

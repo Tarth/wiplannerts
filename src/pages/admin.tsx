@@ -8,9 +8,9 @@ import { Button } from "@material-ui/core";
 import { PeopleAlt, CalendarToday } from "@material-ui/icons";
 import { GetUsersState, GetJobsState } from "../utility/datahandler";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
-import { JobListBox } from "../components/editJob/editJob";
+import { JobList } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
-import { EditUser } from "../components/editUser/editUser";
+import { UserList } from "../components/editUser/editUser";
 import { UserAlertHandler } from "../components/utilityComponents/userAlert";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { adminStyles } from "./admin.style";
@@ -97,7 +97,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   if (views === "editjob") {
     view = (
       <div className="editjob">
-        <JobListBox
+        <JobList
           description={description}
           setDescription={setDescription}
           startDate={startDate}
@@ -124,13 +124,13 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     );
   } else {
     view = (
-      <EditUser
+      <UserList
         setViews={setViews}
         userAlert={userAlert}
         setUserAlert={setUserAlert}
         modalAlert={modalAlert}
         setModalAlert={setModalAlert}
-      ></EditUser>
+      ></UserList>
     );
   }
 
