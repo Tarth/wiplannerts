@@ -75,15 +75,6 @@ export const UserList: React.FC<ViewProp> = ({
     }
   };
 
-  let alert = (
-    <div>
-      <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
-      ></UserAlertHandler>
-    </div>
-  );
   return (
     <div>
       {loading ? (
@@ -112,7 +103,7 @@ export const UserList: React.FC<ViewProp> = ({
               sortable
               filter
               filterMatchMode="contains"
-              filterPlaceholder="Søg brugergruppe"
+              filterPlaceholder="Søg brugernavn"
             ></Column>
             <Column
               field="name"
@@ -128,7 +119,7 @@ export const UserList: React.FC<ViewProp> = ({
               filter
               sortable
               filterMatchMode="contains"
-              filterPlaceholder="Søg brugernavn"
+              filterPlaceholder="Søg brugergruppe"
             ></Column>
           </DataTable>
         </div>
@@ -156,6 +147,10 @@ export const UserList: React.FC<ViewProp> = ({
         openAddModal={openAddModal}
         setOpenAddModal={setOpenAddModal}
         setUsers={setUsers}
+        modalAlert={modalAlert}
+        setModalAlert={setModalAlert}
+        userAlert={userAlert}
+        setUserAlert={setUserAlert}
       ></AddUser>
       <SnackbarWrapper
         severity="error"

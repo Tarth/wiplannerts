@@ -7,13 +7,15 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  FormControl,
 } from "@material-ui/core";
 import { EditUserDialogProp, AlertProp } from "../../models/models";
-import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { DeleteUserDialog } from "./confirmationDialog";
 import { UpdateUser, GetUsersState } from "../../utility/datahandler";
+import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
+import { FormUser } from "../utilityComponents/formUser";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   openEditModal,
@@ -102,7 +104,28 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           Rediger indholdet af de forskellige felter og tryk på Gem når du er færdig
         </DialogContentText>
         {alert}
-        <div className={classes.userInputWrapper}>
+        <FormUser
+          userName={username}
+          setUserName={setUsername}
+          setPassword={setPassword}
+          userGroup={usergroup}
+          setUserGroup={setUsergroup}
+          workerName={name}
+          setWorkerName={setName}
+        ></FormUser>
+        <FormControl>
+          <TextField
+            variant="filled"
+            label="Gentag password"
+            value={tempRepeatedPassword}
+            className={classes.dialogInput}
+            error={error ? true : false}
+            onChange={(e) => {
+              setTempRepeatedPassword(e.target.value);
+            }}
+          ></TextField>
+        </FormControl>
+        {/* <div className={classes.userInputWrapper}>
           <div className={classes.dialogInput}>
             <UserSelectBox
               setUserGroup={setUsergroup}
@@ -153,8 +176,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
             onChange={(e) => {
               setTempRepeatedPassword(e.target.value);
             }}
-          ></TextField>
-        </div>
+          ></TextField> */}
+        {/* </div> */}
       </DialogContent>
       <DialogActions>
         <DeleteUserDialog

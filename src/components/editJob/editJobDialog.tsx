@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { ConfirmationDialog } from "./confirmationDialog";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { FormJob } from "../utilityComponents/elements/formJob";
+import { FormJob } from "../utilityComponents/formJob";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";

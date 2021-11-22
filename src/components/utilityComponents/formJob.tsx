@@ -1,10 +1,10 @@
 import React from "react";
 import { useStyles } from "./formJob.style";
-import { JobFormAddProp } from "../../../models/models";
+import { JobFormAddProp } from "../../models/models";
 import { FormControl } from "@material-ui/core";
-import { DateInput } from "../calendarInput";
-import { Description } from "../descriptionInput";
-import { CheckboxList } from "../workerListBox";
+import { DateInput } from "./calendarInput";
+import { Description } from "./descriptionInput";
+import { CheckboxList } from "./workerListBox";
 
 export const FormJob: React.FC<JobFormAddProp> = ({
   description,

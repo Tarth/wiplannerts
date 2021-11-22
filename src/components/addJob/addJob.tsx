@@ -3,7 +3,7 @@ import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
 import { ResetInputFields } from "../../utility/resetinputfields";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { FormJob } from "../utilityComponents/elements/formJob";
+import { FormJob } from "../utilityComponents/formJob";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { alertStyle } from "../utilityComponents/userAlert.style";

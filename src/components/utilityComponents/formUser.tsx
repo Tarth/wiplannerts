@@ -18,26 +18,6 @@ const FormUser: React.FC<FormUserProp> = ({
   return (
     <form className={form}>
       <FormControl className={formElement}>
-        <TextField
-          variant="filled"
-          label="Brugernavn"
-          value={userName}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-        ></TextField>
-      </FormControl>
-      <FormControl className={formElement}>
-        <TextField
-          variant="filled"
-          type="password"
-          label="Kodeord"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></TextField>
-      </FormControl>
-      <FormControl className={formElement}>
         <InputLabel id="inputUserClassSelect" className={inputLabel}>
           Brugerklasse
         </InputLabel>
@@ -55,6 +35,26 @@ const FormUser: React.FC<FormUserProp> = ({
           disabled={userGroup !== "worker" ? true : false}
           onChange={(e) => {
             setWorkerName(e.target.value);
+          }}
+        ></TextField>
+      </FormControl>
+      <FormControl className={formElement}>
+        <TextField
+          variant="filled"
+          label="Brugernavn"
+          value={userName}
+          onChange={(e) => {
+            setUserName(e.target.value);
+          }}
+        ></TextField>
+      </FormControl>
+      <FormControl className={formElement}>
+        <TextField
+          variant="filled"
+          type="password"
+          label="Kodeord"
+          onChange={(e) => {
+            setPassword(e.target.value);
           }}
         ></TextField>
       </FormControl>

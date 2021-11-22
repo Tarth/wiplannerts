@@ -99,7 +99,7 @@ export const JobList: React.FC<JobsStateProps> = ({
         selectionMode="single"
         paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         currentPageReportTemplate="Viser {first} til {last} af {totalRecords}"
-        rows={10}
+        rows={20}
         rowsPerPageOptions={[10, 20, 50]}
       >
         <Column

@@ -7,17 +7,19 @@ import { FormUser } from "../utilityComponents/formUser";
 import { PostUser, GetUsersState } from "../../utility/datahandler";
 import { alertStyle } from "../utilityComponents/userAlert.style";
 
-export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, setUsers }) => {
+export const AddUser: React.FC<AddUserProp> = ({
+  openAddModal,
+  setOpenAddModal,
+  setUsers,
+  modalAlert,
+  setModalAlert,
+  userAlert,
+  setUserAlert,
+}) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [userGroup, setUserGroup] = useState("worker");
   const [workerName, setWorkerName] = useState("");
-  const [userAlert, setUserAlert] = useState<AlertProp>({
-    type: "",
-    title: "",
-    text: "",
-  });
-
   const { alertDiv } = alertStyle();
 
   let alert = (
@@ -86,49 +88,6 @@ export const AddUser: React.FC<AddUserProp> = ({ openAddModal, setOpenAddModal, 
               workerName={workerName}
               setWorkerName={setWorkerName}
             ></FormUser>
-            {/* <form className={classes.form}>
-              <FormControl className={classes.formElement}>
-                <TextField
-                  variant="filled"
-                  label="Brugernavn"
-                  value={userName}
-                  onChange={(e) => {
-                    setUserName(e.target.value);
-                  }}
-                ></TextField>
-              </FormControl>
-              <FormControl className={classes.formElement}>
-                <TextField
-                  variant="filled"
-                  type="password"
-                  label="Kodeord"
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                ></TextField>
-              </FormControl>
-              <FormControl className={classes.formElement}>
-                <InputLabel id="inputUserClassSelect" className={classes.inputLabel}>
-                  Brugerklasse
-                </InputLabel>
-                <UserSelectBox
-                  setUserGroup={setUserGroup}
-                  workerName={workerName}
-                  setWorkerName={setWorkerName}
-                  userGroup={userGroup}
-                ></UserSelectBox>
-              </FormControl>
-              <FormControl className={classes.formElement}>
-                <TextField
-                  variant="filled"
-                  label="Kalendernavn"
-                  disabled={userGroup !== "worker" ? true : false}
-                  onChange={(e) => {
-                    setWorkerName(e.target.value);
-                  }}
-                ></TextField>
-              </FormControl>
-            </form> */}
           </div>
         </DialogContent>
         <DialogActions>
