@@ -4,8 +4,9 @@ import { AddUserProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
-import { PostUser, GetUsersState } from "../../utility/datahandler";
 import { alertStyle } from "../utilityComponents/userAlert.style";
+import { ResetUserInputFields } from "../utilityComponents/resetinputfields";
+import { PostUser, GetUsersAsState } from "../../utility/datahandler";
 
 export const AddUser: React.FC<AddUserProp> = ({
   openAddModal,
@@ -15,35 +16,40 @@ export const AddUser: React.FC<AddUserProp> = ({
   setModalAlert,
   userAlert,
   setUserAlert,
+  userName,
+  setUserName,
+  password,
+  setPassword,
+  workerName,
+  setWorkerName,
+  userGroup,
+  setUserGroup,
 }) => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [userGroup, setUserGroup] = useState("worker");
-  const [workerName, setWorkerName] = useState("");
   const { alertDiv } = alertStyle();
 
   let alert = (
     <div className={alertDiv}>
       <UserAlertHandler
-        type={userAlert.type}
-        title={userAlert.title}
-        text={userAlert.text}
+        type={modalAlert.type}
+        title={modalAlert.title}
+        text={modalAlert.text}
       ></UserAlertHandler>
     </div>
   );
 
   const CloseModal = () => {
     setOpenAddModal(false);
-    setUserAlert({
+    setModalAlert({
       type: "",
       title: "",
       text: "",
     });
+    ResetUserInputFields(setWorkerName, setPassword, setUserGroup, setUserName);
   };
 
   const SubmitUser = async () => {
     if (userName === "" || password === "" || (userGroup === "worker" && workerName === "")) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: "Forkert indtastning. Ingen tomme felter.",
@@ -57,14 +63,15 @@ export const AddUser: React.FC<AddUserProp> = ({
       } else {
         await PostUser(userName, userGroup, password, accessToken);
       }
-      GetUsersState(accessToken, setUsers);
-      setUserAlert({
+      GetUsersAsState(accessToken, setUsers);
+      setModalAlert({
         type: "success",
         title: "Success",
         text: "Bruger tilføjet til databasen",
       });
+      ResetUserInputFields(setWorkerName, setPassword, setUserGroup, setUserName);
     } catch (err) {
-      setUserAlert({
+      setModalAlert({
         type: "error",
         title: "Fejl",
         text: `Fejltext: ${err}`,

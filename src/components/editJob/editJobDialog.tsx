@@ -6,7 +6,7 @@ import { FormJob } from "../utilityComponents/formJob";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { UpdateJob, GetJobsState } from "../../utility/datahandler";
-import { ResetInputFields } from "../../utility/resetinputfields";
+import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 // import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 import { alertStyle } from "../utilityComponents/userAlert.style";
 
@@ -58,7 +58,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
 
   const HandleClose = () => {
     setOpenModal(false);
-    ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+    ResetJobInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
     ResetAlert();
   };
 

@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { CircularProgress, IconButton } from "@material-ui/core";
 import { PersonAdd } from "@material-ui/icons";
 import { AlertProp, Worker, ViewProp } from "../../models/models";
-import { GetUsersState } from "../../utility/datahandler";
+import { GetUsersAsState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { ParseJWT } from "../../utility/parsetoken";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
@@ -26,7 +26,7 @@ export const UserList: React.FC<ViewProp> = ({
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(0);
   const [usergroup, setUsergroup] = useState("worker");
-  const [name, setName] = useState("");
+  const [workerName, setWorkerName] = useState("");
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -38,7 +38,7 @@ export const UserList: React.FC<ViewProp> = ({
     async function FetchUserData() {
       const token: string | null = localStorage.getItem("accesstoken");
       if (token !== null) {
-        await GetUsersState(token, setUsers);
+        await GetUsersAsState(token, setUsers);
       }
     }
     FetchUserData().then(() => {
@@ -62,7 +62,7 @@ export const UserList: React.FC<ViewProp> = ({
   };
 
   const RowClick = (e: any) => {
-    setName(e.data.name);
+    setWorkerName(e.data.name);
     setPassword(e.data.password);
     setUsergroup(e.data.usergroup_id);
     setUsername(e.data.username);
@@ -133,8 +133,8 @@ export const UserList: React.FC<ViewProp> = ({
         setPassword={setPassword}
         usergroup={usergroup}
         setUsergroup={setUsergroup}
-        name={name}
-        setName={setName}
+        workerName={workerName}
+        setWorkerName={setWorkerName}
         userId={userId}
         userAlert={userAlert}
         setUsers={setUsers}
@@ -151,6 +151,14 @@ export const UserList: React.FC<ViewProp> = ({
         setModalAlert={setModalAlert}
         userAlert={userAlert}
         setUserAlert={setUserAlert}
+        userName={username}
+        setUserName={setUsername}
+        password={password}
+        setPassword={setPassword}
+        workerName={workerName}
+        setWorkerName={setWorkerName}
+        userGroup={usergroup}
+        setUserGroup={setUsergroup}
       ></AddUser>
       <SnackbarWrapper
         severity="error"

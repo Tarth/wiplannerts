@@ -19,7 +19,7 @@ const FormUser: React.FC<FormUserProp> = ({
     <form className={form}>
       <FormControl className={formElement}>
         <InputLabel id="inputUserClassSelect" className={inputLabel}>
-          Brugerklasse
+          Brugergruppe
         </InputLabel>
         <UserSelectBox
           setUserGroup={setUserGroup}
@@ -32,6 +32,7 @@ const FormUser: React.FC<FormUserProp> = ({
         <TextField
           variant="filled"
           label="Kalendernavn"
+          value={workerName}
           disabled={userGroup !== "worker" ? true : false}
           onChange={(e) => {
             setWorkerName(e.target.value);

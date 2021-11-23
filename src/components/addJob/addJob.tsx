@@ -1,7 +1,7 @@
 import React from "react";
 import { JobFormPropWithModal } from "../../models/models";
 import { PostJob } from "../../utility/datahandler";
-import { ResetInputFields } from "../../utility/resetinputfields";
+import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/formJob";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
@@ -77,7 +77,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
           title: "Succes",
           text: "Job tilføjet til kalenderen.",
         });
-        ResetInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+        ResetJobInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
       } catch (error) {
         setModalAlert({
           type: "error",

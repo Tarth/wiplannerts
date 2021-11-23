@@ -217,7 +217,7 @@ export const GetUsersReturn = async (accessToken: string, params?: { querySelect
   return promise;
 };
 
-export const GetUsersState = async (
+export const GetUsersAsState = async (
   accessToken: string,
   setState: (workers: Worker[]) => void,
   params?: { querySelector: string }

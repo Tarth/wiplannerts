@@ -11,11 +11,12 @@ import {
 } from "@material-ui/core";
 import { EditUserDialogProp, AlertProp } from "../../models/models";
 import { DeleteUserDialog } from "./confirmationDialog";
-import { UpdateUser, GetUsersState } from "../../utility/datahandler";
+import { UpdateUser, GetUsersAsState } from "../../utility/datahandler";
 import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
+import { ResetUserInputFields } from "../utilityComponents/resetinputfields";
 
 export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   openEditModal,
@@ -26,8 +27,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   setPassword,
   usergroup,
   setUsergroup,
-  name,
-  setName,
+  workerName,
+  setWorkerName,
   userId,
   setUsers,
   setLoading,
@@ -47,7 +48,7 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     if (
       username.length === 0 ||
       tempPassword !== tempRepeatedPassword ||
-      (usergroup === "worker" && name.length === 0)
+      (usergroup === "worker" && workerName.length === 0)
     ) {
       setModalAlert({
         type: "error",
@@ -62,28 +63,31 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     } else {
       _password = tempPassword;
     }
+
     try {
-      await UpdateUser(username, usergroup, _password, accessToken as string, userId, name);
+      await UpdateUser(username, usergroup, _password, accessToken as string, userId, workerName);
       if (error === true) {
         setError(false);
       }
+      await GetUsersAsState(accessToken as string, setUsers);
+      Close();
+      setUserAlert({
+        type: "success",
+        title: "Succes",
+        text: "Bruger redigeret",
+      });
     } catch (error) {
       setModalAlert({
         type: "error",
         title: "Fejl",
-        text: `Fejl - ${error}`,
+        text: `${error}`,
       });
-    }
-    try {
-      await GetUsersState(accessToken as string, setUsers);
-      Close();
-    } catch (error) {
-      console.log(error);
     }
   };
 
   const Close = () => {
     setOpenEditModal(false);
+    ResetUserInputFields(setWorkerName, setPassword, setUsergroup, setUsername);
   };
 
   let alert = (
@@ -100,9 +104,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     <Dialog open={openEditModal} onClose={Close} className={classes.container}>
       <DialogTitle>Rediger/slet</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Rediger indholdet af de forskellige felter og tryk på Gem når du er færdig
-        </DialogContentText>
         {alert}
         <FormUser
           userName={username}
@@ -110,12 +111,13 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           setPassword={setPassword}
           userGroup={usergroup}
           setUserGroup={setUsergroup}
-          workerName={name}
-          setWorkerName={setName}
+          workerName={workerName}
+          setWorkerName={setWorkerName}
         ></FormUser>
         <FormControl>
           <TextField
             variant="filled"
+            type="password"
             label="Gentag password"
             value={tempRepeatedPassword}
             className={classes.dialogInput}
@@ -195,6 +197,18 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         <ButtonWrapper
           onClick={CloseAndSave}
           caption="Gem"
+          variant="text"
+          color="primary"
+        ></ButtonWrapper>
+        <ButtonWrapper
+          onClick={() => {
+            if (password !== "" && password !== tempRepeatedPassword) {
+              console.log(password);
+              console.log(tempRepeatedPassword);
+              console.log("Passwordet er ikke tomt, og ikke ens");
+            }
+          }}
+          caption="TEST"
           variant="text"
           color="primary"
         ></ButtonWrapper>

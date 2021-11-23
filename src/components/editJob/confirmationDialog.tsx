@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
-import { ResetInputFields } from "../../utility/resetinputfields";
+import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 import { DeleteJob, GetJobsState } from "../../utility/datahandler";
 import { useStyleConfirmationDialog } from "./style";
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
@@ -67,7 +67,7 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         text: "Job blev slettet fra kalenderen.",
       });
       GetJobsState(accessToken, setTasks);
-      ResetInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
+      ResetJobInputFields(setStartDate, setDescription, setEndDate, setSelectedWorkers);
       CloseConfirmModal();
       CloseEditModal();
     } catch (error) {

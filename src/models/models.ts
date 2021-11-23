@@ -191,7 +191,13 @@ export interface ModalAlertProp {
   setModalAlert: (modalAlert: AlertProp) => void;
 }
 
-export interface AddUserProp extends ModalAlertProp, UserAlertProp {
+export interface AddUserProp
+  extends ModalAlertProp,
+    UserAlertProp,
+    UserName,
+    Password,
+    WorkerName,
+    UserGroup {
   openAddModal: boolean;
   setOpenAddModal: (openAddModal: boolean) => void;
   setUsers: (users: Worker[]) => void;
@@ -204,8 +210,8 @@ export interface EditUserDialogProp extends ModalAlertProp {
   setPassword: (password: string) => void;
   usergroup: string;
   setUsergroup: (usergroup: string) => void;
-  name: string;
-  setName: (name: string) => void;
+  workerName: string;
+  setWorkerName: (workerName: string) => void;
   openEditModal: boolean;
   setOpenEditModal: (setOpen: boolean) => void;
   userId: number;
@@ -235,7 +241,7 @@ export interface ViewProp extends ModalAlertProp {
   setUserAlert: (userAlert: AlertProp) => void;
 }
 
-export interface FormUserProp extends UserName, UserGroup, WorkerName {
+export interface FormUserProp extends UserName, UserGroup, WorkerName, TempPassword {
   setPassword: (password: string) => void;
 }
 
@@ -252,4 +258,14 @@ interface UserGroup {
 interface WorkerName {
   workerName: string;
   setWorkerName: (workerName: string) => void;
+}
+
+interface Password {
+  password: string;
+  setPassword: (password: string) => void;
+}
+
+interface TempPassword {
+  setTempPassword?: (tempPassword: string) => void;
+  setRepeatedTempPassWord?: (repeatedTempPassword: string) => void;
 }

@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersState } from "../../utility/datahandler";
+import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersAsState } from "../../utility/datahandler";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
@@ -65,7 +65,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
           await DeleteJob(userJobsInDb, accessToken);
         }
         await DeleteUser(userId, accessToken);
-        await GetUsersState(accessToken, setUsers);
+        await GetUsersAsState(accessToken, setUsers);
         setUserAlert({
           type: "success",
           title: "Succes",

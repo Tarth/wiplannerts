@@ -41,9 +41,5 @@ export const ButtonWrapper: React.FC<Prop> = ({
     >
       {loading ? <CircularProgress size="1.5em"></CircularProgress> : caption}
     </Button>
-
-    // <div>
-
-    // </div>
   );
 };

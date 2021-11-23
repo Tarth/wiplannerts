@@ -6,7 +6,7 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { Button } from "@material-ui/core";
 import { PeopleAlt, CalendarToday } from "@material-ui/icons";
-import { GetUsersState, GetJobsState } from "../utility/datahandler";
+import { GetUsersAsState, GetJobsState } from "../utility/datahandler";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { JobList } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
@@ -58,7 +58,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   useEffect(() => {
     if (accessToken !== null) {
-      GetUsersState(accessToken, setWorkers, { querySelector: "workers" });
+      GetUsersAsState(accessToken, setWorkers, { querySelector: "workers" });
       GetJobsState(accessToken, setTasks);
     }
   }, []);
