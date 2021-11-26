@@ -12,6 +12,8 @@ const FormUser: React.FC<FormUserProp> = ({
   setUserGroup,
   workerName,
   setWorkerName,
+  setTempPassword,
+  setRepeatedTempPassWord,
 }) => {
   const { form, formElement, inputLabel } = useStyles();
 

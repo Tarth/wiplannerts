@@ -113,6 +113,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
           setUserGroup={setUsergroup}
           workerName={workerName}
           setWorkerName={setWorkerName}
+          setTempPassword={setTempPassword}
+          setRepeatedTempPassWord={setTempRepeatedPassword}
         ></FormUser>
         <FormControl>
           <TextField
