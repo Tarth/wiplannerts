@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogActions,
@@ -7,7 +7,7 @@ import {
   FormControl,
   TextField,
 } from "@material-ui/core";
-import { AddUserProp, AlertProp } from "../../models/models";
+import { AddUserProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";

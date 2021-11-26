@@ -8,7 +8,7 @@ import {
   TextField,
   FormControl,
 } from "@material-ui/core";
-import { EditUserDialogProp, AlertProp } from "../../models/models";
+import { EditUserDialogProp } from "../../models/models";
 import { DeleteUserDialog } from "./confirmationDialog";
 import { UpdateUser, GetUsersAsState } from "../../utility/datahandler";
 import { UserAlertHandler } from "../utilityComponents/userAlert";

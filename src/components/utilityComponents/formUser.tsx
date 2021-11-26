@@ -15,7 +15,7 @@ const FormUser: React.FC<FormUserProp> = ({
   setTempPassword,
   setRepeatedTempPassWord,
 }) => {
-  const { form, formElement, inputLabel } = userStyles();
+  const { formElement, inputLabel } = userStyles();
 
   return (
     <>
