@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { useStylesDialog } from "./style";
+import { formStyles, userStyles } from "../utilityComponents/form.style";
 import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   TextField,
   FormControl,
@@ -12,7 +11,6 @@ import {
 import { EditUserDialogProp, AlertProp } from "../../models/models";
 import { DeleteUserDialog } from "./confirmationDialog";
 import { UpdateUser, GetUsersAsState } from "../../utility/datahandler";
-import { UserSelectBox } from "../utilityComponents/elements/userSelectBox";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
@@ -37,7 +35,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   modalAlert,
   setModalAlert,
 }) => {
-  const classes = useStylesDialog();
+  const { dialogInput } = formStyles();
+  const { form } = userStyles();
   const [tempPassword, setTempPassword] = useState("");
   const [tempRepeatedPassword, setTempRepeatedPassword] = useState("");
   const [error, setError] = useState(false);
@@ -101,87 +100,58 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
   );
 
   return (
-    <Dialog open={openEditModal} onClose={Close} className={classes.container}>
+    <Dialog open={openEditModal} onClose={Close}>
       <DialogTitle>Rediger/slet</DialogTitle>
       <DialogContent>
         {alert}
-        <FormUser
-          userName={username}
-          setUserName={setUsername}
-          setPassword={setPassword}
-          userGroup={usergroup}
-          setUserGroup={setUsergroup}
-          workerName={workerName}
-          setWorkerName={setWorkerName}
-          setTempPassword={setTempPassword}
-          setRepeatedTempPassWord={setTempRepeatedPassword}
-        ></FormUser>
-        <FormControl>
-          <TextField
-            variant="filled"
-            type="password"
-            label="Gentag password"
-            value={tempRepeatedPassword}
-            className={classes.dialogInput}
-            error={error ? true : false}
-            onChange={(e) => {
-              setTempRepeatedPassword(e.target.value);
-            }}
-          ></TextField>
-        </FormControl>
-        {/* <div className={classes.userInputWrapper}>
-          <div className={classes.dialogInput}>
-            <UserSelectBox
-              setUserGroup={setUsergroup}
-              workerName={name}
-              setWorkerName={setName}
-              userGroup={usergroup}
-            ></UserSelectBox>
-          </div>
-          <TextField
-            className={classes.dialogInput}
-            variant="filled"
-            label="Brugernavn"
-            value={username}
-            error={error ? true : false}
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          ></TextField>
-          <TextField
-            className={classes.dialogInput}
-            variant="filled"
-            label="Kalendernavn"
-            value={name}
-            error={error ? true : false}
-            disabled={usergroup !== "worker" ? true : false}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          ></TextField>
-        </div>
-        <div className={classes.passwordWrapper}>
-          <TextField
-            variant="filled"
-            label="Password"
-            value={tempPassword}
-            className={classes.dialogInput}
-            error={error ? true : false}
-            onChange={(e) => {
-              setTempPassword(e.target.value);
-            }}
-          ></TextField>
-          <TextField
-            variant="filled"
-            label="Gentag password"
-            value={tempRepeatedPassword}
-            className={classes.dialogInput}
-            error={error ? true : false}
-            onChange={(e) => {
-              setTempRepeatedPassword(e.target.value);
-            }}
-          ></TextField> */}
-        {/* </div> */}
+        <form className={form}>
+          <FormUser
+            userName={username}
+            setUserName={setUsername}
+            setPassword={setPassword}
+            userGroup={usergroup}
+            setUserGroup={setUsergroup}
+            workerName={workerName}
+            setWorkerName={setWorkerName}
+            setTempPassword={setTempPassword}
+            setRepeatedTempPassWord={setTempRepeatedPassword}
+          ></FormUser>
+          <FormControl>
+            <TextField
+              autoComplete="off"
+              variant="filled"
+              type="password"
+              label="Password"
+              value={tempPassword}
+              className={dialogInput}
+              error={error ? true : false}
+              onChange={(e) => {
+                setTempPassword(e.target.value);
+              }}
+              //hack to prevent Chromium based browsers to autofill the password input
+              InputProps={{
+                autoComplete: "new-password",
+              }}
+            ></TextField>
+          </FormControl>
+          <FormControl>
+            <TextField
+              autoComplete="off"
+              variant="filled"
+              type="password"
+              label="Gentag password"
+              value={tempRepeatedPassword}
+              className={dialogInput}
+              error={error ? true : false}
+              onChange={(e) => {
+                setTempRepeatedPassword(e.target.value);
+              }}
+              InputProps={{
+                autoComplete: "new-password",
+              }}
+            ></TextField>
+          </FormControl>
+        </form>
       </DialogContent>
       <DialogActions>
         <DeleteUserDialog
@@ -199,18 +169,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
         <ButtonWrapper
           onClick={CloseAndSave}
           caption="Gem"
-          variant="text"
-          color="primary"
-        ></ButtonWrapper>
-        <ButtonWrapper
-          onClick={() => {
-            if (password !== "" && password !== tempRepeatedPassword) {
-              console.log(password);
-              console.log(tempRepeatedPassword);
-              console.log("Passwordet er ikke tomt, og ikke ens");
-            }
-          }}
-          caption="TEST"
           variant="text"
           color="primary"
         ></ButtonWrapper>

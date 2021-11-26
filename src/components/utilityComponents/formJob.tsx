@@ -1,5 +1,5 @@
 import React from "react";
-import { useStyles } from "./formJob.style";
+import { formStyles } from "./form.style";
 import { JobFormAddProp } from "../../models/models";
 import { FormControl } from "@material-ui/core";
 import { DateInput } from "./calendarInput";
@@ -21,12 +21,12 @@ export const FormJob: React.FC<JobFormAddProp> = ({
   startDate,
   workers,
 }) => {
-  const classes = useStyles();
+  const { form, leftContainer } = formStyles();
 
   return (
     <>
-      <form className={classes.form}>
-        <div className={classes.leftContainer}>
+      <form className={form}>
+        <div className={leftContainer}>
           <Description description={description} setDescription={setDescription} />
           <FormControl>
             <DateInput

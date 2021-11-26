@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  TextField,
+} from "@material-ui/core";
 import { AddUserProp, AlertProp } from "../../models/models";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
-import { alertStyle } from "../utilityComponents/userAlert.style";
 import { ResetUserInputFields } from "../utilityComponents/resetinputfields";
 import { PostUser, GetUsersAsState } from "../../utility/datahandler";
+import { alertStyle } from "../utilityComponents/userAlert.style";
+import { formStyles, userStyles } from "../utilityComponents/form.style";
 
 export const AddUser: React.FC<AddUserProp> = ({
   openAddModal,
@@ -26,7 +34,8 @@ export const AddUser: React.FC<AddUserProp> = ({
   setUserGroup,
 }) => {
   const { alertDiv } = alertStyle();
-
+  const { dialogInput } = formStyles();
+  const { form } = userStyles();
   let alert = (
     <div className={alertDiv}>
       <UserAlertHandler
@@ -86,15 +95,28 @@ export const AddUser: React.FC<AddUserProp> = ({
         <DialogContent>
           <div>
             {alert}
-            <FormUser
-              userName={userName}
-              setUserName={setUserName}
-              setPassword={setPassword}
-              userGroup={userGroup}
-              setUserGroup={setUserGroup}
-              workerName={workerName}
-              setWorkerName={setWorkerName}
-            ></FormUser>
+            <form className={form}>
+              <FormUser
+                userName={userName}
+                setUserName={setUserName}
+                setPassword={setPassword}
+                userGroup={userGroup}
+                setUserGroup={setUserGroup}
+                workerName={workerName}
+                setWorkerName={setWorkerName}
+              ></FormUser>
+              <FormControl>
+                <TextField
+                  variant="filled"
+                  label="Password"
+                  value={password}
+                  className={dialogInput}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                ></TextField>
+              </FormControl>
+            </form>
           </div>
         </DialogContent>
         <DialogActions>

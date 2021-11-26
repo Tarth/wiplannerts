@@ -20,10 +20,10 @@ const useStylesDialog = makeStyles({
   userInputWrapper: {
     marginBottom: "1em",
   },
-  dialogInput: {
-    marginBottom: "1em",
-    width: "100%",
-  },
+  // dialogInput: {
+  //   marginBottom: "1em",
+  //   width: "100%",
+  // },
   passwordWrapper: {
     display: "flex",
     flexDirection: "column",

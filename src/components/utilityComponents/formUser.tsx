@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField, FormControl, InputLabel } from "@material-ui/core";
 import { UserSelectBox } from "./elements/userSelectBox";
-import { useStyles } from "../../components/addUser/style";
+import { userStyles } from "./form.style";
 import { FormUserProp } from "../../models/models";
 
 const FormUser: React.FC<FormUserProp> = ({
@@ -15,10 +15,20 @@ const FormUser: React.FC<FormUserProp> = ({
   setTempPassword,
   setRepeatedTempPassWord,
 }) => {
-  const { form, formElement, inputLabel } = useStyles();
+  const { form, formElement, inputLabel } = userStyles();
 
   return (
-    <form className={form}>
+    <>
+      <FormControl className={formElement}>
+        <TextField
+          variant="filled"
+          label="Brugernavn"
+          value={userName}
+          onChange={(e) => {
+            setUserName(e.target.value);
+          }}
+        ></TextField>
+      </FormControl>
       <FormControl className={formElement}>
         <InputLabel id="inputUserClassSelect" className={inputLabel}>
           Brugergruppe
@@ -41,27 +51,7 @@ const FormUser: React.FC<FormUserProp> = ({
           }}
         ></TextField>
       </FormControl>
-      <FormControl className={formElement}>
-        <TextField
-          variant="filled"
-          label="Brugernavn"
-          value={userName}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-        ></TextField>
-      </FormControl>
-      <FormControl className={formElement}>
-        <TextField
-          variant="filled"
-          type="password"
-          label="Kodeord"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        ></TextField>
-      </FormControl>
-    </form>
+    </>
   );
 };
 
