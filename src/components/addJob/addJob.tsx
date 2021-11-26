@@ -1,6 +1,6 @@
 import React from "react";
 import { JobFormPropWithModal } from "../../models/models";
-import { PostJob } from "../../utility/datahandler";
+import { GetJobsState, PostJob } from "../../utility/datahandler";
 import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/formJob";
@@ -28,8 +28,10 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   setOpenModal,
   modalAlert,
   setModalAlert,
+  setTasks,
 }) => {
   const { alertDiv } = alertStyle();
+  const accessToken = localStorage.getItem("accesstoken");
 
   let alert = (
     <div className={alertDiv}>
@@ -70,7 +72,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
           endDate as string,
           description,
           selectedWorkers.map((x) => x.id),
-          localStorage.getItem("accesstoken")
+          accessToken
         );
         setModalAlert({
           type: "success",
@@ -78,6 +80,7 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
           text: "Job tilføjet til kalenderen.",
         });
         ResetJobInputFields(setDescription, setStartDate, setEndDate, setSelectedWorkers);
+        GetJobsState(accessToken, setTasks);
       } catch (error) {
         setModalAlert({
           type: "error",
