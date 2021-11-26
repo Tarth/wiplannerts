@@ -72,12 +72,12 @@ export const AddUser: React.FC<AddUserProp> = ({
       } else {
         await PostUser(userName, userGroup, password, accessToken);
       }
-      GetUsersAsState(accessToken, setUsers);
       setModalAlert({
         type: "success",
         title: "Success",
         text: "Bruger tilføjet til databasen",
       });
+      GetUsersAsState(accessToken, setUsers);
       ResetUserInputFields(setWorkerName, setPassword, setUserGroup, setUserName);
     } catch (err) {
       setModalAlert({
