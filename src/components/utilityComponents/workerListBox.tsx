@@ -34,15 +34,7 @@ export const CheckboxList: React.FC<Props> = ({ workers, selectedWorkers, setSel
     setSelectedWorkers(newChecked);
   };
   return (
-    <List
-      className={classes.root}
-      // subheader={
-      //   <ListSubheader component="div" id="nested-list-subheader">
-      //     Medarbejdere:
-      //   </ListSubheader>
-      // }
-      // style={{ overflow: "auto", maxHeight: "300px" }}
-    >
+    <List className={classes.root}>
       {workers.map((e) => {
         const labelId = `checkbox-list-label-${e.id}`;
 

@@ -65,6 +65,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   const ClickJobs = () => {
     GetJobsState(accessToken, setTasks);
+    GetUsersAsState(accessToken as string, setWorkers, { querySelector: "workers" });
     setViews("editjob");
     if (userAlert.text !== defaultJobText) {
       setUserAlert({
