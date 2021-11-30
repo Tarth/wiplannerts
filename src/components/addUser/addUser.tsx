@@ -83,7 +83,7 @@ export const AddUser: React.FC<AddUserProp> = ({
       setModalAlert({
         type: "error",
         title: "Fejl",
-        text: `Fejltext: ${err}`,
+        text: `${err}`,
       });
     }
   };

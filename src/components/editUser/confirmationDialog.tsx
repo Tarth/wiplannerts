@@ -56,12 +56,12 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
     setConfirmDialogOpen(false);
   };
 
-  const HandleCloseDelete = async () => {
+  const ClickCloseDelete = async () => {
     if (accessToken != null) {
       try {
         setDeleteConfirmationLoading(true);
         userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
-        if (Array.isArray(userJobsInDb)) {
+        if (Array.isArray(userJobsInDb) && userJobsInDb.length !== 0) {
           await DeleteJob(userJobsInDb, accessToken);
         }
         await DeleteUser(userId, accessToken);
@@ -122,7 +122,7 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
             color="default"
           ></ButtonWrapper>
           <ButtonWrapper
-            onClick={HandleCloseDelete}
+            onClick={ClickCloseDelete}
             caption="Ja"
             variant="text"
             color="primary"

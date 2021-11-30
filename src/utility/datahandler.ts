@@ -103,7 +103,15 @@ export const PostUser = async (
       accessToken,
       workername
     );
-    return res;
+    if (res.data.isSuccess === true) {
+      return res;
+    }
+    if (res.data.data.hasOwnProperty("detail")) {
+      let { code } = res.data.data;
+      if (code === "23505") {
+        throw "Brugernavn findes allerede";
+      }
+    }
   } catch (error) {
     throw error;
   }
