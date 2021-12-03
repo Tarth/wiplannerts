@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Calendar } from "../pages/calendar";
 import { Admin } from "../pages/admin";
 import { Login } from "../pages/login";
-import { IsTokenValidated } from "../utility/datahandler";
+import { IsAccessTokenValid } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
@@ -12,7 +12,7 @@ export const Index: React.FC = () => {
   const accessToken = localStorage.getItem("accesstoken");
 
   const LoginSwitch: React.FC = () => {
-    if (isLoggedIn && IsTokenValidated(accessToken)) {
+    if (isLoggedIn && IsAccessTokenValid(accessToken)) {
       return (
         <Redirect
           to={{
@@ -41,7 +41,7 @@ export const Index: React.FC = () => {
             <LoginSwitch></LoginSwitch>
           </Route>
           <Route path="/calendar">
-            {isLoggedIn && getUserGroupNumber(userGroup) <= 3 && IsTokenValidated(accessToken) ? (
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 3 && IsAccessTokenValid(accessToken) ? (
               <>
                 <Calendar
                   isLoggedIn={isLoggedIn}
@@ -54,7 +54,7 @@ export const Index: React.FC = () => {
             )}
           </Route>
           <Route path="/admin">
-            {isLoggedIn && getUserGroupNumber(userGroup) <= 2 && IsTokenValidated(accessToken) ? (
+            {isLoggedIn && getUserGroupNumber(userGroup) <= 2 && IsAccessTokenValid(accessToken) ? (
               <>
                 <Admin
                   isLoggedIn={isLoggedIn}

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { GetJobsState, GetAccessTokenFromRefresh } from "../utility/datahandler";
+import {
+  GetJobsState,
+  GetAccessTokenFromRefresh,
+  IsAccessTokenValid,
+} from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
 import {
@@ -12,7 +16,7 @@ import {
 } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
-import { ArrowForward, ArrowBack } from "@material-ui/icons";
+import { ArrowForward, ArrowBack, BugReport } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
@@ -23,36 +27,52 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const accessToken = localStorage.getItem("accesstoken");
-  const refreshToken = localStorage.getItem("refreshtoken");
+  let refreshToken = localStorage.getItem("refreshtoken");
 
   async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
-    try {
-      await GetJobsState(accessToken, setTasks);
-      if (refreshToken !== null) {
-        let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
-        localStorage.setItem("accesstoken", newAccessToken);
-        await GetJobsState(newAccessToken, setTasks);
-      }
-    } catch (error) {
-      throw error;
+    if ((await CheckToken()) === false) {
+      setIsLoggedIn(false);
+      localStorage.clear();
     }
+    const accessToken = localStorage.getItem("accesstoken");
+    await GetJobsState(accessToken, setTasks);
   }
 
-  // async function GetJobData(setTasks: (jobs: Job_Worker[]) => void) {
-  //   try {
-  //     await GetJobsState(accessToken, setTasks);
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  const CheckToken = async (token?: string) => {
+    let localToken = localStorage.getItem("accesstoken");
+    if (token !== undefined) {
+      localToken = token;
+    }
+    try {
+      if ((await IsAccessTokenValid(localToken)) === false) {
+        refreshToken = localStorage.getItem("refreshtoken");
+        let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
+        localStorage.setItem("accesstoken", newAccessToken);
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const TestTokenFunc = async () => {
+    const invalidToken = "asasdzxcasd";
+    if ((await CheckToken(invalidToken)) === false) {
+      setIsLoggedIn(false);
+      localStorage.clear();
+    }
+    const accessToken = localStorage.getItem("accesstoken");
+    await GetJobsState(accessToken, setTasks);
+  };
 
   // fetch the data from the db every minute
   useEffect(() => {
-    GetJobData(setTasks);
     GetJobsState(accessToken, setTasks);
+    // GetJobData(setTasks);
     // const interval = setInterval(async () => {
     //   GetJobData(setTasks);
-    // }, 15000);
+    //   console.log("userData fetched");
+    // }, 5000);
     // return () => clearInterval(interval);
   }, []);
 
@@ -71,6 +91,14 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
         </IconButton>
         <IconButton onClick={() => setCurrentDate(addDays(currentDate, 7))} color="primary">
           <ArrowForward></ArrowForward>
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            TestTokenFunc();
+          }}
+          color="primary"
+        >
+          <BugReport></BugReport>
         </IconButton>
       </div>
 
