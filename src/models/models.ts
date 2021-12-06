@@ -269,3 +269,7 @@ interface TempPassword {
   setTempPassword?: (tempPassword: string) => void;
   setRepeatedTempPassWord?: (repeatedTempPassword: string) => void;
 }
+
+export interface IsUserValidProp {
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+}

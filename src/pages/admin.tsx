@@ -6,15 +6,15 @@ import "primereact/resources/themes/nova-light/theme.css";
 import "primereact/resources/primereact.css";
 import { Button } from "@material-ui/core";
 import { PeopleAlt, CalendarToday } from "@material-ui/icons";
-import { GetUsersAsState, GetJobsState } from "../utility/datahandler";
 import { Worker, Job_Worker, AlertProp, IsUserLoggedInProp } from "../models/models";
 import { JobList } from "../components/editJob/editJob";
 import { Navigation } from "../components/navigation/navigation";
 import { UserList } from "../components/editUser/editUser";
 import { UserAlertHandler } from "../components/utilityComponents/userAlert";
+import { alertStyle } from "../components/utilityComponents/userAlert.style";
+import { GetUsersAsState, GetJobsState } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { adminStyles } from "./admin.style";
-import { alertStyle } from "../components/utilityComponents/userAlert.style";
 
 export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -58,8 +58,13 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
 
   useEffect(() => {
     if (accessToken !== null) {
-      GetUsersAsState(accessToken, setWorkers, { querySelector: "workers" });
-      GetJobsState(accessToken, setTasks);
+      try {
+        GetUsersAsState(accessToken, setWorkers, { querySelector: "workers" });
+        GetJobsState(accessToken, setTasks);
+        return () => clearInterval();
+      } catch (error) {
+        return;
+      }
     }
   }, []);
 
