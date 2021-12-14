@@ -19,7 +19,8 @@ const CheckToken = async () => {
     const isTokenValid = await IsAccessTokenValid(localToken);
     if (isTokenValid === false) {
       refreshToken = localStorage.getItem("refreshtoken");
-      let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
+      let newAccessToken: string = await GetAccessTokenFromRefresh("asdklasdlasdli");
+      // let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
       localStorage.setItem("accesstoken", newAccessToken);
     }
     return true;

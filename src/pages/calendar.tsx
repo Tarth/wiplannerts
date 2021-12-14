@@ -13,8 +13,9 @@ import {
 import { LogoutIfUserIsInvalid } from "../components/utilityComponents/auth";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
-import { ArrowForward, ArrowBack } from "@material-ui/icons";
+import { ArrowForward, ArrowBack, BugReport } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
+import { access } from "fs";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
@@ -28,17 +29,24 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   // fetch the data from the db every minute
 
   useEffect(() => {
-    try {
-      LogoutIfUserIsInvalid({ setIsLoggedIn });
-      GetJobsState(accessToken, setTasks);
-      setInterval(() => {
+    const abortController = new AbortController();
+    void (async function fetchData() {
+      try {
         LogoutIfUserIsInvalid({ setIsLoggedIn });
         GetJobsState(accessToken, setTasks);
-      }, 60000);
-      return () => clearInterval();
-    } catch (error) {
-      return;
-    }
+        setInterval(async () => {
+          await LogoutIfUserIsInvalid({ setIsLoggedIn });
+          const newToken = localStorage.getItem("accesstoken");
+          GetJobsState(newToken, setTasks);
+        }, 5000);
+        return () => clearInterval();
+      } catch (error) {
+        return;
+      }
+    })();
+    return () => {
+      abortController.abort();
+    };
   }, []);
 
   return (
@@ -51,6 +59,9 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
+        <IconButton onClick={() => LogoutIfUserIsInvalid({ setIsLoggedIn })} color="primary">
+          <BugReport></BugReport>
+        </IconButton>
         <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
           <ArrowBack></ArrowBack>
         </IconButton>
