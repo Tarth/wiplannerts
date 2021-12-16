@@ -32,7 +32,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     const abortController = new AbortController();
     void (async function fetchData() {
       try {
-        LogoutIfUserIsInvalid({ setIsLoggedIn });
+        await LogoutIfUserIsInvalid({ setIsLoggedIn });
         GetJobsState(accessToken, setTasks);
         setInterval(async () => {
           await LogoutIfUserIsInvalid({ setIsLoggedIn });

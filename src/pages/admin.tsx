@@ -59,8 +59,10 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   useEffect(() => {
     if (accessToken !== null) {
       try {
-        GetUsersAsState(accessToken, setWorkers, { querySelector: "workers" });
-        GetJobsState(accessToken, setTasks);
+        GetUsersAsState(localStorage.getItem("accesstoken") as string, setWorkers, {
+          querySelector: "workers",
+        });
+        GetJobsState(localStorage.getItem("accesstoken"), setTasks);
         return () => clearInterval();
       } catch (error) {
         return;

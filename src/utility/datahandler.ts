@@ -264,7 +264,6 @@ const MapJob_Worker = (res: DbJob[]) => {
 
 export const GetJobData = async (accessToken: string | null, params?: { id: number }) => {
   try {
-    console.log("");
     const res = await GetDataFromDB(`${url}/calendar`, accessToken as string, params);
     let data: Job_Worker[] | JobUserDelete[] = [];
     if (res.data.length > 0) {
