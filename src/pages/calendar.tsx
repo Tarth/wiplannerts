@@ -24,7 +24,6 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const accessToken = localStorage.getItem("accesstoken");
   const timer = 5000;
   // fetch the data from the db every minute
 
@@ -54,6 +53,12 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     }
     GetJobsState(validToken as string, setTasks);
   };
+
+  function testFunc<Type>(arg: Type): Type {
+    return arg;
+  }
+
+  console.log(testFunc("Mikkel"));
 
   return (
     <>
