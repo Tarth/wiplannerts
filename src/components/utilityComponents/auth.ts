@@ -3,27 +3,22 @@ import { IsUserValidProp } from "../../models/models";
 
 let refreshToken = localStorage.getItem("refreshtoken");
 
-export const LogoutIfUserIsInvalid = async ({ setIsLoggedIn }: IsUserValidProp) => {
-  const checkToken = await CheckToken();
-  if (checkToken === false) {
-    setIsLoggedIn(false);
-    localStorage.clear();
-    throw true;
-  }
-  return false;
+export const logout = ({ setIsLoggedIn }: IsUserValidProp) => {
+  setIsLoggedIn(false);
+  localStorage.clear();
 };
 
-const CheckToken = async () => {
+export const CheckToken = async () => {
   let localToken = localStorage.getItem("accesstoken");
   try {
     const isTokenValid = await IsAccessTokenValid(localToken);
     if (isTokenValid === false) {
       refreshToken = localStorage.getItem("refreshtoken");
-      let newAccessToken: string = await GetAccessTokenFromRefresh(refreshToken as string);
-      localStorage.setItem("accesstoken", newAccessToken);
+      localToken = await GetAccessTokenFromRefresh(refreshToken as string);
+      localStorage.setItem("accesstoken", localToken as string);
     }
-    return true;
-  } catch {
-    return false;
+    return localToken;
+  } catch (error) {
+    return error;
   }
 };
