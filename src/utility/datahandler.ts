@@ -1,4 +1,5 @@
-import { Job_Worker, DbJob, Worker, JobUserDelete } from "../models/models";
+import { Job_Worker, DbJob, Worker, JobUserDelete, GetDataWithValidToken } from "../models/models";
+import { CheckToken, logout } from "./auth";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiPort = process.env.REACT_APP_API_PORT;
@@ -244,8 +245,12 @@ export const GetJobsState = async (
   setState: (jobs: Job_Worker[]) => void,
   params?: { id: number }
 ) => {
-  const res = await GetJobData(accessToken, params);
-  setState(res as Job_Worker[]);
+  try {
+    const res = await GetJobData(accessToken, params);
+    setState(res as Job_Worker[]);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const MapJob_Worker = (res: DbJob[]) => {
@@ -275,7 +280,7 @@ export const GetJobData = async (accessToken: string | null, params?: { id: numb
     }
     return data;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
@@ -390,7 +395,7 @@ export const AuthenticateUser = async (accessToken: string) => {
 
 export const IsAccessTokenValid = async (accessToken: string | null) => {
   try {
-    await axios.get(`${url}/validate`, {
+    const res = await axios.get(`${url}/validate`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     return true;
@@ -405,5 +410,26 @@ export const GetAccessTokenFromRefresh = async (refreshToken: string) => {
     return res.data.accessToken;
   } catch (error) {
     throw error;
+  }
+};
+export const getDataWithValidToken = async ({
+  setIsLoggedIn,
+  setTasks,
+  setWorkers,
+}: GetDataWithValidToken) => {
+  try {
+    const validToken = await CheckToken();
+    if (typeof validToken !== "string") {
+      logout({ setIsLoggedIn });
+      return;
+    }
+    if (setWorkers !== undefined) {
+      GetUsersAsState(validToken as string, setWorkers, {
+        querySelector: "workers",
+      });
+    }
+    GetJobsState(validToken as string, setTasks);
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -12,7 +12,7 @@ import { Navigation } from "../components/navigation/navigation";
 import { UserList } from "../components/editUser/editUser";
 import { UserAlertHandler } from "../components/utilityComponents/userAlert";
 import { alertStyle } from "../components/utilityComponents/userAlert.style";
-import { GetUsersAsState, GetJobsState } from "../utility/datahandler";
+import { GetUsersAsState, GetJobsState, getDataWithValidToken } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { adminStyles } from "./admin.style";
 
@@ -57,18 +57,32 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const accessToken: string | null = localStorage.getItem("accesstoken");
 
   useEffect(() => {
-    if (accessToken !== null) {
+    const abortController = new AbortController();
+    void (async function fetchData() {
       try {
-        GetUsersAsState(localStorage.getItem("accesstoken") as string, setWorkers, {
-          querySelector: "workers",
-        });
-        GetJobsState(localStorage.getItem("accesstoken"), setTasks);
-        return () => clearInterval();
+        await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        await getDataWithValidToken({ setIsLoggedIn, setTasks, setWorkers });
       } catch (error) {
         return;
       }
-    }
+    })();
+    return () => {
+      abortController.abort();
+    };
   }, []);
+  // useEffect(() => {
+  //   if (accessToken !== null) {
+  //     try {
+  //       GetUsersAsState(localStorage.getItem("accesstoken") as string, setWorkers, {
+  //         querySelector: "workers",
+  //       });
+  //       GetJobsState(localStorage.getItem("accesstoken"), setTasks);
+  //       return () => clearInterval();
+  //     } catch (error) {
+  //       return;
+  //     }
+  //   }
+  // }, []);
 
   const ClickJobs = () => {
     GetJobsState(accessToken, setTasks);

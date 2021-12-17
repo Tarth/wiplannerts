@@ -1,9 +1,9 @@
-import { IsAccessTokenValid, GetAccessTokenFromRefresh } from "../../utility/datahandler";
-import { IsUserValidProp } from "../../models/models";
+import { IsAccessTokenValid, GetAccessTokenFromRefresh } from "./datahandler";
+import { SetIsLoggedInProp } from "../models/models";
 
 let refreshToken = localStorage.getItem("refreshtoken");
 
-export const logout = ({ setIsLoggedIn }: IsUserValidProp) => {
+export const logout = ({ setIsLoggedIn }: SetIsLoggedInProp) => {
   setIsLoggedIn(false);
   localStorage.clear();
 };

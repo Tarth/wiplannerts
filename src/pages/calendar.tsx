@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetJobsState } from "../utility/datahandler";
+import { GetJobsState, getDataWithValidToken } from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
 import {
@@ -9,9 +9,7 @@ import {
   format,
   differenceInCalendarDays,
   getISOWeek,
-  getDate,
 } from "date-fns";
-import { CheckToken, logout } from "../components/utilityComponents/auth";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack, BugReport } from "@material-ui/icons";
@@ -24,7 +22,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const timer = 5000;
+  const timer = 60_000;
   // fetch the data from the db every minute
 
   useEffect(() => {
@@ -32,9 +30,9 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     let getDataTimer = setInterval(() => {}, timer);
     void (async function fetchData() {
       try {
-        await getJobsWithValidToken();
+        await getDataWithValidToken({ setIsLoggedIn, setTasks });
         getDataTimer = setInterval(async () => {
-          await getJobsWithValidToken();
+          await getDataWithValidToken({ setIsLoggedIn, setTasks });
         }, timer);
       } catch (error) {
         return;
@@ -46,20 +44,6 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     };
   }, []);
 
-  const getJobsWithValidToken = async () => {
-    const validToken = await CheckToken();
-    if (typeof validToken !== "string") {
-      logout({ setIsLoggedIn });
-    }
-    GetJobsState(validToken as string, setTasks);
-  };
-
-  function testFunc<Type>(arg: Type): Type {
-    return arg;
-  }
-
-  console.log(testFunc("Mikkel"));
-
   return (
     <>
       <Navigation
@@ -70,7 +54,10 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
-        <IconButton onClick={() => CheckToken()} color="primary">
+        <IconButton
+          onClick={async () => await getDataWithValidToken({ setIsLoggedIn, setTasks })}
+          color="primary"
+        >
           <BugReport></BugReport>
         </IconButton>
         <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
