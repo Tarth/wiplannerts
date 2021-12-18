@@ -22,7 +22,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const timer = 60_000;
+  const timer = 5_000;
   // fetch the data from the db every minute
 
   useEffect(() => {
@@ -33,6 +33,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
         getDataTimer = setInterval(async () => {
           await getDataWithValidToken({ setIsLoggedIn, setTasks });
+          console.log("Timer");
         }, timer);
       } catch (error) {
         return;
@@ -103,7 +104,9 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   return (
     <div className="headersdate">
       {daysOfTheWeek.map((x) => (
-        <div className="headerdate">{format(x, "EEEE dd/LL", { locale: da })}</div>
+        <div key={daysOfTheWeek.indexOf(x)} className="headerdate">
+          {format(x, "EEEE dd/LL", { locale: da })}
+        </div>
       ))}
     </div>
   );
@@ -111,7 +114,7 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
 
 const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
-  let sortedByWorker = [];
+  let sortedByWorker: Job_Worker[][] = [];
   let tempMultiDay: Job_Worker[] = [];
 
   // this make sure that tasks that last multiple days, are displayed correctly in the frontend
@@ -152,7 +155,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   return (
     <>
       {sortedByWorker.map((x, i) => (
-        <div className="worker">
+        <div key={sortedByWorker.indexOf(x)} className="worker">
           <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
         </div>
       ))}
@@ -163,7 +166,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
 //Display all tasks of 1 worker during a week
 const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
   const numberOfDays: number = 5;
-  const oneWorkerWeekData = [];
+  const oneWorkerWeekData: Job_Worker[][] = [];
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
@@ -184,7 +187,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
         {oneWorkerWeekData.map((x) => (
-          <DailyTasks tasks={x} index={index} />
+          <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />
         ))}
       </div>
     </>
@@ -197,7 +200,11 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
     <>
       <div className="workerjobs">
         {tasks.map((x) => (
-          <div className="workerjob" style={{ backgroundColor: NameBackgroundColor(index) }}>
+          <div
+            key={x.id}
+            className="workerjob"
+            style={{ backgroundColor: NameBackgroundColor(index) }}
+          >
             <div>{x.description}</div>
             <div>
               {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
