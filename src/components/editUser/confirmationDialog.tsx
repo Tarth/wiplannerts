@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { DeleteUser, GetJobsReturn, DeleteJob, GetUsersAsState } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { DeleteUserConfirmationProp, AlertProp } from "../../models/models";
@@ -26,12 +27,13 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   });
   const [, setLoading] = useState(false);
   const [, setDeleteConfirmationLoading] = useState(false);
-  const accessToken = localStorage.getItem("accesstoken");
   let userJobsInDb: unknown;
 
   const classes = useStylesConfirmationDialog();
   const ClickOpenConfirm = async () => {
     try {
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string") return accessToken;
       setLoading(true);
       if (accessToken !== null) {
         userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
@@ -57,30 +59,30 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   };
 
   const ClickCloseDelete = async () => {
-    if (accessToken != null) {
-      try {
-        setDeleteConfirmationLoading(true);
-        userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
-        if (Array.isArray(userJobsInDb) && userJobsInDb.length !== 0) {
-          await DeleteJob(userJobsInDb, accessToken);
-        }
-        await DeleteUser(userId, accessToken);
-        await GetUsersAsState(accessToken, setUsers);
-        setUserAlert({
-          type: "success",
-          title: "Succes",
-          text: "Bruger og evt. tilhørende jobs blev slettet fra databasen",
-        });
-        setDeleteConfirmationLoading(false);
-        ClickCloseConfirm();
-        HandleClose();
-      } catch (error) {
-        setLocalAlert({
-          type: "error",
-          title: "Fejl",
-          text: `${error} - Kontakt Winoto`,
-        });
+    try {
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string" || accessToken === null) return accessToken;
+      setDeleteConfirmationLoading(true);
+      userJobsInDb = await GetJobsReturn(accessToken, { id: userId });
+      if (Array.isArray(userJobsInDb) && userJobsInDb.length !== 0) {
+        await DeleteJob(userJobsInDb, accessToken);
       }
+      await DeleteUser(userId, accessToken);
+      await GetUsersAsState(accessToken, setUsers);
+      setUserAlert({
+        type: "success",
+        title: "Succes",
+        text: "Bruger og evt. tilhørende jobs blev slettet fra databasen",
+      });
+      setDeleteConfirmationLoading(false);
+      ClickCloseConfirm();
+      HandleClose();
+    } catch (error) {
+      setLocalAlert({
+        type: "error",
+        title: "Fejl",
+        text: `${error} - Kontakt Winoto`,
+      });
     }
   };
 

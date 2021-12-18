@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { JobFormPropWithModal, Job_Worker } from "../../models/models";
 import { ConfirmationDialog } from "./confirmationDialog";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/formJob";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
-import { JobFormPropWithModal, Job_Worker } from "../../models/models";
-import { UpdateJob, GetJobsState } from "../../utility/datahandler";
 import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
-// import { SnackbarWrapper } from "../utilityComponents/elements/snackBarWrapper";
 import { alertStyle } from "../utilityComponents/userAlert.style";
+import { UpdateJob, GetJobsState } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 
 export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
   description,
@@ -86,13 +86,15 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
     }
     try {
       if (selectedTasks !== undefined) {
+        const accessToken = await CheckToken();
+        if (typeof accessToken !== "string") return accessToken;
         await UpdateJob(
           startDate as string,
           endDate as string,
           description,
           selectedWorkers.map((x) => x.id),
           selectedTasks.id,
-          localStorage.getItem("accesstoken")
+          accessToken
         );
         setUserAlert({
           type: "success",
@@ -101,7 +103,7 @@ export const EditJobDialog: React.FC<JobFormPropWithModal> = ({
         });
         setOpenSnackbar(true);
         if (setTasks !== undefined) {
-          GetJobsState(localStorage.getItem("accesstoken"), setTasks);
+          GetJobsState(accessToken, setTasks);
         }
         HandleClose();
         ResetAlert();

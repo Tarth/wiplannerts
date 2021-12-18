@@ -1,10 +1,11 @@
 import React from "react";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { JobFormPropWithModal } from "../../models/models";
 import { GetJobsState, PostJob } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormJob } from "../utilityComponents/formJob";
-import { Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { alertStyle } from "../utilityComponents/userAlert.style";
 
@@ -31,7 +32,6 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
   setTasks,
 }) => {
   const { alertDiv } = alertStyle();
-  const accessToken = localStorage.getItem("accesstoken");
 
   let alert = (
     <div className={alertDiv}>
@@ -67,6 +67,8 @@ export const AddJobForm: React.FC<JobFormPropWithModal> = ({
       });
     } else {
       try {
+        const accessToken = await CheckToken();
+        if (typeof accessToken !== "string") return accessToken;
         await PostJob(
           startDate as string,
           endDate as string,

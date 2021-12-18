@@ -13,6 +13,7 @@ import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
 import { ResetUserInputFields } from "../utilityComponents/resetinputfields";
 import { PostUser, GetUsersAsState } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 import { alertStyle } from "../utilityComponents/userAlert.style";
 import { formStyles, userStyles } from "../utilityComponents/form.style";
 
@@ -66,7 +67,8 @@ export const AddUser: React.FC<AddUserProp> = ({
       return;
     }
     try {
-      const accessToken = localStorage.getItem("accesstoken") as string;
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string") return accessToken;
       if (userGroup === "worker") {
         await PostUser(userName, userGroup, password, accessToken, workerName);
       } else {

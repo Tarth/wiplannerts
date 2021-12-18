@@ -11,6 +11,7 @@ import {
 import { EditUserDialogProp } from "../../models/models";
 import { DeleteUserDialog } from "./confirmationDialog";
 import { UpdateUser, GetUsersAsState } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 import { UserAlertHandler } from "../utilityComponents/userAlert";
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { FormUser } from "../utilityComponents/formUser";
@@ -43,7 +44,6 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
 
   const CloseAndSave = async () => {
     let _password = "";
-    const accessToken = localStorage.getItem("accesstoken");
     if (
       username.length === 0 ||
       tempPassword !== tempRepeatedPassword ||
@@ -64,6 +64,8 @@ export const EditUserDialog: React.FC<EditUserDialogProp> = ({
     }
 
     try {
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string") return accessToken;
       await UpdateUser(username, usergroup, _password, accessToken as string, userId, workerName);
       if (error === true) {
         setError(false);

@@ -10,6 +10,7 @@ import {
 import { ButtonWrapper } from "../utilityComponents/elements/buttonWrapper";
 import { ResetJobInputFields } from "../utilityComponents/resetinputfields";
 import { DeleteJob, GetJobsState } from "../../utility/datahandler";
+import { CheckToken } from "../../utility/auth";
 import { useStyleConfirmationDialog } from "./style";
 export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
   setStartDate,
@@ -24,7 +25,6 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
 }) => {
   const [openConfirmModal, setOpenConfirmModal] = React.useState(false);
   const classes = useStyleConfirmationDialog();
-  const accessToken = localStorage.getItem("accesstoken");
 
   const handleClickOpen = () => {
     setOpenConfirmModal(true);
@@ -60,6 +60,8 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
       return;
     }
     try {
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string") return accessToken;
       await DeleteJob(selectedTasks.id, accessToken);
       setUserAlert({
         type: "success",
