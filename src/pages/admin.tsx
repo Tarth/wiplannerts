@@ -70,19 +70,6 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
       abortController.abort();
     };
   }, []);
-  // useEffect(() => {
-  //   if (accessToken !== null) {
-  //     try {
-  //       GetUsersAsState(localStorage.getItem("accesstoken") as string, setWorkers, {
-  //         querySelector: "workers",
-  //       });
-  //       GetJobsState(localStorage.getItem("accesstoken"), setTasks);
-  //       return () => clearInterval();
-  //     } catch (error) {
-  //       return;
-  //     }
-  //   }
-  // }, []);
 
   const ClickJobs = () => {
     GetJobsState(accessToken, setTasks);

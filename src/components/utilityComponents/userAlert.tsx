@@ -12,6 +12,6 @@ export const UserAlertHandler: React.FC<AlertProp> = ({ type, title, text }) => 
       </Alert>
     );
   } else {
-    return <div></div>;
+    return <></>;
   }
 };

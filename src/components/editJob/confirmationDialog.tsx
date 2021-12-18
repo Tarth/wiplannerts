@@ -102,13 +102,13 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProp> = ({
         </DialogContent>
         <DialogActions>
           <ButtonWrapper
-            onClick={CloseConfirmModal} // Luk kun confirmModal
+            onClick={CloseConfirmModal}
             caption="Nej"
             color="primary"
             variant="text"
           ></ButtonWrapper>
           <ButtonWrapper
-            onClick={ConfirmJobDelete} //Luk både confirm og normal modal
+            onClick={ConfirmJobDelete}
             caption="Ja"
             variant="text"
             color="primary"

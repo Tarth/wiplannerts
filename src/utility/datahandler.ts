@@ -392,15 +392,18 @@ export const AuthenticateUser = async (accessToken: string) => {
     return error;
   }
 };
-
+// res.data
 export const IsAccessTokenValid = async (accessToken: string | null) => {
   try {
     const res = await axios.get(`${url}/validate`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
+    if (res.data.isSuccess === false) {
+      return false;
+    }
     return true;
-  } catch {
-    return false;
+  } catch (error) {
+    return error;
   }
 };
 

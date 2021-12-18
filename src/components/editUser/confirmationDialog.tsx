@@ -85,13 +85,13 @@ export const DeleteUserDialog: React.FC<DeleteUserConfirmationProp> = ({
   };
 
   let alert = (
-    <div>
+    <>
       <UserAlertHandler
         type={localAlert.type}
         title={localAlert.title}
         text={localAlert.text}
       ></UserAlertHandler>
-    </div>
+    </>
   );
   return (
     <div className={classes.deleteButton}>
