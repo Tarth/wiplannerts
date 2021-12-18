@@ -14,7 +14,9 @@ import { UserAlertHandler } from "../components/utilityComponents/userAlert";
 import { alertStyle } from "../components/utilityComponents/userAlert.style";
 import { GetUsersAsState, GetJobsState, getDataWithValidToken } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
+import { CheckToken } from "../utility/auth";
 import { adminStyles } from "./admin.style";
+import { type } from "os";
 
 export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
@@ -54,8 +56,6 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
   const { buttonStyle } = classesAdmin;
   const { alertDiv } = classesAlert;
 
-  const accessToken: string | null = localStorage.getItem("accesstoken");
-
   useEffect(() => {
     const abortController = new AbortController();
     void (async function fetchData() {
@@ -71,16 +71,22 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
     };
   }, []);
 
-  const ClickJobs = () => {
-    GetJobsState(accessToken, setTasks);
-    GetUsersAsState(accessToken as string, setWorkers, { querySelector: "workers" });
-    setViews("editjob");
-    if (userAlert.text !== defaultJobText) {
-      setUserAlert({
-        type: "info",
-        title: "information",
-        text: defaultJobText,
-      });
+  const ClickJobs = async () => {
+    try {
+      const accessToken = await CheckToken();
+      if (typeof accessToken !== "string") return accessToken;
+      GetJobsState(accessToken, setTasks);
+      GetUsersAsState(accessToken as string, setWorkers, { querySelector: "workers" });
+      setViews("editjob");
+      if (userAlert.text !== defaultJobText) {
+        setUserAlert({
+          type: "info",
+          title: "information",
+          text: defaultJobText,
+        });
+      }
+    } catch (error) {
+      return error;
     }
   };
 

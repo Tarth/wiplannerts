@@ -8,7 +8,7 @@ export const logout = ({ setIsLoggedIn }: SetIsLoggedInProp) => {
   localStorage.clear();
 };
 
-export const CheckToken = async () => {
+export const CheckToken = async (): Promise<string | null | unknown> => {
   let localToken = localStorage.getItem("accesstoken");
   try {
     const isTokenValid = await IsAccessTokenValid(localToken);

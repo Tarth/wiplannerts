@@ -22,18 +22,17 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const timer = 5_000;
-  // fetch the data from the db every minute
+  const fetchTimer = 60_000;
 
   useEffect(() => {
     const abortController = new AbortController();
-    let getDataTimer = setInterval(() => {}, timer);
+    let getDataTimer = setInterval(() => {}, fetchTimer);
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
         getDataTimer = setInterval(async () => {
           await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        }, timer);
+        }, fetchTimer);
       } catch (error) {
         return;
       }

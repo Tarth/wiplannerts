@@ -1,5 +1,6 @@
 import { Job_Worker, DbJob, Worker, JobUserDelete, GetDataWithValidToken } from "../models/models";
 import { CheckToken, logout } from "./auth";
+import { parseDate } from "./date";
 
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiPort = process.env.REACT_APP_API_PORT;
@@ -347,11 +348,13 @@ const UpdateJobInDB = async (
   accessToken: string
 ) => {
   try {
+    if (start_date || end_date) {
+    }
     let res = await axios.put(
       localurl,
       {
-        startdate: start_date,
-        enddate: end_date,
+        startdate: parseDate(start_date),
+        enddate: parseDate(end_date),
         description: description,
         workerid: workersOnJob,
         jobid: job_id,

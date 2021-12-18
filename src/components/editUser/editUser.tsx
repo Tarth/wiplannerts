@@ -7,6 +7,7 @@ import { Worker, ViewProp } from "../../models/models";
 import { GetUsersAsState } from "../../utility/datahandler";
 import { getUserGroupString } from "../../utility/usergroups";
 import { ParseJWT } from "../../utility/parsetoken";
+import { CheckToken } from "../../utility/auth";
 import { EditUserDialog } from "./editUserDialog";
 import { AddUser } from "../addUser/addUser";
 import { useStyles } from "./style";
@@ -35,14 +36,17 @@ export const UserList: React.FC<ViewProp> = ({
 
   useEffect(() => {
     async function FetchUserData() {
-      const token: string | null = localStorage.getItem("accesstoken");
-      if (token !== null) {
-        await GetUsersAsState(token, setUsers);
+      try {
+        const accessToken = await CheckToken();
+        if (typeof accessToken !== "string") return accessToken;
+        await GetUsersAsState(accessToken, setUsers);
+      } catch (error) {
+        return error;
+      } finally {
+        setLoading(false);
       }
     }
-    FetchUserData().then(() => {
-      setLoading(false);
-    });
+    FetchUserData();
   }, []);
 
   useEffect(() => {
