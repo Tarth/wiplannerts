@@ -33,7 +33,6 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
         getDataTimer = setInterval(async () => {
           await getDataWithValidToken({ setIsLoggedIn, setTasks });
-          console.log("Timer");
         }, timer);
       } catch (error) {
         return;
