@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetJobsState, getDataWithValidToken } from "../utility/datahandler";
+import { getDataWithValidToken } from "../utility/datahandler";
 import { NameBackgroundColor } from "../utility/colorcodes";
 import { Job_Worker, DateProp, CalendarDataProps, IsUserLoggedInProp } from "../models/models";
 import {
@@ -12,7 +12,7 @@ import {
 } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
-import { ArrowForward, ArrowBack, BugReport } from "@material-ui/icons";
+import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
@@ -53,12 +53,6 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 
       <DisplayHeaders currentDate={currentDate} />
       <div className="leftrightbtngrp">
-        <IconButton
-          onClick={async () => await getDataWithValidToken({ setIsLoggedIn, setTasks })}
-          color="primary"
-        >
-          <BugReport></BugReport>
-        </IconButton>
         <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
           <ArrowBack></ArrowBack>
         </IconButton>
