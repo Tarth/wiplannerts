@@ -9,6 +9,9 @@ import {
   format,
   differenceInCalendarDays,
   getISOWeek,
+  isEqual,
+  isBefore,
+  parse,
 } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
@@ -30,16 +33,16 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        getDataTimer = setInterval(async () => {
-          await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        }, fetchTimer);
+        // getDataTimer = setInterval(async () => {
+        //   await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        // }, fetchTimer);
       } catch (error) {
         return;
       }
     })();
     return () => {
       abortController.abort();
-      clearInterval(getDataTimer);
+      // clearInterval(getDataTimer);
     };
   }, []);
 
@@ -162,7 +165,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
-
+  // TODO: Sort data by time as well as Date
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
@@ -174,12 +177,18 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
     );
   }
 
+  console.log(oneWorkerWeekData);
   return (
     <>
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
         {oneWorkerWeekData.map((x) => (
-          <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />
+          <DailyTasks
+            key={oneWorkerWeekData.indexOf(x)}
+            tasks={x}
+            index={index}
+            currentDate={currentDate}
+          />
         ))}
       </div>
     </>
@@ -187,10 +196,28 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
+  let color = "#000000";
+  // if (tasks.length > 0) {
+  //   const { start, end } = tasks[0];
+  //   const date1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  //   const date2 = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+  //   const deltaEndAndCurrentDate = differenceInCalendarDays(date2, currentDate as Date);
+  //   const deltaStartAndEndDate = differenceInCalendarDays(date2, date1);
+
+  //   console.log(
+  //     `${
+  //       tasks[0].description
+  //     } - ${date1.getDate()} ${date2.getDate()} - ${deltaStartAndEndDate} - ${deltaEndAndCurrentDate}`
+  //   );
+
+  //   if (deltaStartAndEndDate < deltaEndAndCurrentDate) {
+  //     color = NameBackgroundColor(index);
+  //   }
+  // }
   return (
     <>
-      <div className="workerjobs">
+      <div className="workerjobs" style={{ borderLeft: `1px solid ${color}` }}>
         {tasks.map((x) => (
           <div
             key={x.id}
