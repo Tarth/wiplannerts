@@ -177,7 +177,15 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
     );
   }
 
-  console.log(oneWorkerWeekData);
+  oneWorkerWeekData.forEach((array) => {
+    if (array.length > 0) {
+      array.sort((a, b) => {
+        if (a.start > b.start) return 1;
+        if (a.start < b.start) return -1;
+        return 0;
+      });
+    }
+  });
   return (
     <>
       <DisplayWorkerName tasks={tasks} />
