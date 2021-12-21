@@ -165,7 +165,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
-  // TODO: Sort data by time as well as Date
+
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
       tasks.filter(
@@ -186,6 +186,8 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
       });
     }
   });
+
+  // console.log(oneWorkerWeekData);
   return (
     <>
       <DisplayWorkerName tasks={tasks} />
@@ -203,26 +205,84 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   );
 };
 
+
+// const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
+//   const numberOfDays: number = 5;
+//   const oneWorkerWeekData: Job_Worker[][] = [];
+//   const firstDayOfWeek = startOfWeek(currentDate as Date, {
+//     weekStartsOn: 1,
+//   });
+//   for (let i = 0; i < numberOfDays; i++) {
+//     oneWorkerWeekData.push(
+//       tasks.filter(
+//         (x) =>
+//           x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
+//           x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
+//           x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
+//       )
+//     );
+//   }
+
+//   oneWorkerWeekData.forEach((array) => {
+//     if (array.length > 0) {
+//       array.sort((a, b) => {
+//         if (a.start > b.start) return 1;
+//         if (a.start < b.start) return -1;
+//         return 0;
+//       });
+//     }
+//   });
+
+//   // console.log(oneWorkerWeekData);
+//   return (
+//     <>
+//       <DisplayWorkerName tasks={tasks} />
+//       <div className="workerweek">
+//         {oneWorkerWeekData.map((x) => (
+//           <DailyTasks
+//             key={oneWorkerWeekData.indexOf(x)}
+//             tasks={x}
+//             index={index}
+//             currentDate={currentDate}
+//           />
+//         ))}
+//       </div>
+//     </>
+//   );
+// };
+
 // Display all tasks during a day
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
+  const firstDayOfWeek = startOfWeek(currentDate as Date, {
+    weekStartsOn: 1,
+  });
+  // console.log(tasks);
+
   let color = "#000000";
-  // if (tasks.length > 0) {
-  //   const { start, end } = tasks[0];
-  //   const date1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-  //   const date2 = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-  //   const deltaEndAndCurrentDate = differenceInCalendarDays(date2, currentDate as Date);
-  //   const deltaStartAndEndDate = differenceInCalendarDays(date2, date1);
+  if (tasks.length > 0) {
+    const { start, end } = tasks[0];
+    const date1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+    const date2 = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+    const deltaEndAndCurrentDate = differenceInCalendarDays(date2, firstDayOfWeek as Date);
+    const deltaStartAndEndDate = differenceInCalendarDays(date2, date1);
+    // console.log(`${tasks[0].description}: ${deltaStartAndEndDate}`);
+    // console.log(
+    //   `${
+    //     tasks[0].description
+    //   } - ${date1.getDate()} ${date2.getDate()} - deltaStartAndEnd: ${deltaStartAndEndDate} - deltaTotalDays: ${deltaEndAndCurrentDate}`
+    // );
 
-  //   console.log(
-  //     `${
-  //       tasks[0].description
-  //     } - ${date1.getDate()} ${date2.getDate()} - ${deltaStartAndEndDate} - ${deltaEndAndCurrentDate}`
-  //   );
+    //
 
-  //   if (deltaStartAndEndDate < deltaEndAndCurrentDate) {
-  //     color = NameBackgroundColor(index);
-  //   }
-  // }
+    if (deltaStartAndEndDate < deltaEndAndCurrentDate) {
+      // if (){
+
+      // }
+      // if (deltaStartAndEndDate < deltaEndAndCurrentDate && deltaStartAndEndDate > 0) {
+      color = NameBackgroundColor(index);
+    }
+    // currentDate er dags dato, dvs den skifter: Tue Dec 21 2021 09:59:02 GMT+0100 (Centraleuropæisk normaltid)
+  }
   return (
     <>
       <div className="workerjobs" style={{ borderLeft: `1px solid ${color}` }}>
