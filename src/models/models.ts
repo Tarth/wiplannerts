@@ -19,6 +19,7 @@ interface Job {
 }
 export interface Job_Worker extends Job {
   worker: Worker;
+  deltaDays?: number;
 }
 export interface Job_WorkerArray extends Job {
   workers: Worker[];
