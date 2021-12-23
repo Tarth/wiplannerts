@@ -191,7 +191,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
     <>
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
-        {oneWorkerWeekData.map((x) => (
+        {oneWorkerWeekData.map((x, dailyIndex) => (
           <DailyTasks
             key={oneWorkerWeekData.indexOf(x)}
             tasks={x}
@@ -210,29 +210,30 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) 
     weekStartsOn: 1,
   });
   if (tasks.length !== 0) {
-    console.log("🚀 ~ tasks", tasks);
   }
-  let color = "#000000";
+  let borderColor = "#000000";
   if (tasks.length > 0) {
     const { start, end, deltaDays } = tasks[0];
-    const date1 = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-    const date2 = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-    const deltaEndAndCurrentDate = differenceInCalendarDays(date2, firstDayOfWeek as Date);
-    const deltaStartAndEndDate = differenceInCalendarDays(date2, date1);
-    const test = subDays(end, deltaDays as number);
 
-    if (deltaDays !== 0) {
-      color = NameBackgroundColor(index);
+    if (deltaDays !== undefined) {
+      if (deltaDays > 0 && subDays(end, deltaDays) < start) {
+        borderColor = NameBackgroundColor(index);
+      }
     }
   }
+
   return (
     <>
-      <div className="workerjobs" style={{ borderLeft: `1px solid ${color}` }}>
+      <div className="workerjobs" style={{ borderTop: "1px solid black" }}>
+        {/* <div className="workerjobs" style={{ borderLeft: `1px solid ${color}` }}> */}
         {tasks.map((x) => (
           <div
             key={x.id}
             className="workerjob"
-            style={{ backgroundColor: NameBackgroundColor(index) }}
+            style={{
+              backgroundColor: NameBackgroundColor(index),
+              borderLeft: `1px solid ${borderColor}`,
+            }}
           >
             <div>{x.description}</div>
             <div>

@@ -43,8 +43,8 @@ div.leftrightbtngrp > button {
 }
 
 .headerdate {
-  border-left: 1px solid black;
-  border-top: 1px solid black;
+  /* border-left: 1px solid black; */
+  /* border-top: 1px solid black; */
   flex: 1;
   text-transform: capitalize;
   font-size: x-large;
@@ -52,7 +52,7 @@ div.leftrightbtngrp > button {
 }
 
 .headerdate:last-child {
-  border-right: 1px solid black;
+  /* border-right: 1px solid black; */
 }
 
 .headermonthandyear {
@@ -81,11 +81,11 @@ div.leftrightbtngrp > button {
 }
 .worker {
   display: flex;
-  border: 1px solid black;
-  border-bottom: none;
+  /* border: 1px solid black; */
+  /* border-bottom: none; */
 }
 .worker:last-child {
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
 }
 
 .workername {
@@ -100,15 +100,15 @@ div.leftrightbtngrp > button {
 .workerjobs {
   display: flex;
   flex: 1;
-  border-left: 1px solid black;
+  /* border-left: 1px solid black; */
   min-height: 44px;
 }
 .workerjob {
   flex: 1;
   text-align: center;
-  border-left: 1px solid black;
+  /* border-left: 1px solid black; */
 }
 .workerjob:only-child,
 .workerjob:first-child {
-  border-left: none;
+  /* border-left: none; */
 }
