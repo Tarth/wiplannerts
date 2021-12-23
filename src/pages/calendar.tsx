@@ -9,9 +9,6 @@ import {
   format,
   differenceInCalendarDays,
   getISOWeek,
-  isEqual,
-  isBefore,
-  parse,
 } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
@@ -192,12 +189,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
         {oneWorkerWeekData.map((x, dailyIndex) => (
-          <DailyTasks
-            key={oneWorkerWeekData.indexOf(x)}
-            tasks={x}
-            index={index}
-            currentDate={currentDate}
-          />
+          <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />
         ))}
       </div>
     </>
@@ -205,19 +197,16 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
-  const firstDayOfWeek = startOfWeek(currentDate as Date, {
-    weekStartsOn: 1,
-  });
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   if (tasks.length !== 0) {
   }
-  let borderColor = "#000000";
+  let borderColorLeft = "#000000";
   if (tasks.length > 0) {
     const { start, end, deltaDays } = tasks[0];
 
     if (deltaDays !== undefined) {
       if (deltaDays > 0 && subDays(end, deltaDays) < start) {
-        borderColor = NameBackgroundColor(index);
+        borderColorLeft = NameBackgroundColor(index);
       }
     }
   }
@@ -225,22 +214,31 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) 
   return (
     <>
       <div className="workerjobs" style={{ borderTop: "1px solid black" }}>
-        {/* <div className="workerjobs" style={{ borderLeft: `1px solid ${color}` }}> */}
-        {tasks.map((x) => (
+        {tasks.length === 0 ? (
           <div
-            key={x.id}
             className="workerjob"
             style={{
-              backgroundColor: NameBackgroundColor(index),
-              borderLeft: `1px solid ${borderColor}`,
+              backgroundColor: "white",
+              borderLeft: `1px solid black`,
             }}
-          >
-            <div>{x.description}</div>
-            <div>
-              {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+          ></div>
+        ) : (
+          tasks.map((x) => (
+            <div
+              key={x.id}
+              className="workerjob"
+              style={{
+                backgroundColor: NameBackgroundColor(index),
+                borderLeft: `1px solid ${borderColorLeft}`,
+              }}
+            >
+              <div>{x.description}</div>
+              <div>
+                {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </>
   );
