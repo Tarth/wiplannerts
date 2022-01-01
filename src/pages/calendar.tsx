@@ -189,7 +189,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
     <>
       <DisplayWorkerName tasks={tasks} />
       <div className="workerweek">
-        {oneWorkerWeekData.map((x, dailyIndex) => (
+        {oneWorkerWeekData.map((x) => (
           <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />
         ))}
       </div>
@@ -252,54 +252,6 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
     </>
   );
 };
-// const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
-//   let borderColorLeft = "#000000";
-//   let borderColorRight = "none";
-//   if (tasks.length > 0) {
-//     const { start, end, deltaDays } = tasks[0];
-//     const lastJobOfDay = tasks[tasks.length - 1];
-//     const isJobOnFriday = isFriday(lastJobOfDay.start);
-//     if (isJobOnFriday && lastJobOfDay.deltaDays === 0) {
-//       borderColorRight = `1px solid black`;
-//     }
-//     if (deltaDays !== undefined && deltaDays > 0 && subDays(end, deltaDays) < start) {
-//       borderColorLeft = NameBackgroundColor(index);
-//     }
-//   }
-
-//   return (
-//     <>
-//       <div className="workerjobs" style={{ borderTop: "1px solid black" }}>
-//         {tasks.length === 0 ? (
-//           <div
-//             className="workerjob"
-//             style={{
-//               backgroundColor: "white",
-//               borderLeft: `1px solid black`,
-//             }}
-//           ></div>
-//         ) : (
-//           tasks.map((x) => (
-//             <div
-//               key={x.id}
-//               className="workerjob"
-//               style={{
-//                 backgroundColor: NameBackgroundColor(index),
-//                 borderLeft: `1px solid ${borderColorLeft}`,
-//                 borderRight: `${borderColorRight}`,
-//               }}
-//             >
-//               <div>{x.description}</div>
-//               <div>
-//                 {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-//               </div>
-//             </div>
-//           ))
-//         )}
-//       </div>
-//     </>
-//   );
-// };
 
 const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   const nameToDisplay = [];
