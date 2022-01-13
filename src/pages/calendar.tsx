@@ -15,6 +15,7 @@ import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
+import { borderColor } from "@material-ui/system";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
@@ -201,57 +202,63 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
-  if (tasks.length > 0) {
-    const { start, end, deltaDays } = tasks[0];
+  let tasksInADay: HTMLDivElement[];
+
+  if (tasks.length !== 0) {
+    console.log("🚀 ~ tasks", tasks);
     const lastJobOfDay = tasks[tasks.length - 1];
+    const firstJobOfDay = tasks[0];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
 
-    // if (isJobOnFriday) {
-    //   console.log("🚀 ~ tasks", tasks);
-    // }
-    // if (isJobOnFriday) {
-    //   if (lastJobOfDay.deltaDays === 0) {
-    //     console.log("🚀 ~ lastJobOfDay", lastJobOfDay);
-    //     borderColorRight = `1px solid black`;
-    //   }
-    // } else {
-    //   borderColorRight = NameBackgroundColor(index);
+    // for (let i=0; i < tasks.length, i++){
+    //  tasksInADay.push(<div
+    //   key={x.id}
+    //   className="workerjob"
+    //   style={{
+    //     backgroundColor: NameBackgroundColor(index),
+    //     borderLeft: `1px solid ${borderColorLeft}`,
+    //     borderRight: `1px solid ${borderColorRight}`,
+    //   }}
+    // >
+    //   <div>{`${x.description} - ${x.deltaDays}`}</div>
+    //   <div>
+    //     {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+    //   </div>
+    // </div>)
     // }
 
-    // if (deltaDays !== undefined && deltaDays > 0 && subDays(end, deltaDays) < start) {
-    //   borderColorLeft = NameBackgroundColor(index);
-    // }
+    tasksInADay = tasks.map((x) => (
+      <div
+        key={x.id}
+        className="workerjob"
+        style={{
+          backgroundColor: NameBackgroundColor(index),
+          borderLeft: `1px solid ${borderColorLeft}`,
+          borderRight: `1px solid ${borderColorRight}`,
+        }}
+      >
+        <div>{`${x.description} - ${x.deltaDays}`}</div>
+        <div>
+          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+        </div>
+      </div>
+    ));
+  } else {
+    tasksInADay = (
+      <div
+        className="workerjob"
+        style={{
+          backgroundColor: "white",
+          borderLeft: `1px solid black`,
+        }}
+      ></div>
+    );
   }
 
   return (
     <>
       <div className="workerjobs" style={{ borderTop: "1px solid black" }}>
-        {tasks.length === 0 ? (
-          <div
-            className="workerjob"
-            style={{
-              backgroundColor: "white",
-              borderLeft: `1px solid black`,
-            }}
-          ></div>
-        ) : (
-          tasks.map((x, localIndex) => (
-            <div
-              key={x.id}
-              className="workerjob"
-              style={{
-                backgroundColor: NameBackgroundColor(index),
-                borderLeft: `1px solid ${borderColorLeft}`,
-                // borderRight: borderColorRight,
-              }}
-            >
-              <div>{`${x.description} - ${localIndex}`}</div>
-              <div>
-                {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-              </div>
-            </div>
-          ))
-        )}
+        {tasksInADay}
       </div>
     </>
   );
