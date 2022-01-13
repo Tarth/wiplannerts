@@ -202,47 +202,48 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
-  let tasksInADay: HTMLDivElement[];
+  let tasksInADay: any;
 
   if (tasks.length !== 0) {
-    console.log("🚀 ~ tasks", tasks);
     const lastJobOfDay = tasks[tasks.length - 1];
     const firstJobOfDay = tasks[0];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
 
-    // for (let i=0; i < tasks.length, i++){
-    //  tasksInADay.push(<div
-    //   key={x.id}
-    //   className="workerjob"
-    //   style={{
-    //     backgroundColor: NameBackgroundColor(index),
-    //     borderLeft: `1px solid ${borderColorLeft}`,
-    //     borderRight: `1px solid ${borderColorRight}`,
-    //   }}
-    // >
-    //   <div>{`${x.description} - ${x.deltaDays}`}</div>
-    //   <div>
-    //     {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-    //   </div>
-    // </div>)
-    // }
-
-    tasksInADay = tasks.map((x) => (
-      <div
-        key={x.id}
-        className="workerjob"
-        style={{
-          backgroundColor: NameBackgroundColor(index),
-          borderLeft: `1px solid ${borderColorLeft}`,
-          borderRight: `1px solid ${borderColorRight}`,
-        }}
-      >
-        <div>{`${x.description} - ${x.deltaDays}`}</div>
-        <div>
-          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-        </div>
+    for (let i=0; i < tasks.length, i++){
+     const {id, description, deltaDays, start, end} = tasks[i];
+      
+    tasksInADay.push(<div
+      key={id}
+      className="workerjob"
+      style={{
+        backgroundColor: NameBackgroundColor(index),
+        borderLeft: `1px solid ${borderColorLeft}`,
+        borderRight: `1px solid ${borderColorRight}`,
+      }}
+    >
+      <div>{`${description} - ${deltaDays}`}</div>
+      <div>
+        {format(start, "HH:mm")} - {format(end, "HH:mm")}
       </div>
-    ));
+    </div>)
+    }
+
+    // tasksInADay = tasks.map((x) => (
+    //   <div
+    //     key={x.id}
+    //     className="workerjob"
+    //     style={{
+    //       backgroundColor: NameBackgroundColor(index),
+    //       borderLeft: `1px solid ${borderColorLeft}`,
+    //       borderRight: `1px solid ${borderColorRight}`,
+    //     }}
+    //   >
+    //     <div>{`${x.description} - ${x.deltaDays}`}</div>
+    //     <div>
+    //       {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+    //     </div>
+    //   </div>
+    // ));
   } else {
     tasksInADay = (
       <div
