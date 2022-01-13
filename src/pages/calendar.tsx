@@ -22,7 +22,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 11, 21));
   const fetchTimer = 60_000;
 
   useEffect(() => {
@@ -200,23 +200,27 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 // Display all tasks during a day
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   let borderColorLeft = "#000000";
-  let borderColorRight = "none";
+  let borderColorRight = NameBackgroundColor(index);
   if (tasks.length > 0) {
     const { start, end, deltaDays } = tasks[0];
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
 
-    if (isJobOnFriday) {
-      if (lastJobOfDay.deltaDays === 0) {
-        console.log("🚀 ~ lastJobOfDay", lastJobOfDay);
-        borderColorRight = `1px solid black`;
-      }
-    } else {
-      borderColorRight = "none";
-    }
-    if (deltaDays !== undefined && deltaDays > 0 && subDays(end, deltaDays) < start) {
-      borderColorLeft = NameBackgroundColor(index);
-    }
+    // if (isJobOnFriday) {
+    //   console.log("🚀 ~ tasks", tasks);
+    // }
+    // if (isJobOnFriday) {
+    //   if (lastJobOfDay.deltaDays === 0) {
+    //     console.log("🚀 ~ lastJobOfDay", lastJobOfDay);
+    //     borderColorRight = `1px solid black`;
+    //   }
+    // } else {
+    //   borderColorRight = NameBackgroundColor(index);
+    // }
+
+    // if (deltaDays !== undefined && deltaDays > 0 && subDays(end, deltaDays) < start) {
+    //   borderColorLeft = NameBackgroundColor(index);
+    // }
   }
 
   return (
@@ -231,17 +235,17 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
             }}
           ></div>
         ) : (
-          tasks.map((x) => (
+          tasks.map((x, localIndex) => (
             <div
               key={x.id}
               className="workerjob"
               style={{
                 backgroundColor: NameBackgroundColor(index),
                 borderLeft: `1px solid ${borderColorLeft}`,
-                borderRight: borderColorRight,
+                // borderRight: borderColorRight,
               }}
             >
-              <div>{x.description}</div>
+              <div>{`${x.description} - ${localIndex}`}</div>
               <div>
                 {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
               </div>
