@@ -15,7 +15,7 @@ import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
-import { borderColor } from "@material-ui/system";
+import { calendarStyles } from "./calendar.style";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
@@ -25,6 +25,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 11, 21));
   const fetchTimer = 60_000;
+  const { workerContainer, leftRightBtngrp } = calendarStyles();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -54,7 +55,8 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
       ></Navigation>
 
       <DisplayHeaders currentDate={currentDate} />
-      <div className="leftrightbtngrp">
+      {/* <div className="leftrightbtngrp"> */}
+      <div className={leftRightBtngrp}>
         <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
           <ArrowBack></ArrowBack>
         </IconButton>
@@ -63,7 +65,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
         </IconButton>
       </div>
 
-      <div className="workercontainer">
+      <div className={workerContainer}>
         <DisplayWeekDays currentDate={currentDate} />
         <AllWorkers tasks={tasks} currentDate={currentDate} />
       </div>
@@ -73,12 +75,13 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
 
 const DisplayHeaders: React.FC<DateProp> = ({ currentDate }) => {
   const initialDate = startOfWeek(currentDate, { weekStartsOn: 1 });
+  const { headerMonthAndYear, headerMonth, headerYear } = calendarStyles();
   return (
     <>
-      <div className="headermonthandyear">
-        <div className="headermonth">{format(initialDate, "MMMM", { locale: da })}</div>
-        <div className="headerweek">Uge {getISOWeek(initialDate)}</div>
-        <div className="headeryear">{format(initialDate, "yyyy", { locale: da })}</div>
+      <div className={headerMonthAndYear}>
+        <div className={headerMonth}>{format(initialDate, "MMMM", { locale: da })}</div>
+        <div>Uge {getISOWeek(initialDate)}</div>
+        <div className={headerYear}>{format(initialDate, "yyyy", { locale: da })}</div>
       </div>
     </>
   );
@@ -91,14 +94,14 @@ const DisplayWeekDays: React.FC<DateProp> = ({ currentDate }) => {
   });
   const numberOfDays = 5;
   let daysOfTheWeek: Date[] = [];
-
+  const { headerDate, headersDate } = calendarStyles();
   for (let i = 0; i < numberOfDays; i++) {
     daysOfTheWeek.push(addDays(firstDayOfWeek, i));
   }
   return (
-    <div className="headersdate">
+    <div className={headersDate}>
       {daysOfTheWeek.map((x) => (
-        <div key={daysOfTheWeek.indexOf(x)} className="headerdate">
+        <div key={daysOfTheWeek.indexOf(x)} className={headerDate}>
           {format(x, "EEEE dd/LL", { locale: da })}
         </div>
       ))}
@@ -164,6 +167,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
+  const { workerWeek } = calendarStyles();
 
   for (let i = 0; i < numberOfDays; i++) {
     oneWorkerWeekData.push(
@@ -189,7 +193,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   return (
     <>
       <DisplayWorkerName tasks={tasks} />
-      <div className="workerweek">
+      <div className={workerWeek}>
         {oneWorkerWeekData.map((x) => (
           <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />
         ))}
@@ -203,51 +207,32 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: any;
+  const { workerJobs, workerJob } = calendarStyles();
 
   if (tasks.length !== 0) {
     const lastJobOfDay = tasks[tasks.length - 1];
-    const firstJobOfDay = tasks[0];
-    const isJobOnFriday = isFriday(lastJobOfDay.start);
-
-    for (let i=0; i < tasks.length, i++){
-     const {id, description, deltaDays, start, end} = tasks[i];
-      
-    tasksInADay.push(<div
-      key={id}
-      className="workerjob"
-      style={{
-        backgroundColor: NameBackgroundColor(index),
-        borderLeft: `1px solid ${borderColorLeft}`,
-        borderRight: `1px solid ${borderColorRight}`,
-      }}
-    >
-      <div>{`${description} - ${deltaDays}`}</div>
-      <div>
-        {format(start, "HH:mm")} - {format(end, "HH:mm")}
+    // const firstJobOfDay = tasks[0];
+    // const isJobOnFriday = isFriday(lastJobOfDay.start);
+    tasksInADay = tasks.map((x) => (
+      <div
+        key={x.id}
+        className={workerJob}
+        style={{
+          backgroundColor: NameBackgroundColor(index),
+          borderLeft: `1px solid ${borderColorLeft}`,
+          borderRight: `1px solid ${borderColorRight}`,
+        }}
+      >
+        <div>{`${x.description} - ${x.deltaDays}`}</div>
+        <div>
+          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+        </div>
       </div>
-    </div>)
-    }
-
-    // tasksInADay = tasks.map((x) => (
-    //   <div
-    //     key={x.id}
-    //     className="workerjob"
-    //     style={{
-    //       backgroundColor: NameBackgroundColor(index),
-    //       borderLeft: `1px solid ${borderColorLeft}`,
-    //       borderRight: `1px solid ${borderColorRight}`,
-    //     }}
-    //   >
-    //     <div>{`${x.description} - ${x.deltaDays}`}</div>
-    //     <div>
-    //       {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-    //     </div>
-    //   </div>
-    // ));
+    ));
   } else {
     tasksInADay = (
       <div
-        className="workerjob"
+        className={workerJob}
         style={{
           backgroundColor: "white",
           borderLeft: `1px solid black`,
@@ -258,7 +243,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
 
   return (
     <>
-      <div className="workerjobs" style={{ borderTop: "1px solid black" }}>
+      <div className={workerJobs} style={{ borderTop: "1px solid black" }}>
         {tasksInADay}
       </div>
     </>
@@ -266,9 +251,11 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
 };
 
 const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
+  const { workerName } = calendarStyles();
   const nameToDisplay = [];
   if (tasks.length !== 0) {
     nameToDisplay.push(tasks[0].worker.name);
   }
-  return <div className="workername">{nameToDisplay}</div>;
+  // return <div className="workername">{nameToDisplay}</div>;
+  return <div className={workerName}>{nameToDisplay}</div>;
 };
