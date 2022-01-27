@@ -113,7 +113,6 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker: Job_Worker[][] = [];
   let tempMultiDay: Job_Worker[] = [];
-
   // this make sure that tasks that last multiple days, are displayed correctly in the frontend
   tasks.forEach((task) => {
     const deltaDays = differenceInCalendarDays(task.end, task.start);
@@ -133,21 +132,9 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
     }
   });
   // Find unique workers
-  allNamesFromDB = tempMultiDay.map((x) => x.worker.name);
-  let uniqWorkers = allNamesFromDB.filter((name, index) => {
-    return allNamesFromDB.indexOf(name) === index;
-  });
-
+  let uniqWorkers = RemoveDuplicateWorkerNames();
   // Sort job data by worker
-  for (let i = 0; i < uniqWorkers.length; i++) {
-    sortedByWorker.push(tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i]));
-    // sort worker list alphabetically
-    sortedByWorker.sort(function (a, b) {
-      if (a[0].worker.name > b[0].worker.name) return 1;
-      if (a[0].worker.name < b[0].worker.name) return -1;
-      return 0;
-    });
-  }
+  SortJobDataByWorker();
 
   return (
     <>
@@ -158,44 +145,60 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
       ))}
     </>
   );
+
+  function SortJobDataByWorker() {
+    for (let i = 0; i < uniqWorkers.length; i++) {
+      sortedByWorker.push(tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i]));
+      // sort worker list alphabetically
+      SortWorkerListAlphabetically();
+    }
+  }
+
+  function SortWorkerListAlphabetically() {
+    sortedByWorker.sort(function (a, b) {
+      if (a[0].worker.name > b[0].worker.name) return 1;
+      if (a[0].worker.name < b[0].worker.name) return -1;
+      return 0;
+    });
+  }
+
+  function RemoveDuplicateWorkerNames() {
+    allNamesFromDB = tempMultiDay.map((x) => x.worker.name);
+    let uniqWorkers = allNamesFromDB.filter((name, index) => {
+      return allNamesFromDB.indexOf(name) === index;
+    });
+    return uniqWorkers;
+  }
 };
 
 //Display all tasks of 1 worker during a week
 const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
   const numberOfDays: number = 5;
   const oneWorkerWeekData: Job_Worker[][] = [];
+  let prevDay: Job_Worker[] = [];
   const firstDayOfWeek = startOfWeek(currentDate as Date, {
     weekStartsOn: 1,
   });
   const { workerWeek } = calendarStyles();
 
-  for (let i = 0; i < numberOfDays; i++) {
-    oneWorkerWeekData.push(
-      tasks.filter(
-        (x) =>
-          x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
-          x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
-          x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
-      )
-    );
-  }
-
-  oneWorkerWeekData.forEach((array) => {
-    if (array.length > 0) {
-      array.sort((a, b) => {
-        if (a.start > b.start) return 1;
-        if (a.start < b.start) return -1;
-        return 0;
-      });
-    }
-  });
+  GetOneWorkerWeekData(numberOfDays, oneWorkerWeekData, tasks, firstDayOfWeek);
+  SortWorkerDataByStartDate(oneWorkerWeekData);
 
   return (
     <>
       <DisplayWorkerName tasks={tasks} />
       <div className={workerWeek}>
         {oneWorkerWeekData.map((x) => {
-          return <DailyTasks key={oneWorkerWeekData.indexOf(x)} tasks={x} index={index} />;
+          const weekData = (
+            <DailyTasks
+              key={oneWorkerWeekData.indexOf(x)}
+              tasks={x}
+              index={index}
+              prevDay={prevDay}
+            />
+          );
+          prevDay = x;
+          return weekData;
         })}
       </div>
     </>
@@ -203,27 +206,22 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
-  const { workerJobs, workerJob } = calendarStyles();
+  const { workerJobs, workerJob, workerJobEmpty } = calendarStyles();
 
   if (tasks.length !== 0) {
     const lastJobOfDay = tasks[tasks.length - 1];
-    //const firstJobOfDay = tasks[0];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    console.log(tasks);
-    // if (isJobOnFriday && lastJobOfDay === ) {
-    //   border
-    // }
+    let color = borderColorRight;
 
     tasksInADay = tasks.map((x) => {
-      var color = borderColorRight;
+      color = borderColorRight;
       if (isJobOnFriday && lastJobOfDay === x) {
         color = "#000000";
       }
-
       return (
         <div
           key={x.id}
@@ -234,7 +232,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
             borderRight: `1px solid ${color}`,
           }}
         >
-          <div>{`${x.description} - ${x.deltaDays}`}</div>
+          <div>{`${x.description}`}</div>
           <div>
             {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
           </div>
@@ -242,15 +240,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
       );
     });
   } else {
-    tasksInADay = [
-      <div
-        className={workerJob}
-        style={{
-          backgroundColor: "white",
-          borderLeft: `1px solid black`,
-        }}
-      ></div>,
-    ];
+    tasksInADay = [<div className={workerJobEmpty}></div>];
   }
 
   return (
@@ -270,3 +260,32 @@ const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   }
   return <div className={workerName}>{nameToDisplay}</div>;
 };
+function SortWorkerDataByStartDate(oneWorkerWeekData: Job_Worker[][]) {
+  oneWorkerWeekData.forEach((array) => {
+    if (array.length > 0) {
+      array.sort((a, b) => {
+        if (a.start > b.start) return 1;
+        if (a.start < b.start) return -1;
+        return 0;
+      });
+    }
+  });
+}
+
+function GetOneWorkerWeekData(
+  numberOfDays: number,
+  oneWorkerWeekData: Job_Worker[][],
+  tasks: Job_Worker[],
+  firstDayOfWeek: Date
+) {
+  for (let i = 0; i < numberOfDays; i++) {
+    oneWorkerWeekData.push(
+      tasks.filter(
+        (x) =>
+          x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
+          x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
+          x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
+      )
+    );
+  }
+}

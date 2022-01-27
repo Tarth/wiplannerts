@@ -13,9 +13,18 @@ const calendarStyles = makeStyles({
     flex: 1,
     minHeight: "44px",
   },
+
   workerJob: {
     flex: 1,
     textAlign: "center",
+    backgroundColor: "white",
+    borderLeft: `1px solid black`,
+  },
+
+  workerJobEmpty: {
+    flex: 1,
+    backgroundColor: "white",
+    borderLeft: `1px solid black`,
   },
   workerName: {
     width: "100px",

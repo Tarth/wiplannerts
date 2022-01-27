@@ -159,6 +159,7 @@ export interface CalendarDataProps {
   tasks: Job_Worker[];
   index?: number;
   currentDate?: Date;
+  prevDay?: Job_Worker[];
 }
 
 export interface LoginProps {
