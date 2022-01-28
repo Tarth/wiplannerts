@@ -229,18 +229,17 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
   if (tasks.length !== 0) {
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    let colorRight = borderColorRight;
-    let colorLeft = borderColorLeft;
 
     tasksInADay = tasks.map((x, i, tasks) => {
-      colorRight = borderColorRight;
-      colorLeft = borderColorLeft;
       if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
-        colorRight = "#000000";
+        borderColorRight = "#000000";
       }
       if (x.deltaDays !== undefined) {
-        if (x.deltaDays > 0 && subDays(x.end, x.deltaDays).getDate() !== x.start.getDate()) {
-          colorLeft = NameBackgroundColor(index);
+        if (
+          x.deltaDays > 0 &&
+          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0
+        ) {
+          borderColorLeft = NameBackgroundColor(index);
         }
       }
 
@@ -250,8 +249,8 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
           className={workerJob}
           style={{
             backgroundColor: NameBackgroundColor(index),
-            borderLeft: `1px solid ${colorLeft}`,
-            borderRight: `1px solid ${colorRight}`,
+            borderLeft: `1px solid ${borderColorLeft}`,
+            borderRight: `1px solid ${borderColorRight}`,
           }}
         >
           <div>{`${x.description} - ${x.deltaDays}`}</div>
