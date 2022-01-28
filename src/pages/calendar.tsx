@@ -55,7 +55,6 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
       ></Navigation>
 
       <DisplayHeaders currentDate={currentDate} />
-      {/* <div className="leftrightbtngrp"> */}
       <div className={leftRightBtngrp}>
         <IconButton onClick={() => setCurrentDate(subDays(currentDate, 7))} color="primary">
           <ArrowBack></ArrowBack>
@@ -191,7 +190,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
       <DisplayWorkerName tasks={tasks} />
       <div className={workerWeek}>
         {oneWorkerWeekData.map((x) => {
-          return (
+          const weekData = (
             <DailyTasks
               key={oneWorkerWeekData.indexOf(x)}
               tasks={x}
@@ -199,6 +198,8 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
               prevDay={prevDay}
             />
           );
+          prevDay = x;
+          return weekData;
         })}
       </div>
     </>
@@ -206,25 +207,25 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
-  const lastJobOfDay = tasks[tasks.length - 1];
-  const isJobOnFriday = isFriday(lastJobOfDay.start);
   const { workerJobs, workerJob, workerJobEmpty } = calendarStyles();
 
   if (tasks.length === 0) {
     return (
       <>
         <div className={workerJobs} style={{ borderTop: "1px solid black" }}>
-          [<div className={workerJobEmpty}></div>]
+          <div className={workerJobEmpty}></div>
         </div>
       </>
     );
   }
 
   tasksInADay = tasks.map((x, i, tasks) => {
+    const lastJobOfDay = tasks[tasks.length - 1];
+    const isJobOnFriday = isFriday(lastJobOfDay.start);
     if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
       borderColorRight = "#000000";
     }
