@@ -196,7 +196,7 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
               key={oneWorkerWeekData.indexOf(x)}
               tasks={x}
               index={index}
-              oneWorkerWeekData={oneWorkerWeekData}
+              weekDataIndex={i}
             />
           );
         })}
@@ -206,32 +206,21 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, oneWorkerWeekData }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
-  let color = "#ffffff";
   const { workerJobs, workerJob, workerJobEmpty } = calendarStyles();
-  if (oneWorkerWeekData !== undefined) {
-    const lastJobOfWeek = oneWorkerWeekData[oneWorkerWeekData.length - 1];
-    if (lastJobOfWeek.length === 0) {
-      console.log(lastJobOfWeek);
-      color = "#bcbcbc";
-    }
-    // if (oneWorkerWeekData[4] === []) {
-    //   border = "1px solid black";
-    // }
-  }
 
   if (tasks.length === 0) {
     let border = "none";
+    if (weekDataIndex === 4) {
+      border = "1px solid black";
+    }
     return (
       <>
         <div className={workerJobs}>
-          <div
-            className={workerJobEmpty}
-            style={{ backgroundColor: color, borderRight: border }}
-          ></div>
+          <div className={workerJobEmpty} style={{ borderRight: border }}></div>
         </div>
       </>
     );
@@ -240,14 +229,8 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, oneWorkerWeekDa
   tasksInADay = tasks.map((x, i, tasks) => {
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
-      borderColorRight = "#000000";
-    }
-    if (x.deltaDays !== undefined) {
-      if (x.deltaDays > 0 && differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0) {
-        borderColorLeft = NameBackgroundColor(index);
-      }
-    }
+    ColorBorderRightIfLastOnFriday();
+    ColorBorderLeftIfMultiDay();
 
     return (
       <div
@@ -265,6 +248,23 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, oneWorkerWeekDa
         </div>
       </div>
     );
+
+    function ColorBorderLeftIfMultiDay() {
+      if (x.deltaDays !== undefined) {
+        if (
+          x.deltaDays > 0 &&
+          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0
+        ) {
+          borderColorLeft = NameBackgroundColor(index);
+        }
+      }
+    }
+
+    function ColorBorderRightIfLastOnFriday() {
+      if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
+        borderColorRight = "#000000";
+      }
+    }
   });
 
   return (

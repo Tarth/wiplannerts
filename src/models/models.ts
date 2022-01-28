@@ -159,7 +159,7 @@ export interface CalendarDataProps {
   tasks: Job_Worker[];
   index?: number;
   currentDate?: Date;
-  oneWorkerWeekData?: Job_Worker[][];
+  weekDataIndex?: number;
 }
 
 export interface LoginProps {
