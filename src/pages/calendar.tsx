@@ -253,7 +253,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
             borderRight: `1px solid ${borderColorRight}`,
           }}
         >
-          <div>{`${x.description} - ${x.deltaDays}`}</div>
+          <div>{`${x.description}`}</div>
           <div>
             {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
           </div>
