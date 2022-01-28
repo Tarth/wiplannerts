@@ -18,6 +18,9 @@ const calendarStyles = makeStyles({
     display: "flex",
     flex: 1,
     minHeight: "44px",
+    "&div ": {
+      borderRight: "1px solid blue",
+    },
   },
 
   workerJob: {

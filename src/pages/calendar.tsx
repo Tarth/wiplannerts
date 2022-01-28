@@ -190,17 +190,15 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
     <>
       <DisplayWorkerName tasks={tasks} />
       <div className={workerWeek}>
-        {oneWorkerWeekData.map((x) => {
-          const weekData = (
+        {oneWorkerWeekData.map((x, i, oneWorkerWeekData) => {
+          return (
             <DailyTasks
               key={oneWorkerWeekData.indexOf(x)}
               tasks={x}
               index={index}
-              prevDay={prevDay}
+              oneWorkerWeekData={oneWorkerWeekData}
             />
           );
-          prevDay = x;
-          return weekData;
         })}
       </div>
     </>
@@ -208,17 +206,32 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 };
 
 // Display all tasks during a day
-const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
+const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, oneWorkerWeekData }) => {
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
+  let color = "#ffffff";
   const { workerJobs, workerJob, workerJobEmpty } = calendarStyles();
+  if (oneWorkerWeekData !== undefined) {
+    const lastJobOfWeek = oneWorkerWeekData[oneWorkerWeekData.length - 1];
+    if (lastJobOfWeek.length === 0) {
+      console.log(lastJobOfWeek);
+      color = "#bcbcbc";
+    }
+    // if (oneWorkerWeekData[4] === []) {
+    //   border = "1px solid black";
+    // }
+  }
 
   if (tasks.length === 0) {
+    let border = "none";
     return (
       <>
         <div className={workerJobs}>
-          <div className={workerJobEmpty}></div>
+          <div
+            className={workerJobEmpty}
+            style={{ backgroundColor: color, borderRight: border }}
+          ></div>
         </div>
       </>
     );
