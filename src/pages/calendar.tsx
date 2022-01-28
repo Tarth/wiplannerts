@@ -112,6 +112,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   let allNamesFromDB: String[] = [];
   let sortedByWorker: Job_Worker[][] = [];
   let tempMultiDay: Job_Worker[] = [];
+  const { worker } = calendarStyles();
   // this make sure that tasks that last multiple days, are displayed correctly in the frontend
   tasks.forEach((task) => {
     const deltaDays = differenceInCalendarDays(task.end, task.start);
@@ -139,7 +140,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
     <>
       {sortedByWorker.map((x, i) => {
         return (
-          <div key={sortedByWorker.indexOf(x)} className="worker">
+          <div key={sortedByWorker.indexOf(x)} className={worker}>
             <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
           </div>
         );
@@ -216,7 +217,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
   if (tasks.length === 0) {
     return (
       <>
-        <div className={workerJobs} style={{ borderTop: "1px solid black" }}>
+        <div className={workerJobs}>
           <div className={workerJobEmpty}></div>
         </div>
       </>
@@ -255,9 +256,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
 
   return (
     <>
-      <div className={workerJobs} style={{ borderTop: "1px solid black" }}>
-        {tasksInADay}
-      </div>
+      <div className={workerJobs}>{tasksInADay}</div>
     </>
   );
 };
@@ -270,6 +269,7 @@ const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   }
   return <div className={workerName}>{nameToDisplay}</div>;
 };
+
 function SortWorkerDataByStartDate(oneWorkerWeekData: Job_Worker[][]) {
   oneWorkerWeekData.forEach((array) => {
     if (array.length > 0) {

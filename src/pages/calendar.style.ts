@@ -1,10 +1,16 @@
 import { makeStyles } from "@material-ui/core";
 
 const calendarStyles = makeStyles({
+  worker: {
+    display: "flex",
+    borderTop: "1px solid black",
+    borderLeft: "1px solid black",
+    "&:last-child": {
+      borderBottom: "1px solid black",
+    },
+  },
+
   workerWeek: {
-    // "&:last-child": {
-    //   borderRight: "1px solid black",
-    // },
     display: "flex",
     flexGrow: 1,
   },
