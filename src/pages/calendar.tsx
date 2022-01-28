@@ -138,13 +138,26 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
 
   return (
     <>
-      {sortedByWorker.map((x, i) => (
-        <div key={sortedByWorker.indexOf(x)} className="worker">
-          <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
-        </div>
-      ))}
+      {sortedByWorker.map((x, i) => {
+        return (
+          <div key={sortedByWorker.indexOf(x)} className="worker">
+            {/* <WeeklyTasks tasks={x} index={i} currentDate={currentDate} prevDay={prevDay} /> */}
+            <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
+          </div>
+        );
+      })}
     </>
   );
+
+  // return (
+  //   <>
+  //     {sortedByWorker.map((x, i) => (
+  //       <div key={sortedByWorker.indexOf(x)} className="worker">
+  //         <WeeklyTasks tasks={x} index={i} currentDate={currentDate} />
+  //       </div>
+  //     ))}
+  //   </>
+  // );
 
   function SortJobDataByWorker() {
     for (let i = 0; i < uniqWorkers.length; i++) {
@@ -173,6 +186,7 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
 
 //Display all tasks of 1 worker during a week
 const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate }) => {
+  // const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate, prevDay }) => {
   const numberOfDays: number = 5;
   const oneWorkerWeekData: Job_Worker[][] = [];
   let prevDay: Job_Worker[] = [];
@@ -215,24 +229,32 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, prevDay }) => {
   if (tasks.length !== 0) {
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    let color = borderColorRight;
+    let colorRight = borderColorRight;
+    let colorLeft = borderColorLeft;
 
-    tasksInADay = tasks.map((x) => {
-      color = borderColorRight;
-      if (isJobOnFriday && lastJobOfDay === x) {
-        color = "#000000";
+    tasksInADay = tasks.map((x, i, tasks) => {
+      colorRight = borderColorRight;
+      colorLeft = borderColorLeft;
+      if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
+        colorRight = "#000000";
       }
+      if (x.deltaDays !== undefined) {
+        if (x.deltaDays > 0 && subDays(x.end, x.deltaDays).getDate() !== x.start.getDate()) {
+          colorLeft = NameBackgroundColor(index);
+        }
+      }
+
       return (
         <div
           key={x.id}
           className={workerJob}
           style={{
             backgroundColor: NameBackgroundColor(index),
-            borderLeft: `1px solid ${borderColorLeft}`,
-            borderRight: `1px solid ${color}`,
+            borderLeft: `1px solid ${colorLeft}`,
+            borderRight: `1px solid ${colorRight}`,
           }}
         >
-          <div>{`${x.description}`}</div>
+          <div>{`${x.description} - ${x.deltaDays}`}</div>
           <div>
             {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
           </div>
