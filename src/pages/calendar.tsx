@@ -226,6 +226,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
   }
 
   tasksInADay = tasks.map((x, i, tasks) => {
+    borderColorLeft = "#000000";
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
     ColorBorderRightIfLastOnFriday();
