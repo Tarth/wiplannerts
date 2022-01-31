@@ -229,8 +229,18 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
     borderColorLeft = "#000000";
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    ColorBorderRightIfLastOnFriday();
+
+    let taskDiv = (
+      <>
+        <div>{`${x.description}`}</div>
+        <div>
+          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
+        </div>
+      </>
+    );
+
     ColorBorderLeftIfMultiDay();
+    ColorBorderRightIfLastOnFriday();
 
     return (
       <div
@@ -242,10 +252,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
           borderRight: `1px solid ${borderColorRight}`,
         }}
       >
-        <div>{`${x.description}`}</div>
-        <div>
-          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-        </div>
+        {taskDiv}
       </div>
     );
 
@@ -253,9 +260,11 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       if (x.deltaDays !== undefined) {
         if (
           x.deltaDays > 0 &&
-          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0
+          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0 &&
+          weekDataIndex !== 0
         ) {
           borderColorLeft = NameBackgroundColor(index);
+          taskDiv = <></>;
         }
       }
     }
