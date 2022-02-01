@@ -13,9 +13,10 @@ import {
 } from "date-fns";
 import { da } from "date-fns/locale";
 import { IconButton } from "@material-ui/core";
-import { ArrowForward, ArrowBack } from "@material-ui/icons";
+import { ArrowForward, ArrowBack, ArrowRight, ArrowLeft } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
 import { calendarStyles } from "./calendar.style";
+import { border, borderRadius } from "@material-ui/system";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
@@ -33,16 +34,16 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        getDataTimer = setInterval(async () => {
-          await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        }, fetchTimer);
+        // getDataTimer = setInterval(async () => {
+        //   await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        // }, fetchTimer);
       } catch (error) {
         return;
       }
     })();
     return () => {
       abortController.abort();
-      clearInterval(getDataTimer);
+      // clearInterval(getDataTimer);
     };
   }, []);
 
@@ -209,7 +210,8 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
-  const { workerJobs, workerJob, workerJobEmpty } = calendarStyles();
+  const { workerJobs, workerJob, workerJobEmpty, taskDescription, taskIcon, taskTime } =
+    calendarStyles();
 
   if (tasks.length === 0) {
     let border = "none";
@@ -229,19 +231,34 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
     borderColorLeft = "#000000";
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-
+    // let iconDiv = <></>;
+    if (x.deltaDays !== undefined) {
+      if (x.deltaDays > 0) {
+        if (
+          weekDataIndex === 0 &&
+          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) < 0
+        ) {
+          // iconDiv = (
+          //   <div className={taskIcon}>
+          //     <ArrowLeft></ArrowLeft>
+          //   </div>
+          // );
+          borderColorLeft = NameBackgroundColor(index);
+        }
+      }
+    }
     let taskDiv = (
       <>
-        <div>{`${x.description}`}</div>
-        <div>
+        {TaskLayout("first", x.description, x.start, x.end)}
+        {/* {iconDiv}
+        <div className={taskDescription}>{`${x.description}`}</div>
+        <div className={taskTime}>
           {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-        </div>
+        </div> */}
       </>
     );
-
-    ColorBorderLeftIfMultiDay();
-    ColorBorderRightIfLastOnFriday();
-
+    BGColorBorderLeftIfMultiDay();
+    BlackBorderRightIfLastOnFriday();
     return (
       <div
         key={x.id}
@@ -250,13 +267,14 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
           backgroundColor: NameBackgroundColor(index),
           borderLeft: `1px solid ${borderColorLeft}`,
           borderRight: `1px solid ${borderColorRight}`,
+          borderRadius: `${borderRadius}`,
         }}
       >
         {taskDiv}
       </div>
     );
 
-    function ColorBorderLeftIfMultiDay() {
+    function BGColorBorderLeftIfMultiDay() {
       if (x.deltaDays !== undefined) {
         if (
           x.deltaDays > 0 &&
@@ -269,9 +287,14 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       }
     }
 
-    function ColorBorderRightIfLastOnFriday() {
+    function BlackBorderRightIfLastOnFriday() {
       if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
         borderColorRight = "#000000";
+        // iconDiv = (
+        //   <div className={taskIcon}>
+        //     <ArrowRight></ArrowRight>
+        //   </div>
+        // );
       }
     }
   });
@@ -318,6 +341,59 @@ function GetOneWorkerWeekData(
           x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
           x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
       )
+    );
+  }
+}
+
+function TaskLayout(iconPosition: "first" | "last", description: string, start: Date, end: Date) {
+  let divReturn = <></>;
+  if (iconPosition === "first") {
+    divReturn = IconFirstOrLast("first", description, start, end);
+  } else {
+    divReturn = IconFirstOrLast("last", description, start, end);
+  }
+  return <>{divReturn}</>;
+}
+
+function IconFirstOrLast(
+  iconPosition: "first" | "last",
+  description: string,
+  start: Date,
+  end: Date
+) {
+  const { taskDescription, taskTime, taskIcon } = calendarStyles();
+  let icon = <></>;
+  const task = (
+    <>
+      <div className={taskDescription}>{`${description}`}</div>
+      <div className={taskTime}>
+        {format(start, "HH:mm")} - {format(end, "HH:mm")}
+      </div>
+    </>
+  );
+  if (iconPosition === "first") {
+    icon = (
+      <div className={taskIcon}>
+        <ArrowLeft></ArrowLeft>
+      </div>
+    );
+    return (
+      <>
+        {icon}
+        {task}
+      </>
+    );
+  } else {
+    icon = (
+      <div className={taskIcon}>
+        <ArrowRight></ArrowRight>
+      </div>
+    );
+    return (
+      <>
+        {task}
+        {icon}
+      </>
     );
   }
 }

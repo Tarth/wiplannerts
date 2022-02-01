@@ -14,6 +14,7 @@ const calendarStyles = makeStyles({
     display: "flex",
     flexGrow: 1,
   },
+
   workerJobs: {
     display: "flex",
     flex: 1,
@@ -28,6 +29,11 @@ const calendarStyles = makeStyles({
     textAlign: "center",
     backgroundColor: "white",
     borderLeft: `1px solid black`,
+    display: "grid",
+    gridTemplateRows: "50% 50%",
+    gridTemplateColumns: "5% 95%",
+    gridTemplateAreas: `"icon description" "icon time"`,
+    alignItems: "center",
   },
 
   workerJobEmpty: {
@@ -40,6 +46,15 @@ const calendarStyles = makeStyles({
     textAlign: "center",
     fontFamily: "Fjalla One, sans-serif",
     margin: "auto",
+  },
+  taskIcon: {
+    gridArea: "icon",
+  },
+  taskDescription: {
+    gridArea: "description",
+  },
+  taskTime: {
+    gridArea: "time",
   },
   headerDate: {
     flex: 1,
