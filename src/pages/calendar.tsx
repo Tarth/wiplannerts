@@ -135,8 +135,16 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
   // Find unique workers
   let uniqWorkers = RemoveDuplicateWorkerNames();
   // Sort job data by worker
-  SortJobDataByWorker();
-
+  for (let i = 0; i < uniqWorkers.length; i++) {
+    sortedByWorker.push(tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i]));
+    // sort worker list alphabetically
+    sortedByWorker.sort(function (a, b) {
+      if (a[0].worker.name > b[0].worker.name) return 1;
+      if (a[0].worker.name < b[0].worker.name) return -1;
+      return 0;
+    });
+  }
+  console.log(sortedByWorker);
   return (
     <>
       {sortedByWorker.map((x, i) => {
@@ -148,22 +156,6 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
       })}
     </>
   );
-
-  function SortJobDataByWorker() {
-    for (let i = 0; i < uniqWorkers.length; i++) {
-      sortedByWorker.push(tempMultiDay.filter((x) => x.worker.name === uniqWorkers[i]));
-      // sort worker list alphabetically
-      SortWorkerListAlphabetically();
-    }
-  }
-
-  function SortWorkerListAlphabetically() {
-    sortedByWorker.sort(function (a, b) {
-      if (a[0].worker.name > b[0].worker.name) return 1;
-      if (a[0].worker.name < b[0].worker.name) return -1;
-      return 0;
-    });
-  }
 
   function RemoveDuplicateWorkerNames() {
     allNamesFromDB = tempMultiDay.map((x) => x.worker.name);
@@ -183,8 +175,26 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   });
   const { workerWeek } = calendarStyles();
 
-  GetOneWorkerWeekData(numberOfDays, oneWorkerWeekData, tasks, firstDayOfWeek);
-  SortWorkerDataByStartDate(oneWorkerWeekData);
+  for (let i = 0; i < numberOfDays; i++) {
+    oneWorkerWeekData.push(
+      tasks.filter(
+        (x) =>
+          x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
+          x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
+          x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
+      )
+    );
+  }
+  oneWorkerWeekData.forEach((array) => {
+    if (array.length > 0) {
+      array.sort((a, b) => {
+        if (a.start > b.start) return 1;
+        if (a.start < b.start) return -1;
+        return 0;
+      });
+    }
+  });
+  console.log(oneWorkerWeekData);
 
   return (
     <>
@@ -205,8 +215,8 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
   );
 };
 
-// Display all tasks during a day
-// const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }) => {
+//Display all tasks during a day
+// const DailyTasksRefactor: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }) => {
 //   let borderColorLeft = "#000000";
 //   let borderColorRight = NameBackgroundColor(index);
 //   const { workerJobs, workerJobEmpty } = calendarStyles();
@@ -238,18 +248,18 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
   let borderColorLeft = "#000000";
   let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
-  const { workerJobs, workerJob, workerJobEmpty, taskDescription, taskIcon, taskTime } =
+  const { workerJobs, workerJob, workerJobEmpty, taskDescription, taskTime, taskIcon } =
     calendarStyles();
 
   if (tasks.length === 0) {
-    let border = "none";
+    let borderRight = "none";
     if (weekDataIndex === 4) {
-      border = "1px solid black";
+      borderRight = "1px solid black";
     }
     return (
       <>
         <div className={workerJobs}>
-          <div className={workerJobEmpty} style={{ borderRight: border }}></div>
+          <div className={workerJobEmpty} style={{ borderRight: borderRight }}></div>
         </div>
       </>
     );
@@ -259,34 +269,49 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
     borderColorLeft = "#000000";
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
-    // let iconDiv = <></>;
-    if (x.deltaDays !== undefined) {
-      if (x.deltaDays > 0) {
-        if (
-          weekDataIndex === 0 &&
-          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) < 0
-        ) {
-          // iconDiv = (
-          //   <div className={taskIcon}>
-          //     <ArrowLeft></ArrowLeft>
-          //   </div>
-          // );
-          borderColorLeft = NameBackgroundColor(index);
-        }
-      }
-    }
+
     let taskDiv = (
       <>
-        {TaskLayout("first", x.description, x.start, x.end)}
-        {/* {iconDiv}
-        <div className={taskDescription}>{`${x.description}`}</div>
-        <div className={taskTime}>
-          {format(x.start, "HH:mm")} - {format(x.end, "HH:mm")}
-        </div> */}
+        {TaskLayout(
+          "first",
+          false,
+          x.description,
+          x.start,
+          x.end,
+          taskDescription,
+          taskTime,
+          taskIcon
+        )}
       </>
     );
-    BGColorBorderLeftIfMultiDay();
-    BlackBorderRightIfLastOnFriday();
+    if (x.deltaDays !== undefined) {
+      if (
+        x.deltaDays > 0 &&
+        differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0 &&
+        weekDataIndex !== 0
+      ) {
+        borderColorLeft = NameBackgroundColor(index);
+        taskDiv = (
+          <>
+            {TaskLayout(
+              "first",
+              true,
+              x.description,
+              x.start,
+              x.end,
+              taskDescription,
+              taskTime,
+              taskIcon
+            )}
+          </>
+        );
+      }
+    }
+
+    if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
+      borderColorRight = "#000000";
+    }
+
     return (
       <div
         key={x.id}
@@ -301,30 +326,6 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
         {taskDiv}
       </div>
     );
-
-    function BGColorBorderLeftIfMultiDay() {
-      if (x.deltaDays !== undefined) {
-        if (
-          x.deltaDays > 0 &&
-          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0 &&
-          weekDataIndex !== 0
-        ) {
-          borderColorLeft = NameBackgroundColor(index);
-          taskDiv = <></>;
-        }
-      }
-    }
-
-    function BlackBorderRightIfLastOnFriday() {
-      if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
-        borderColorRight = "#000000";
-        // iconDiv = (
-        //   <div className={taskIcon}>
-        //     <ArrowRight></ArrowRight>
-        //   </div>
-        // );
-      }
-    }
   });
 
   return (
@@ -343,85 +344,106 @@ const DisplayWorkerName: React.FC<CalendarDataProps> = ({ tasks }) => {
   return <div className={workerName}>{nameToDisplay}</div>;
 };
 
-function SortWorkerDataByStartDate(oneWorkerWeekData: Job_Worker[][]) {
-  oneWorkerWeekData.forEach((array) => {
-    if (array.length > 0) {
-      array.sort((a, b) => {
-        if (a.start > b.start) return 1;
-        if (a.start < b.start) return -1;
-        return 0;
-      });
-    }
-  });
+function EmptyDay(weekDataIndex: number | undefined) {
+  const { workerJobs, workerJobEmpty } = calendarStyles();
+  let borderRight = "none";
+  if (weekDataIndex === 4) {
+    borderRight = "1px solid black";
+  }
+  return (
+    <>
+      <div className={workerJobs}>
+        <div className={workerJobEmpty} style={{ borderRight: borderRight }}></div>
+      </div>
+    </>
+  );
 }
+
+function SortWorkerDataByStartDate(oneWorkerWeekData: Job_Worker[][]) {}
 
 function GetOneWorkerWeekData(
   numberOfDays: number,
   oneWorkerWeekData: Job_Worker[][],
   tasks: Job_Worker[],
   firstDayOfWeek: Date
-) {
-  for (let i = 0; i < numberOfDays; i++) {
-    oneWorkerWeekData.push(
-      tasks.filter(
-        (x) =>
-          x.start.getDate() === addDays(firstDayOfWeek, i).getDate() &&
-          x.start.getMonth() === addDays(firstDayOfWeek, i).getMonth() &&
-          x.start.getFullYear() === addDays(firstDayOfWeek, i).getFullYear()
-      )
-    );
-  }
-}
+) {}
 
-function TasksInADay(
-  tasks: Job_Worker[],
-  borderColorLeft: string,
-  borderColorRight: string,
-  weekDataIndex: number | undefined,
-  index: number | undefined
-) {
-  const { workerJob } = calendarStyles();
-  const tasksInADay = tasks.map((x, i, tasks) => {
-    borderColorLeft = "#000000";
-    const lastJobOfDay = tasks[tasks.length - 1];
-    const isJobOnFriday = isFriday(lastJobOfDay.start);
-    if (x.deltaDays !== undefined) {
-      if (x.deltaDays > 0) {
-        if (
-          weekDataIndex === 0 &&
-          differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) < 0
-        ) {
-          borderColorLeft = NameBackgroundColor(index);
-        }
-      }
-    }
-    let taskDiv = <>{TaskLayout("first", x.description, x.start, x.end)}</>;
-    BGColorBorderLeftIfMultiDay(x, borderColorLeft, weekDataIndex, index, taskDiv);
-    BlackBorderRightIfLastOnFriday(x, isJobOnFriday, lastJobOfDay, borderColorRight);
-    return (
-      <div
-        key={x.id}
-        className={workerJob}
-        style={{
-          backgroundColor: NameBackgroundColor(index),
-          borderLeft: `1px solid ${borderColorLeft}`,
-          borderRight: `1px solid ${borderColorRight}`,
-          borderRadius: `${borderRadius}`,
-        }}
-      >
-        {taskDiv}
-      </div>
-    );
-  });
-  return tasksInADay;
-}
+// function TasksInADay(
+//   tasks: Job_Worker[],
+//   borderColorLeft: string,
+//   borderColorRight: string,
+//   weekDataIndex: number | undefined,
+//   index: number | undefined
+// ) {
+//   const { workerJob } = calendarStyles();
+//   const tasksInADay = tasks.map((x, i, tasks) => {
+//     borderColorLeft = "#000000";
+//     const lastJobOfDay = tasks[tasks.length - 1];
+//     const isJobOnFriday = isFriday(lastJobOfDay.start);
+//     if (x.deltaDays !== undefined) {
+//       if (x.deltaDays > 0) {
+//         if (
+//           weekDataIndex === 0 &&
+//           differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) < 0
+//         ) {
+//           borderColorLeft = NameBackgroundColor(index);
+//         }
+//       }
+//     }
+//     let taskDiv = <>{TaskLayout("first", true, x.description, x.start, x.end)}</>;
+//     BGColorBorderLeftIfMultiDay(x, weekDataIndex, index);
+//     BlackBorderRightIfLastOnFriday(x, isJobOnFriday, lastJobOfDay, borderColorRight);
+//     return (
+//       <div
+//         key={x.id}
+//         className={workerJob}
+//         style={{
+//           backgroundColor: NameBackgroundColor(index),
+//           borderLeft: `1px solid ${borderColorLeft}`,
+//           borderRight: `1px solid ${borderColorRight}`,
+//         }}
+//       >
+//         {taskDiv}
+//       </div>
+//     );
+//   });
+//   return tasksInADay;
+// }
 
-function TaskLayout(iconPosition: "first" | "last", description: string, start: Date, end: Date) {
+function TaskLayout(
+  iconPosition: "first" | "last",
+  hidden: boolean,
+  description: string,
+  start: Date,
+  end: Date,
+  taskDescription: string,
+  taskTime: string,
+  taskIcon: string
+) {
   let divReturn = <></>;
+  if (hidden) {
+    return divReturn;
+  }
   if (iconPosition === "first") {
-    divReturn = IconFirstOrLast("first", description, start, end);
+    divReturn = IconFirstOrLast(
+      "first",
+      description,
+      start,
+      end,
+      taskDescription,
+      taskTime,
+      taskIcon
+    );
   } else {
-    divReturn = IconFirstOrLast("last", description, start, end);
+    divReturn = IconFirstOrLast(
+      "last",
+      description,
+      start,
+      end,
+      taskDescription,
+      taskTime,
+      taskIcon
+    );
   }
   return <>{divReturn}</>;
 }
@@ -430,9 +452,11 @@ function IconFirstOrLast(
   iconPosition: "first" | "last",
   description: string,
   start: Date,
-  end: Date
+  end: Date,
+  taskDescription: string,
+  taskTime: string,
+  taskIcon: string
 ) {
-  const { taskDescription, taskTime, taskIcon } = calendarStyles();
   let icon = <></>;
   const task = (
     <>
@@ -468,33 +492,30 @@ function IconFirstOrLast(
     );
   }
 }
-function BGColorBorderLeftIfMultiDay(
-  job: Job_Worker,
-  borderColorLeft: string,
-  weekDataIndex: number | undefined,
-  index: number | undefined,
-  taskDiv: JSX.Element
-) {
-  const { deltaDays, end, start } = job;
-  if (deltaDays !== undefined && weekDataIndex !== undefined && index !== undefined) {
-    if (
-      deltaDays > 0 &&
-      differenceInCalendarDays(subDays(end, deltaDays), start) !== 0 &&
-      weekDataIndex !== 0
-    ) {
-      borderColorLeft = NameBackgroundColor(index);
-      taskDiv = <></>;
-    }
-  }
-}
+// function BGColorBorderLeftIfMultiDay(
+//   job: Job_Worker,
+//   weekDataIndex: number | undefined,
+//   index: number | undefined
+// ) {
+//   const { deltaDays, end, start } = job;
+//   if (deltaDays !== undefined && weekDataIndex !== undefined && index !== undefined) {
+//     if (
+//       deltaDays > 0 &&
+//       differenceInCalendarDays(subDays(end, deltaDays), start) !== 0 &&
+//       weekDataIndex !== 0
+//     ) {
+//       return NameBackgroundColor(index);
+//     }
+//   }
+// }
 
-function BlackBorderRightIfLastOnFriday(
-  job: Job_Worker,
-  isJobOnFriday: boolean,
-  lastJobOfDay: Job_Worker,
-  borderColorRight: string
-) {
-  if (isJobOnFriday && lastJobOfDay === job && differenceInCalendarDays(job.start, job.end) === 0) {
-    borderColorRight = "#000000";
-  }
-}
+// function BlackBorderRightIfLastOnFriday(
+//   job: Job_Worker,
+//   isJobOnFriday: boolean,
+//   lastJobOfDay: Job_Worker,
+//   borderColorRight: string
+// ) {
+//   if (isJobOnFriday && lastJobOfDay === job && differenceInCalendarDays(job.start, job.end) === 0) {
+//     borderColorRight = "#000000";
+//   }
+// }
