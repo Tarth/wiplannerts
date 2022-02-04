@@ -16,7 +16,6 @@ import { IconButton } from "@material-ui/core";
 import { ArrowForward, ArrowBack, ArrowRight, ArrowLeft } from "@material-ui/icons";
 import { Navigation } from "../components/navigation/navigation";
 import { calendarStyles } from "./calendar.style";
-import { border, borderRadius } from "@material-ui/system";
 
 export const Calendar: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
@@ -24,7 +23,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 11, 21)); //DEBUG: Dont forget to remove the specific date before prod
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const fetchTimer = 60_000;
   const { workerContainer, leftRightBtngrp } = calendarStyles();
 
@@ -34,16 +33,16 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        // getDataTimer = setInterval(async () => {
-        //   await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        // }, fetchTimer);
+        getDataTimer = setInterval(async () => {
+          await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        }, fetchTimer);
       } catch (error) {
         return;
       }
     })();
     return () => {
       abortController.abort();
-      // clearInterval(getDataTimer);
+      clearInterval(getDataTimer);
     };
   }, []);
 
@@ -144,7 +143,6 @@ const AllWorkers: React.FC<CalendarDataProps> = ({ tasks, currentDate }) => {
       return 0;
     });
   }
-  console.log(sortedByWorker);
   return (
     <>
       {sortedByWorker.map((x, i) => {
