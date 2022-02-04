@@ -23,7 +23,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 11, 21));
   const fetchTimer = 60_000;
   const { workerContainer, leftRightBtngrp } = calendarStyles();
 
@@ -33,16 +33,16 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        getDataTimer = setInterval(async () => {
-          await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        }, fetchTimer);
+        // getDataTimer = setInterval(async () => {
+        //   await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        // }, fetchTimer);
       } catch (error) {
         return;
       }
     })();
     return () => {
       abortController.abort();
-      clearInterval(getDataTimer);
+      // clearInterval(getDataTimer);
     };
   }, []);
 
@@ -237,6 +237,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       alignItems: "center",
       justifyItems: "center",
     };
+
     let taskDiv = <>{TaskLayout(false, x.description, x.start, x.end, taskClasses)}</>;
 
     if (x.deltaDays !== undefined) {
@@ -328,14 +329,20 @@ function TaskLayout(
   taskClasses?: { taskDescription: string; taskTime: string; taskIcon: string },
   iconDirection?: "left" | "right"
 ): JSX.Element {
+  //hidden
+  //hidden + right
+  //display
+  //display + left
+  //display + right
+  let icon = <></>;
   if (
-    description !== undefined &&
+    iconDirection !== undefined &&
+    taskClasses !== undefined &&
     start !== undefined &&
-    end !== undefined &&
-    taskClasses !== undefined
+    end !== undefined
   ) {
     const { taskDescription, taskTime, taskIcon } = taskClasses;
-    let divReturn = (
+    const initDisplay = (
       <>
         <div className={taskDescription}>{`${description}`}</div>
         <div className={taskTime}>
@@ -343,31 +350,36 @@ function TaskLayout(
         </div>
       </>
     );
-    if (iconDirection !== undefined) {
-      divReturn = IconLeftOrRight(iconDirection, divReturn, taskIcon);
+    if (hidden && iconDirection === "right") {
+      icon = IconLeftOrRight(iconDirection, taskIcon);
+      return <>{icon}</>;
     }
-    return <>{divReturn}</>;
+    if (!hidden) {
+      if (iconDirection === "left" || iconDirection === "right") {
+        return (
+          <>
+            {icon}
+            {initDisplay}
+          </>
+        );
+      }
+      return <>{initDisplay}</>;
+    }
   }
   return <></>;
 }
 
-function IconLeftOrRight(iconDirection: "left" | "right", task: JSX.Element, taskIcon: string) {
+function IconLeftOrRight(iconDirection: "left" | "right", taskIcon: string) {
   if (iconDirection === "left") {
     return (
-      <>
-        <div className={taskIcon}>
-          <ArrowLeft></ArrowLeft>
-        </div>
-        {task}
-      </>
+      <div className={taskIcon}>
+        <ArrowLeft></ArrowLeft>
+      </div>
     );
   }
   return (
-    <>
-      {task}
-      <div className={taskIcon}>
-        <ArrowRight></ArrowRight>
-      </div>
-    </>
+    <div className={taskIcon}>
+      <ArrowRight></ArrowRight>
+    </div>
   );
 }
