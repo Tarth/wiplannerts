@@ -237,9 +237,27 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       alignItems: "center",
       justifyItems: "center",
     };
+    // hidden
+    // hidden + right
+    // diplay
+    // display + left
+    // display + right
+    // start with the unique cases
+    // 4 (3) cases: hidden, display, left and right
 
     let taskDiv = <>{TaskLayout(false, x.description, x.start, x.end, taskClasses)}</>;
+    // const div = <></>
 
+    // if (left){
+
+    // }
+    // if (right){
+
+    // }
+    // if (display) {
+
+    // }
+    // return div
     if (x.deltaDays !== undefined) {
       const taskStartDate = subDays(x.end, x.deltaDays);
       if (x.deltaDays > 0 && differenceInCalendarDays(taskStartDate, x.start) !== 0) {
@@ -305,29 +323,15 @@ function EmptyDay(weekDataIndex: number | undefined, workerJobs: string, workerJ
   );
 }
 
-function TaskLayout(hidden: boolean): JSX.Element;
 function TaskLayout(
   hidden: boolean,
-  description: string,
-  start: Date,
-  end: Date,
-  taskClasses: { taskDescription: string; taskTime: string; taskIcon: string }
-): JSX.Element;
-function TaskLayout(
-  hidden: boolean,
-  description: string,
-  start: Date,
-  end: Date,
-  taskClasses: { taskDescription: string; taskTime: string; taskIcon: string },
-  iconDirection: "left" | "right"
-): JSX.Element;
-function TaskLayout(
-  hidden: boolean,
-  description?: string,
-  start?: Date,
-  end?: Date,
-  taskClasses?: { taskDescription: string; taskTime: string; taskIcon: string },
-  iconDirection?: "left" | "right"
+  description: string | undefined = undefined,
+  start: Date | undefined = undefined,
+  end: Date | undefined = undefined,
+  taskClasses:
+    | { taskDescription: string; taskTime: string; taskIcon: string }
+    | undefined = undefined,
+  iconDirection: "left" | "right" | undefined = undefined
 ): JSX.Element {
   //hidden
   //hidden + right
@@ -342,6 +346,7 @@ function TaskLayout(
     end !== undefined
   ) {
     const { taskDescription, taskTime, taskIcon } = taskClasses;
+    icon = IconLeftOrRight(iconDirection, taskIcon);
     const initDisplay = (
       <>
         <div className={taskDescription}>{`${description}`}</div>
@@ -351,7 +356,6 @@ function TaskLayout(
       </>
     );
     if (hidden && iconDirection === "right") {
-      icon = IconLeftOrRight(iconDirection, taskIcon);
       return <>{icon}</>;
     }
     if (!hidden) {
