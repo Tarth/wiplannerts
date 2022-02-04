@@ -194,7 +194,6 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
       });
     }
   });
-  console.log(oneWorkerWeekData);
 
   return (
     <>
@@ -217,8 +216,6 @@ const WeeklyTasks: React.FC<CalendarDataProps> = ({ tasks, index, currentDate })
 
 // Display all tasks during a day
 const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }) => {
-  let borderColorLeft = "#000000";
-  let borderColorRight = NameBackgroundColor(index);
   let tasksInADay: JSX.Element[];
   const { workerJobs, workerJob, workerJobEmpty, taskDescription, taskTime, taskIcon } =
     calendarStyles();
@@ -228,36 +225,52 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
   }
 
   tasksInADay = tasks.map((x, i, tasks) => {
-    borderColorLeft = "#000000";
     const lastJobOfDay = tasks[tasks.length - 1];
     const isJobOnFriday = isFriday(lastJobOfDay.start);
     const taskClasses = { taskDescription, taskTime, taskIcon };
-    let taskDiv = <>{TaskLayout(x.description, x.start, x.end, taskClasses, false, "right")}</>;
+    let style = {
+      backgroundColor: NameBackgroundColor(index),
+      borderLeft: `1px solid #000000`,
+      borderRight: `1px solid ${NameBackgroundColor(index)}`,
+    };
+    const grid = {
+      display: "grid",
+      gridTemplateRows: "50% 50%",
+      alignItems: "center",
+      justifyItems: "center",
+    };
+    let taskDiv = <>{TaskLayout(false, x.description, x.start, x.end, taskClasses)}</>;
+
     if (x.deltaDays !== undefined) {
-      if (
-        x.deltaDays > 0 &&
-        differenceInCalendarDays(subDays(x.end, x.deltaDays), x.start) !== 0 &&
-        weekDataIndex !== 0
-      ) {
-        taskDiv = <>{TaskLayout(x.description, x.start, x.end, taskClasses, true)}</>;
-        borderColorLeft = NameBackgroundColor(index);
+      const taskStartDate = subDays(x.end, x.deltaDays);
+      if (x.deltaDays > 0 && differenceInCalendarDays(taskStartDate, x.start) !== 0) {
+        if (weekDataIndex !== 0) {
+          taskDiv = <>{TaskLayout(true)}</>;
+          Object.assign(style, { borderLeft: `1px solid ${NameBackgroundColor(index)}` });
+        } else {
+          taskDiv = <>{TaskLayout(false, x.description, x.start, x.end, taskClasses, "left")}</>;
+          Object.assign(grid, {
+            gridTemplateColumns: "5% 95%",
+            gridTemplateAreas: `"icon description" "icon time"`,
+          });
+          Object.assign(style, grid);
+        }
       }
     }
-    if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) === 0) {
-      borderColorRight = "#000000";
+    if (isJobOnFriday && lastJobOfDay === x) {
+      Object.assign(style, { borderRight: `1px solid #000000` });
+      if (differenceInCalendarDays(x.start, x.end) !== 0) {
+        taskDiv = <>{TaskLayout(false, x.description, x.start, x.end, taskClasses, "right")}</>;
+        Object.assign(grid, {
+          gridTemplateColumns: "95% 5%",
+          gridTemplateAreas: `"description icon" "time icon"`,
+        });
+        Object.assign(style, grid);
+      }
     }
+
     return (
-      <div
-        key={x.id}
-        className={workerJob}
-        style={{
-          backgroundColor: NameBackgroundColor(index),
-          borderLeft: `1px solid ${borderColorLeft}`,
-          borderRight: `1px solid ${borderColorRight}`,
-          // gridTemplateAreas: `"description icon" "time icon"`,
-          // gridTemplateColumns: "95% 5%",
-        }}
-      >
+      <div key={x.id} className={workerJob} style={style}>
         {taskDiv}
       </div>
     );
@@ -293,34 +306,51 @@ function EmptyDay(weekDataIndex: number | undefined, workerJobs: string, workerJ
   );
 }
 
+function TaskLayout(hidden: boolean): JSX.Element;
 function TaskLayout(
+  hidden: boolean,
+  description: string,
+  start: Date,
+  end: Date,
+  taskClasses: { taskDescription: string; taskTime: string; taskIcon: string }
+): JSX.Element;
+function TaskLayout(
+  hidden: boolean,
   description: string,
   start: Date,
   end: Date,
   taskClasses: { taskDescription: string; taskTime: string; taskIcon: string },
-  hidden?: boolean,
+  iconDirection: "left" | "right"
+): JSX.Element;
+function TaskLayout(
+  hidden: boolean,
+  description?: string,
+  start?: Date,
+  end?: Date,
+  taskClasses?: { taskDescription: string; taskTime: string; taskIcon: string },
   iconDirection?: "left" | "right"
 ): JSX.Element {
-  const { taskDescription, taskTime, taskIcon } = taskClasses;
-  let divReturn = (
-    <>
-      <div className={taskDescription}>{`${description}`}</div>
-      <div className={taskTime}>
-        {format(start, "HH:mm")} - {format(end, "HH:mm")}
-      </div>
-    </>
-  );
-  if (hidden) {
-    return <></>;
-  }
-  if (iconDirection !== undefined) {
-    if (iconDirection === "left") {
-      divReturn = IconLeftOrRight("left", divReturn, taskIcon);
-    } else {
-      divReturn = IconLeftOrRight("right", divReturn, taskIcon);
+  if (
+    description !== undefined &&
+    start !== undefined &&
+    end !== undefined &&
+    taskClasses !== undefined
+  ) {
+    const { taskDescription, taskTime, taskIcon } = taskClasses;
+    let divReturn = (
+      <>
+        <div className={taskDescription}>{`${description}`}</div>
+        <div className={taskTime}>
+          {format(start, "HH:mm")} - {format(end, "HH:mm")}
+        </div>
+      </>
+    );
+    if (iconDirection !== undefined) {
+      divReturn = IconLeftOrRight(iconDirection, divReturn, taskIcon);
     }
+    return <>{divReturn}</>;
   }
-  return <>{divReturn}</>;
+  return <></>;
 }
 
 function IconLeftOrRight(iconDirection: "left" | "right", task: JSX.Element, taskIcon: string) {

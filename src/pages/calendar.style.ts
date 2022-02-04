@@ -29,11 +29,11 @@ const calendarStyles = makeStyles({
     textAlign: "center",
     backgroundColor: "white",
     borderLeft: `1px solid black`,
-    display: "grid",
-    gridTemplateRows: "50% 50%",
-    gridTemplateColumns: "5% 95%",
-    gridTemplateAreas: `"icon description" "icon time"`,
-    alignItems: "center",
+    // display: "grid",
+    // gridTemplateRows: "50% 50%",
+    // gridTemplateColumns: "5% 95%",
+    // gridTemplateAreas: `"icon description" "icon time"`,
+    // alignItems: "center",
   },
 
   workerJobEmpty: {
