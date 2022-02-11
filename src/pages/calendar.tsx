@@ -262,7 +262,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
         } else {
           taskDiv = <>{TaskLayout(false, "left", taskClasses, x.description, x.start, x.end)}</>;
           Object.assign(grid, {
-            gridTemplateColumns: "5% 95%",
+            gridTemplateColumns: "15px auto",
             gridTemplateAreas: `"icon description" "icon time"`,
           });
           Object.assign(style, grid);
@@ -274,7 +274,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       if (differenceInCalendarDays(x.start, x.end) !== 0) {
         taskDiv = <>{TaskLayout(true, "right", taskClasses)}</>;
         Object.assign(grid, {
-          gridTemplateColumns: "95% 5%",
+          gridTemplateColumns: "auto 15px",
           gridTemplateAreas: `"description icon" "time icon"`,
         });
         Object.assign(style, grid);
@@ -290,7 +290,7 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       ) {
         taskDiv = <>{TaskLayout(false, "right", taskClasses, x.description, x.start, x.end)}</>;
         Object.assign(grid, {
-          gridTemplateColumns: "95% 5%",
+          gridTemplateColumns: "auto 15px",
           gridTemplateAreas: `"description icon" "time icon"`,
         });
         Object.assign(style, grid);
