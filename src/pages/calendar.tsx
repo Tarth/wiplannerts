@@ -24,10 +24,13 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   userGroup,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
-  const [currentDate, setCurrentDate] = useState<Date>(new Date(2021, 11, 21));
+  let todaysDate = new Date();
+  if (process.env.NODE_ENV === "development") {
+    todaysDate = new Date(2021, 11, 21);
+  }
+  const [currentDate, setCurrentDate] = useState<Date>(todaysDate);
   const fetchTimer = 60_000;
   const { workerContainer, leftRightBtngrp } = calendarStyles();
-
   useEffect(() => {
     const abortController = new AbortController();
     let getDataTimer = setInterval(() => {}, fetchTimer);
