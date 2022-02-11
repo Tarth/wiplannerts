@@ -10,7 +10,7 @@ export const NameBackgroundColor = (index: number | undefined) => {
     "#BB8FCE",
     "#F8C471",
     "#73C6B6",
-    "#f0ead6",
+    "#F5DEB3",
   ];
   return colorArray[index % colorArray.length];
 };
