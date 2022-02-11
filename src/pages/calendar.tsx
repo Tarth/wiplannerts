@@ -34,16 +34,16 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
     void (async function fetchData() {
       try {
         await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        // getDataTimer = setInterval(async () => {
-        //   await getDataWithValidToken({ setIsLoggedIn, setTasks });
-        // }, fetchTimer);
+        getDataTimer = setInterval(async () => {
+          await getDataWithValidToken({ setIsLoggedIn, setTasks });
+        }, fetchTimer);
       } catch (error) {
         return;
       }
     })();
     return () => {
       abortController.abort();
-      // clearInterval(getDataTimer);
+      clearInterval(getDataTimer);
     };
   }, []);
 
@@ -238,64 +238,44 @@ const DailyTasks: React.FC<CalendarDataProps> = ({ tasks, index, weekDataIndex }
       alignItems: "center",
       justifyItems: "center",
     };
-    // hidden
-    // hidden + right
-    // diplay
-    // display + left
-    // display + right
-    // start with the unique cases
-    // 4 (3) cases: hidden, display, left and right
-    //TaskLayout(true)
-    //TaskLayout(true, "right")
-    //TaskLayout(false, undefined, x.description, x.start, x.end, taskClasses)
-    //TaskLayout(false, "left", x.description, x.start, x.end, taskClasses)
-    //TaskLayout(false, "right", x.description, x.start, x.end, taskClasses)
-
-    let taskDiv = <>{TaskLayout(false, undefined, taskClasses, x.description, x.start, x.end)}</>;
-
+    let taskDiv = <></>;
     if (x.deltaDays !== undefined) {
-      const taskStartDate = subDays(x.end, x.deltaDays);
-      if (x.deltaDays > 0 && differenceInCalendarDays(taskStartDate, x.start) !== 0) {
-        if (weekDataIndex !== 0) {
-          taskDiv = <>{TaskLayout(true)}</>;
-          Object.assign(style, { borderLeft: `1px solid ${NameBackgroundColor(index)}` });
+      if (x.deltaDays === 0) {
+        taskDiv = TaskLayout(false, undefined, taskClasses, x.description, x.start, x.end);
+      }
+      if (x.deltaDays > 0) {
+        const taskStartDate = subDays(x.end, x.deltaDays);
+        const DiffDeltaDaysAndEnd = subDays(x.end, x.deltaDays);
+        if (differenceInCalendarDays(taskStartDate, x.start) === 0) {
+          taskDiv = TaskLayout(false, undefined, taskClasses, x.description, x.start, x.end);
         } else {
-          taskDiv = <>{TaskLayout(false, "left", taskClasses, x.description, x.start, x.end)}</>;
-          Object.assign(grid, {
-            gridTemplateColumns: "15px auto",
-            gridTemplateAreas: `"icon description" "icon time"`,
-          });
+          Object.assign(style, { borderLeft: `1px solid ${NameBackgroundColor(index)}` });
+          if (weekDataIndex === 0) {
+            taskDiv = TaskLayout(false, "left", taskClasses, x.description, x.start, x.end);
+            Object.assign(grid, {
+              gridTemplateColumns: "15px auto",
+              gridTemplateAreas: `"icon description" "icon time"`,
+              borderLeft: "1px solid #000000",
+            });
+            Object.assign(style, grid);
+          }
+        }
+        if (isJobOnFriday && lastJobOfDay === x && differenceInCalendarDays(x.start, x.end) < 0) {
+          const gridLayoutWithIconRight = {
+            gridTemplateColumns: "auto 15px",
+            gridTemplateAreas: `"description icon" "time icon"`,
+          };
+          taskDiv = TaskLayout(true, "right", taskClasses);
+          if (!isBefore(DiffDeltaDaysAndEnd, x.start)) {
+            taskDiv = TaskLayout(false, "right", taskClasses, x.description, x.start, x.end);
+          }
+          Object.assign(grid, gridLayoutWithIconRight);
           Object.assign(style, grid);
         }
       }
     }
     if (isJobOnFriday && lastJobOfDay === x) {
-      Object.assign(style, { borderRight: `1px solid #000000` });
-      if (differenceInCalendarDays(x.start, x.end) !== 0) {
-        taskDiv = <>{TaskLayout(true, "right", taskClasses)}</>;
-        Object.assign(grid, {
-          gridTemplateColumns: "auto 15px",
-          gridTemplateAreas: `"description icon" "time icon"`,
-        });
-        Object.assign(style, grid);
-      }
-    }
-    if (x.deltaDays !== undefined) {
-      const DiffDeltaDaysAndEnd = subDays(x.end, x.deltaDays);
-      if (
-        isJobOnFriday &&
-        lastJobOfDay === x &&
-        !isBefore(DiffDeltaDaysAndEnd, x.start) &&
-        differenceInCalendarDays(x.start, x.end) < 0
-      ) {
-        taskDiv = <>{TaskLayout(false, "right", taskClasses, x.description, x.start, x.end)}</>;
-        Object.assign(grid, {
-          gridTemplateColumns: "auto 15px",
-          gridTemplateAreas: `"description icon" "time icon"`,
-        });
-        Object.assign(style, grid);
-        console.log(x.description);
-      }
+      Object.assign(style, { borderRight: "1px solid #000000" });
     }
     return (
       <div key={x.id} className={workerJob} style={style}>
@@ -347,88 +327,41 @@ function TaskLayout(
   let icon = <></>;
   let initDisplay = <></>;
   let divReturn = <></>;
-  //TaskLayout(true): Hidden
-  //Tasklayout(true, right): Hidden right
-  //TaskLayout(false, undefined, x.description, x.start, x.end, taskClasses): show
-  //TaskLayout(false, left, x.description, x.start, x.end, taskClasses): show left
-  //TaskLayout(false, right, x.description, x.start, x.end, taskClasses): show right
 
-  if (hidden) {
-    divReturn = <></>;
-  }
-
-  if (hidden && iconDirection === "right" && taskClasses !== undefined) {
-    const { taskIcon } = taskClasses;
-    icon = IconLeftOrRight(iconDirection, taskIcon);
-    divReturn = (
-      <>
-        {icon}
-        {initDisplay}
-      </>
-    );
-  }
-
-  if (!hidden && taskClasses !== undefined && start !== undefined && end !== undefined) {
-    const { taskDescription, taskTime } = taskClasses;
-    initDisplay = (
-      <>
-        <div className={taskDescription}>{`${description}`}</div>
-        <div className={taskTime}>
-          {format(start, "HH:mm")} - {format(end, "HH:mm")}
-        </div>
-      </>
-    );
-    divReturn = initDisplay;
-  }
-
-  if (
-    !hidden &&
-    taskClasses !== undefined &&
-    start !== undefined &&
-    end !== undefined &&
-    iconDirection === "right"
-  ) {
-    const { taskDescription, taskTime, taskIcon } = taskClasses;
-    icon = IconLeftOrRight(iconDirection, taskIcon);
-    initDisplay = (
-      <>
-        <div className={taskDescription}>{`${description}`}</div>
-        <div className={taskTime}>
-          {format(start, "HH:mm")} - {format(end, "HH:mm")}
-        </div>
-      </>
-    );
-    divReturn = (
-      <>
-        {icon}
-        {initDisplay}
-      </>
-    );
-  }
-
-  if (
-    !hidden &&
-    taskClasses !== undefined &&
-    start !== undefined &&
-    end !== undefined &&
-    iconDirection === "left"
-  ) {
-    const { taskDescription, taskTime, taskIcon } = taskClasses;
-    icon = IconLeftOrRight(iconDirection, taskIcon);
-    initDisplay = (
-      <>
-        <div className={taskDescription}>{`${description}`}</div>
-        <div className={taskTime}>
-          {format(start, "HH:mm")} - {format(end, "HH:mm")}
-        </div>
-      </>
-    );
-    divReturn = (
-      <>
-        {icon}
-        {initDisplay}
-      </>
-    );
+  if (!hidden) {
+    if (taskClasses !== undefined && start !== undefined && end !== undefined) {
+      const { taskDescription, taskTime, taskIcon } = taskClasses;
+      initDisplay = (
+        <>
+          <div className={taskDescription}>{`${description}`}</div>
+          <div className={taskTime}>
+            {format(start, "HH:mm")} - {format(end, "HH:mm")}
+          </div>
+        </>
+      );
+      if (iconDirection === "right" || iconDirection === "left") {
+        icon = IconLeftOrRight(iconDirection, taskIcon);
+        divReturn = (
+          <>
+            {icon}
+            {initDisplay}
+          </>
+        );
+      } else {
+        divReturn = initDisplay;
+      }
+    }
+  } else {
+    if (iconDirection === "right" && taskClasses !== undefined) {
+      const { taskIcon } = taskClasses;
+      icon = IconLeftOrRight(iconDirection, taskIcon);
+      divReturn = (
+        <>
+          {icon}
+          {initDisplay}
+        </>
+      );
+    }
   }
 
   return divReturn;
