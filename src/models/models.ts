@@ -176,7 +176,7 @@ export interface LoginResponse {
   statusText: string;
 }
 
-export interface IsUserLoggedInProp {
+export interface IsUserLoggedInProp extends RememberMeProp {
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
   userGroup?: string;
@@ -279,4 +279,9 @@ export interface SetIsLoggedInProp {
 export interface GetDataWithValidToken extends SetIsLoggedInProp {
   setTasks: (tasks: Job_Worker[]) => void;
   setWorkers?: (workers: Worker[]) => void;
+}
+
+export interface RememberMeProp {
+  rememberMe?: boolean;
+  setRememberMe?: (rememberMe: boolean) => void;
 }

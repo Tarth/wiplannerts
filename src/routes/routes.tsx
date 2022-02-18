@@ -4,11 +4,13 @@ import { Admin } from "../pages/admin";
 import { Login } from "../pages/login";
 import { IsAccessTokenValid } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
+import { useStickyState } from "../components/utilityComponents/customHooks/useStickyState";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 export const Index: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userGroup, setUserGroup] = useState("");
+  const [rememberMe, setRememberMe] = useStickyState(false, "rememberMe");
   const accessToken = localStorage.getItem("accesstoken");
 
   const LoginSwitch: React.FC = () => {
@@ -29,6 +31,8 @@ export const Index: React.FC = () => {
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
           setUserGroup={setUserGroup}
+          rememberMe={rememberMe}
+          setRememberMe={setRememberMe}
         ></Login>
       );
     }

@@ -406,7 +406,7 @@ export const IsAccessTokenValid = async (accessToken: string | null) => {
     }
     return true;
   } catch (error) {
-    return error;
+    return false;
   }
 };
 

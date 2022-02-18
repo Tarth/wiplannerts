@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { PostLogin, AuthenticateUser } from "../utility/datahandler";
 import { ParseJWT } from "../utility/parsetoken";
-import Box from "@material-ui/core/Box";
 import { ButtonWrapper } from "../components/utilityComponents/elements/buttonWrapper";
-import TextField from "@material-ui/core/TextField";
+import { RememberMeCheckbox } from "../components/utilityComponents/elements/rememberMeCheckbox";
+import { Box, TextField } from "@material-ui/core";
 import { useStyles } from "../css/login";
 import { IsUserLoggedInProp } from "../models/models";
 import WaveTop from "../css/imgs/wave-top.png";
@@ -14,6 +14,8 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
   setUserGroup,
+  rememberMe,
+  setRememberMe,
 }) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
@@ -91,6 +93,10 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
             error={isError ? true : false}
           ></TextField>
 
+          <RememberMeCheckbox
+            rememberMe={rememberMe}
+            setRememberMe={setRememberMe}
+          ></RememberMeCheckbox>
           <ButtonWrapper
             className={classes.button}
             onClick={async () => {
