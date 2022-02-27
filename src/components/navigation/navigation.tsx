@@ -9,29 +9,26 @@ export const Navigation: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
   userGroup,
+  rememberMe,
 }) => {
   const classes = useStyles();
 
+  function Logout() {
+    localStorage.clear();
+    setIsLoggedIn(false);
+  }
   return (
     <>
       <div className={classes.buttonParent}>
         {getUserGroupNumber(userGroup as string) <= 2 ? (
           <div>
             <Link to="/admin">
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.buttonStyle}
-              >
+              <Button variant="contained" color="primary" className={classes.buttonStyle}>
                 Admin
               </Button>
             </Link>
             <Link to="/calendar">
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.buttonStyle}
-              >
+              <Button variant="contained" color="primary" className={classes.buttonStyle}>
                 Kalender
               </Button>
             </Link>
@@ -46,10 +43,7 @@ export const Navigation: React.FC<IsUserLoggedInProp> = ({
               className={classes.buttonStyle}
               variant="contained"
               color="primary"
-              onClick={() => {
-                setIsLoggedIn(false);
-                localStorage.clear();
-              }}
+              onClick={() => Logout()}
             >
               Log ud
             </Button>

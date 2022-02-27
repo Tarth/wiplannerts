@@ -2,11 +2,11 @@ import ReactDOM from "react-dom";
 import React from "react";
 import * as serviceWorker from "./serviceWorker";
 import "./css/index.css";
-import { Index } from "./routes/routes";
+import { IndexWrapper } from "./routes/routes";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Index />
+    <IndexWrapper />
   </React.StrictMode>,
   document.getElementById("root")
 );

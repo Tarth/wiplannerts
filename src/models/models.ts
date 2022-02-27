@@ -276,6 +276,11 @@ export interface SetIsLoggedInProp {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
+interface IsLoggedInProp {
+  isLoggedIn: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+}
+
 export interface GetDataWithValidToken extends SetIsLoggedInProp {
   setTasks: (tasks: Job_Worker[]) => void;
   setWorkers?: (workers: Worker[]) => void;
@@ -285,3 +290,14 @@ export interface RememberMeProp {
   rememberMe?: boolean;
   setRememberMe?: (rememberMe: boolean) => void;
 }
+
+interface IsAccessTokenValidProp {
+  isAccessTokenValid: boolean;
+  setIsAccessTokenValid: (accessToken: boolean) => void;
+}
+
+export interface IndexWrapperProp
+  extends RememberMeProp,
+    IsLoggedInProp,
+    UserGroup,
+    IsAccessTokenValidProp {}

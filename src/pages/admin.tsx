@@ -17,7 +17,12 @@ import { getUserGroupNumber } from "../utility/usergroups";
 import { CheckToken } from "../utility/auth";
 import { adminStyles } from "./admin.style";
 
-export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn, userGroup }) => {
+export const Admin: React.FC<IsUserLoggedInProp> = ({
+  isLoggedIn,
+  setIsLoggedIn,
+  userGroup,
+  rememberMe,
+}) => {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [selectedWorkers, setSelectedWorkers] = useState<Worker[]>([]);
   const [tasks, setTasks] = useState<Job_Worker[]>([]); //This state has all jobs fetched from DB
@@ -154,6 +159,7 @@ export const Admin: React.FC<IsUserLoggedInProp> = ({ isLoggedIn, setIsLoggedIn,
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
         userGroup={userGroup}
+        rememberMe={rememberMe}
       ></Navigation>
       <div className="body">
         <div className="buttongroup">
