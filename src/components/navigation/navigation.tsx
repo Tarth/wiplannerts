@@ -4,19 +4,26 @@ import Button from "@material-ui/core/Button";
 import { IsUserLoggedInProp } from "../../models/models";
 import { useStyles } from "./style";
 import { getUserGroupNumber } from "../../utility/usergroups";
+import { Logout } from "../../utility/logout";
 
 export const Navigation: React.FC<IsUserLoggedInProp> = ({
   isLoggedIn,
   setIsLoggedIn,
   userGroup,
   rememberMe,
+  setRememberMe,
 }) => {
   const classes = useStyles();
 
-  function Logout() {
-    localStorage.clear();
-    setIsLoggedIn(false);
-  }
+  // function Logout() {
+  //   if (setRememberMe !== undefined) {
+  //     setRememberMe(false);
+  //   }
+  //   setIsLoggedIn(false);
+  //   localStorage.removeItem("accesstoken");
+  //   localStorage.removeItem("refreshtoken");
+  // }
+
   return (
     <>
       <div className={classes.buttonParent}>
@@ -43,7 +50,7 @@ export const Navigation: React.FC<IsUserLoggedInProp> = ({
               className={classes.buttonStyle}
               variant="contained"
               color="primary"
-              onClick={() => Logout()}
+              onClick={() => Logout(setRememberMe, setIsLoggedIn)}
             >
               Log ud
             </Button>

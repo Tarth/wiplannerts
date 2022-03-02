@@ -402,6 +402,7 @@ export const IsAccessTokenValid = async (accessToken: string | null) => {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (res.data.isSuccess === false) {
+      console.log(accessToken);
       return false;
     }
     return true;

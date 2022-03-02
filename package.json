@@ -19,7 +19,7 @@
     "axios": "^0.19.2",
     "caniuse-lite": "^1.0.30001312",
     "classnames": "^2.3.1",
-    "date-fns": "^2.28.0",
+    "date-fns": "^2.14.0",
     "fontsource-roboto": "^3.1.5",
     "primeicons": "^4.1.0",
     "primereact": "^4.2.2",

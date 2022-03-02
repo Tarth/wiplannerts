@@ -4,6 +4,7 @@ import { Admin } from "../pages/admin";
 import { Login } from "../pages/login";
 import { IsAccessTokenValid } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
+import { Logout } from "../utility/logout";
 import { IndexWrapperProp } from "../models/models";
 import { useStickyState } from "../components/utilityComponents/customHooks/useStickyState";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
@@ -38,20 +39,21 @@ export const Index: React.FC<IndexWrapperProp> = ({
   isAccessTokenValid,
   setIsAccessTokenValid,
 }) => {
-  const accessToken = localStorage.getItem("accesstoken");
   const LoginSwitch = () => {
+    const accessToken = localStorage.getItem("accesstoken");
     useEffect(() => {
       async function GetUserTokenValidity() {
         try {
           setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
         } catch (error) {
-          return error;
+          console.log(error);
         }
       }
       GetUserTokenValidity();
+      return () => {};
     }, []);
 
-    if (isAccessTokenValid && (isLoggedIn || rememberMe)) {
+    if (isAccessTokenValid && rememberMe) {
       return (
         <Redirect
           to={{
@@ -62,17 +64,75 @@ export const Index: React.FC<IndexWrapperProp> = ({
           }}
         />
       );
-    } else {
-      console.log("Login");
+    }
+
+    if (isAccessTokenValid && isLoggedIn) {
       return (
-        <Login
+        <Redirect
+          to={{
+            pathname: "/calendar",
+            state: {
+              accesstoken: accessToken,
+            },
+          }}
+        />
+      );
+    }
+
+    return (
+      <Login
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        setUserGroup={setUserGroup}
+        rememberMe={rememberMe}
+        setRememberMe={setRememberMe}
+      ></Login>
+    );
+  };
+
+  const RouteCalendar = () => {
+    const accessToken = localStorage.getItem("accesstoken");
+    useEffect(() => {
+      async function GetUserTokenValidity() {
+        try {
+          setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      GetUserTokenValidity();
+      return () => {};
+    }, []);
+
+    if (getUserGroupNumber(userGroup) <= 3 && isAccessTokenValid) {
+      return (
+        <Calendar
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
-          setUserGroup={setUserGroup}
+          userGroup={userGroup}
           rememberMe={rememberMe}
           setRememberMe={setRememberMe}
-        ></Login>
+        ></Calendar>
       );
+    } else {
+      Logout(setRememberMe, setIsLoggedIn);
+      return <Redirect exact to="/"></Redirect>;
+    }
+  };
+
+  const RouteAdmin = () => {
+    if (getUserGroupNumber(userGroup) <= 2 && isAccessTokenValid) {
+      return (
+        <Admin
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          userGroup={userGroup}
+          rememberMe={rememberMe}
+        ></Admin>
+      );
+    } else {
+      Logout(setRememberMe, setIsLoggedIn);
+      return <Redirect exact to="/"></Redirect>;
     }
   };
   return (
@@ -83,33 +143,10 @@ export const Index: React.FC<IndexWrapperProp> = ({
             <LoginSwitch></LoginSwitch>
           </Route>
           <Route path="/calendar">
-            {getUserGroupNumber(userGroup) <= 3 && isAccessTokenValid ? (
-              <>
-                <Calendar
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  userGroup={userGroup}
-                  rememberMe={rememberMe}
-                ></Calendar>
-              </>
-            ) : (
-              <></>
-              // <Redirect exact to="/"></Redirect>
-            )}
+            <RouteCalendar></RouteCalendar>
           </Route>
           <Route path="/admin">
-            {getUserGroupNumber(userGroup) <= 2 && isAccessTokenValid ? (
-              <>
-                <Admin
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  userGroup={userGroup}
-                  rememberMe={rememberMe}
-                ></Admin>
-              </>
-            ) : (
-              <Redirect exact to="/"></Redirect>
-            )}
+            <RouteAdmin></RouteAdmin>
           </Route>
         </Switch>
       </BrowserRouter>

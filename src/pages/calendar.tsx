@@ -23,6 +23,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
   setIsLoggedIn,
   userGroup,
   rememberMe,
+  setRememberMe,
 }) => {
   const [tasks, setTasks] = useState<Job_Worker[]>([]);
   let todaysDate = new Date();
@@ -58,6 +59,7 @@ export const Calendar: React.FC<IsUserLoggedInProp> = ({
         setIsLoggedIn={setIsLoggedIn}
         userGroup={userGroup}
         rememberMe={rememberMe}
+        setRememberMe={setRememberMe}
       ></Navigation>
 
       <DisplayHeaders currentDate={currentDate} />
