@@ -25,13 +25,16 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
 
   async function LoginResponse() {
     try {
-      const returnmsg = await PostLogin(username, password);
-      if (returnmsg.data.isSuccess === false) {
+      const {
+        data: {
+          isSuccess,
+          data: { accessToken, refreshToken },
+        },
+      } = await PostLogin(username, password);
+      if (!isSuccess) {
         setIsError(true);
         setIsLoading(false);
       } else {
-        const accessToken = returnmsg.data.accessToken;
-        const refreshToken = returnmsg.data.refreshToken;
         const userdata = ParseJWT(accessToken);
         localStorage.setItem("accesstoken", accessToken);
         localStorage.setItem("refreshtoken", refreshToken);
