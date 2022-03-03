@@ -35,12 +35,12 @@ export const Login: React.FC<IsUserLoggedInProp> = ({
         setIsError(true);
         setIsLoading(false);
       } else {
-        const userdata = ParseJWT(accessToken);
+        const { usergroup } = ParseJWT(accessToken);
         localStorage.setItem("accesstoken", accessToken);
         localStorage.setItem("refreshtoken", refreshToken);
 
         if (setUserGroup !== undefined) {
-          setUserGroup(userdata.usergroup);
+          setUserGroup(usergroup);
         }
         if (accessToken !== null) {
           await AuthenticateUser(accessToken);
