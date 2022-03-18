@@ -1,5 +1,5 @@
 import { Job_Worker, DbJob, Worker, JobUserDelete, GetDataWithValidToken } from "../models/models";
-import { CheckToken, logout } from "./auth";
+import { CheckToken, Logout } from "./auth";
 import { parseDate } from "./date";
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -401,13 +401,13 @@ export const IsAccessTokenValid = async (accessToken: string | null) => {
     const res = await axios.get(`${url}/validate`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    if (res.data.isSuccess === false) {
-      console.log(accessToken);
-      return false;
-    }
-    return true;
+    return res;
+    // if (res.data.isSuccess === false) {
+    //   return false;
+    // }
+    // return true;
   } catch (error) {
-    return false;
+    return error;
   }
 };
 
@@ -427,7 +427,7 @@ export const getDataWithValidToken = async ({
   try {
     const validToken = await CheckToken();
     if (typeof validToken !== "string") {
-      logout({ setIsLoggedIn });
+      Logout({ setIsLoggedIn });
       return;
     }
     if (setWorkers !== undefined) {

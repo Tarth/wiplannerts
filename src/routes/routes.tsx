@@ -5,8 +5,10 @@ import { Login } from "../pages/login";
 import { IsAccessTokenValid } from "../utility/datahandler";
 import { getUserGroupNumber } from "../utility/usergroups";
 import { Logout } from "../utility/logout";
+import { IsEmpty } from "../utility/isEmpty";
 import { IndexWrapperProp } from "../models/models";
 import { useStickyState } from "../components/utilityComponents/customHooks/useStickyState";
+import { useUserLogin } from "../components/utilityComponents/customHooks/useUserLogin";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 export const IndexWrapper = () => {
@@ -39,40 +41,57 @@ export const Index: React.FC<IndexWrapperProp> = ({
   isAccessTokenValid,
   setIsAccessTokenValid,
 }) => {
+  const loginResponse = useUserLogin();
+
+  useEffect(() => {
+    console.log(loginResponse);
+  }, [loginResponse]);
+
+  const {
+    isSuccess,
+    data: { name, message },
+  } = loginResponse;
+
   const LoginSwitch = () => {
+    //user kommer ind for første gang -> Login screen
+    //
+
+    //user logger ud -> Login screen
+    //user returnerer efter at have været logget ind før: Redirect til Kalender
+
     const accessToken = localStorage.getItem("accesstoken");
-    useEffect(() => {
-      async function GetUserTokenValidity() {
-        try {
-          setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      GetUserTokenValidity();
-      return () => {};
-    }, []);
+    // useEffect(() => {
+    //   async function GetUserTokenValidity() {
+    //     try {
+    //       setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    //   GetUserTokenValidity();
+    //   return () => {};
+    // }, []);
 
-    if (isAccessTokenValid && rememberMe) {
+    // if (isTokenValid && rememberMe) {
+    //   return (
+    //     <Redirect
+    //       to={{
+    //         pathname: "/calendar",
+    //         state: {
+    //           accesstoken: accessToken,
+    //         },
+    //       }}
+    //     />
+    //   );
+    // }
+
+    if (isSuccess) {
       return (
         <Redirect
           to={{
             pathname: "/calendar",
             state: {
-              accesstoken: accessToken,
-            },
-          }}
-        />
-      );
-    }
-
-    if (isAccessTokenValid && isLoggedIn) {
-      return (
-        <Redirect
-          to={{
-            pathname: "/calendar",
-            state: {
-              accesstoken: accessToken,
+              accesstoken: localStorage.getItem("accesstoken"),
             },
           }}
         />
@@ -92,32 +111,41 @@ export const Index: React.FC<IndexWrapperProp> = ({
 
   const RouteCalendar = () => {
     const accessToken = localStorage.getItem("accesstoken");
-    useEffect(() => {
-      async function GetUserTokenValidity() {
-        try {
-          setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      GetUserTokenValidity();
-      return () => {};
-    }, []);
+    return (
+      <Calendar
+        isLoggedIn={isSuccess}
+        setIsLoggedIn={setIsLoggedIn}
+        userGroup={userGroup}
+        rememberMe={rememberMe}
+        setRememberMe={setRememberMe}
+      ></Calendar>
+    );
+    // useEffect(() => {
+    //   async function GetUserTokenValidity() {
+    //     try {
+    //       setIsAccessTokenValid(await IsAccessTokenValid(accessToken));
+    //     } catch (error) {
+    //       console.log("RouteCalendar", error);
+    //     }
+    //   }
+    //   GetUserTokenValidity();
+    //   return () => {};
+    // }, []);
 
-    if (getUserGroupNumber(userGroup) <= 3 && isAccessTokenValid) {
-      return (
-        <Calendar
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-          userGroup={userGroup}
-          rememberMe={rememberMe}
-          setRememberMe={setRememberMe}
-        ></Calendar>
-      );
-    } else {
-      Logout(setRememberMe, setIsLoggedIn);
-      return <Redirect exact to="/"></Redirect>;
-    }
+    // if (getUserGroupNumber(userGroup) <= 3 && isAccessTokenValid) {
+    //   return (
+    //     <Calendar
+    //       isLoggedIn={isLoggedIn}
+    //       setIsLoggedIn={setIsLoggedIn}
+    //       userGroup={userGroup}
+    //       rememberMe={rememberMe}
+    //       setRememberMe={setRememberMe}
+    //     ></Calendar>
+    //   );
+    // } else {
+    //   Logout(setRememberMe, setIsLoggedIn);
+    //   return <Redirect exact to="/"></Redirect>;
+    // }
   };
 
   const RouteAdmin = () => {
@@ -135,6 +163,7 @@ export const Index: React.FC<IndexWrapperProp> = ({
       return <Redirect exact to="/"></Redirect>;
     }
   };
+
   return (
     <>
       <BrowserRouter>

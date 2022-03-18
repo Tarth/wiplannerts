@@ -3,7 +3,7 @@ import { SetIsLoggedInProp } from "../models/models";
 
 let refreshToken = localStorage.getItem("refreshtoken");
 
-export const logout = ({ setIsLoggedIn }: SetIsLoggedInProp) => {
+export const Logout = ({ setIsLoggedIn }: SetIsLoggedInProp) => {
   setIsLoggedIn(false);
   localStorage.clear();
 };
@@ -12,7 +12,7 @@ export const CheckToken = async (): Promise<string | null | unknown> => {
   let localToken = localStorage.getItem("accesstoken");
   try {
     const isTokenValid = await IsAccessTokenValid(localToken);
-    if (isTokenValid === false) {
+    if (isTokenValid.isSuccess === false) {
       refreshToken = localStorage.getItem("refreshtoken");
       localToken = await GetAccessTokenFromRefresh(refreshToken as string);
       localStorage.setItem("accesstoken", localToken as string);
